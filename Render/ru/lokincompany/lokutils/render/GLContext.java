@@ -35,7 +35,7 @@ public class GLContext {
         return bindedContext != null && context != null && context.getWindow().getGLFWWindow() == bindedContext.getWindow().getGLFWWindow();
     }
 
-    public static GLContext getCorrect(){
+    public static GLContext getCurrent(){
         return bindedContext;
     }
 

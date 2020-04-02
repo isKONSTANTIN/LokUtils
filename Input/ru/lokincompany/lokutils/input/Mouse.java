@@ -1,10 +1,11 @@
-package ru.lokincompany.lokutils.objects.glfw;
+package ru.lokincompany.lokutils.input;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFWMouseButtonCallback;
 import org.lwjgl.glfw.GLFWScrollCallback;
 import org.lwjgl.util.vector.Vector2f;
 import ru.lokincompany.lokutils.objects.Vector2i;
+import ru.lokincompany.lokutils.render.GLContext;
 
 import java.nio.DoubleBuffer;
 
@@ -12,25 +13,26 @@ import static org.lwjgl.glfw.GLFW.*;
 
 public class Mouse {
     public int buttonID = GLFW_MOUSE_BUTTON_LEFT;
-    private Vector2i mousePosition = new Vector2i();
-    private Vector2i lastMousePosition = new Vector2i(-1, 0);
-    private Vector2i mouseDeltaPosition = new Vector2i();
-    private Vector2f mouseScroll = new Vector2f();
-    private Vector2f lastMouseScroll = new Vector2f();
-    private boolean mousePressed = false;
-    private long windowID;
+    protected Vector2i mousePosition = new Vector2i();
+    protected Vector2i lastMousePosition = new Vector2i(-1, 0);
+    protected Vector2i mouseDeltaPosition = new Vector2i();
+    protected Vector2f mouseScroll = new Vector2f();
+    protected Vector2f lastMouseScroll = new Vector2f();
+    protected boolean mousePressed = false;
+    protected GLContext GLcontext;
 
-    public Mouse(long windowID) {
-        this.windowID = windowID;
+    public Mouse() {
+        GLcontext = GLContext.getCurrent();
+        if (GLcontext == null) throw new RuntimeException("VBO cannot be created without OpenGL context!");
 
-        glfwSetMouseButtonCallback(windowID, new GLFWMouseButtonCallback() {
+        glfwSetMouseButtonCallback(GLcontext.getWindow().getGLFWWindow(), new GLFWMouseButtonCallback() {
             @Override
             public void invoke(long window, int button, int action, int mods) {
                 mousePressed = button == buttonID && action == GLFW_PRESS;
             }
         });
 
-        glfwSetScrollCallback(windowID, new GLFWScrollCallback() {
+        glfwSetScrollCallback(GLcontext.getWindow().getGLFWWindow(), new GLFWScrollCallback() {
             @Override
             public void invoke(long l, double xoffset, double yoffset) {
                 mouseScroll.x = (float) xoffset;
@@ -56,9 +58,11 @@ public class Mouse {
     }
 
     public void update() {
+        if (!GLContext.check(GLcontext)) throw new RuntimeException("Mouse cannot be updated without or another OpenGL context!");
+
         DoubleBuffer xBuffer = BufferUtils.createDoubleBuffer(1);
         DoubleBuffer yBuffer = BufferUtils.createDoubleBuffer(1);
-        glfwGetCursorPos(windowID, xBuffer, yBuffer);
+        glfwGetCursorPos(GLcontext.getWindow().getGLFWWindow(), xBuffer, yBuffer);
 
         mousePosition.setX((int)xBuffer.get(0));
         mousePosition.setY((int)yBuffer.get(0));

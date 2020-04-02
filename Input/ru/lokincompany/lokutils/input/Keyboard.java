@@ -1,25 +1,29 @@
-package ru.lokincompany.lokutils.objects.glfw;
+package ru.lokincompany.lokutils.input;
 
 import org.lwjgl.glfw.GLFWCharCallback;
 import org.lwjgl.glfw.GLFWKeyCallback;
+import ru.lokincompany.lokutils.render.GLContext;
+
 import java.util.ArrayList;
 
 import static org.lwjgl.glfw.GLFW.*;
 
 public class Keyboard {
-    private GLFWKeyCallback callbackKey;
-    private GLFWCharCallback callbackChar;
-    private ArrayList<KeyInfo> keysPressed = new ArrayList<>();
-    private long windowID;
 
-    public Keyboard(long windowID) {
-        this.windowID = windowID;
+    protected GLFWKeyCallback callbackKey;
+    protected GLFWCharCallback callbackChar;
+    protected ArrayList<KeyInfo> keysPressed = new ArrayList<>();
+    protected GLContext GLcontext;
+
+    public Keyboard() {
+        GLcontext = GLContext.getCurrent();
+        if (GLcontext == null) throw new RuntimeException("Keyboard cannot be created without OpenGL context!");
 
         callbackKey = GLFWKeyCallback.create(this::keyCallback);
         callbackChar = GLFWCharCallback.create(this::charCallback);
 
-        glfwSetKeyCallback(windowID, callbackKey);
-        glfwSetCharCallback(windowID, callbackChar);
+        glfwSetKeyCallback(GLcontext.getWindow().getGLFWWindow(), callbackKey);
+        glfwSetCharCallback(GLcontext.getWindow().getGLFWWindow(), callbackChar);
     }
 
     public boolean next() {
@@ -49,6 +53,6 @@ public class Keyboard {
     }
 
     public boolean isKeyDown(int glfwKey) {
-        return glfwGetKey(windowID, glfwKey) == 1;
+        return glfwGetKey(GLcontext.getWindow().getGLFWWindow(), glfwKey) == 1;
     }
 }

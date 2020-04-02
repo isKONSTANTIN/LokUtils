@@ -1,4 +1,4 @@
-package ru.lokincompany.lokutils.objects.glfw;
+package ru.lokincompany.lokutils.input;
 
 public class KeyInfo {
     public char aChar;

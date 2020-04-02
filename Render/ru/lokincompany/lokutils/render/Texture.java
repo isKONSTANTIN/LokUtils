@@ -10,7 +10,7 @@ public class Texture extends GLObject{
 
     @Override
     public void generate() {
-        GLcontext = GLContext.getCorrect();
+        GLcontext = GLContext.getCurrent();
         if (GLcontext == null) throw new RuntimeException("VBO cannot be created without OpenGL context!");
 
         id = GL30.glGenVertexArrays();
@@ -31,7 +31,7 @@ public class Texture extends GLObject{
     }
 
     public void unbind() {
-        if (GLContext.getCorrect() == null) throw new RuntimeException("VBO cannot be binded without OpenGL context!");
+        if (GLContext.getCurrent() == null) throw new RuntimeException("VBO cannot be binded without OpenGL context!");
 
         glBindTexture(GL_TEXTURE_2D, 0);
     }

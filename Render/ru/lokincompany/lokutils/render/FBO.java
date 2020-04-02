@@ -94,7 +94,7 @@ public class FBO extends GLObject {
 
     @Override
     public void generate() {
-        GLcontext = GLContext.getCorrect();
+        GLcontext = GLContext.getCurrent();
         if (GLcontext == null) throw new RuntimeException("FBO cannot be created without OpenGL context!");
 
         initialiseFrameBuffer();
