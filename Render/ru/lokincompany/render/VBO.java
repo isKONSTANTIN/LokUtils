@@ -12,12 +12,14 @@ public class VBO extends GLObject {
     public VBO(){
     }
 
+    @Override
     public void bind() {
         if (!GLContext.check(GLcontext)) throw new RuntimeException("VBO cannot be binded without or another OpenGL context!");
 
         GL15C.glBindBuffer(GL15C.GL_ARRAY_BUFFER, id);
     }
 
+    @Override
     public void unbind() {
         if (GLContext.getCorrect() == null) throw new RuntimeException("VBO cannot be binded without OpenGL context!");
 
@@ -65,6 +67,7 @@ public class VBO extends GLObject {
         return putData(floatPoints);
     }
 
+    @Override
     public void generate(){
         GLcontext = GLContext.getCorrect();
         if (GLcontext == null) throw new RuntimeException("VBO cannot be created without OpenGL context!");
@@ -73,6 +76,7 @@ public class VBO extends GLObject {
         id = GL15.glGenBuffers();
     }
 
+    @Override
     public void delete() {
         if (id == 0) return;
 
