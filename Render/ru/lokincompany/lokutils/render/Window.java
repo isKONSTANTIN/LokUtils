@@ -26,6 +26,7 @@ public class Window {
     protected boolean isFullscreen;
     protected boolean isCreated;
     protected boolean isShow;
+    protected boolean isResizable;
     protected GLContext glContext;
 
     public Window(){
@@ -67,6 +68,8 @@ public class Window {
 
             if (aspectRatio.getX() != -1)
                 setAspectRatio(aspectRatio);
+
+            setResizable(isResizable);
         }
 
         return this;
@@ -93,6 +96,14 @@ public class Window {
 
     public long getGLFWWindow() {
         return window;
+    }
+
+    public Window setResizable(boolean resizable){
+        if (isCreated) glfwSetWindowAttrib(window, GLFW_RESIZABLE, resizable ? GLFW_TRUE : GLFW_FALSE);
+
+        this.isResizable = resizable;
+
+        return this;
     }
 
     public Vector2f getContentScale(){

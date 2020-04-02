@@ -14,6 +14,8 @@ public class GLFW {
         if (!inited)
             inited = glfwInit();
 
+        glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
+
         return inited;
     }
 
