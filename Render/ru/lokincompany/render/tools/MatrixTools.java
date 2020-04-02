@@ -67,21 +67,27 @@ public class MatrixTools {
         return buffer;
     }
 
-    public static void bindPerspectiveMatrix(float fov, float aspect, float near, float far){
-        glMatrixMode(GL_PROJECTION);
+    public static void bindMatrix(Matrix4f matrix4f, int GLMatrixMode){
+        glMatrixMode(GLMatrixMode);
         glLoadIdentity();
-        glMultMatrixf(
-                insertInBuffer(MatrixTools.createPerspectiveMatrix(fov, aspect, near, far))
-        );
+
+        glMultMatrixf(insertInBuffer(matrix4f));
+    }
+
+    public static Matrix4f getBindedMatrix(int GLMatrixType){
+        FloatBuffer buffer = BufferUtils.createFloatBuffer(16);
+        glGetFloatv(GLMatrixType, buffer);
+
+        return (Matrix4f)new Matrix4f().load(buffer);
+    }
+
+    public static void bindPerspectiveMatrix(float fov, float aspect, float near, float far){
+        bindMatrix(MatrixTools.createPerspectiveMatrix(fov, aspect, near, far), GL_PROJECTION);
         glMatrixMode(GL_MODELVIEW);
     }
 
     public static void bindOrthographicMatrix(float left, float right, float bottom, float top, float near, float far){
-        glMatrixMode(GL_PROJECTION);
-        glLoadIdentity();
-        glMultMatrixf(
-                insertInBuffer(MatrixTools.createOrthographicMatrix(left, right, bottom, top, near, far))
-        );
+        bindMatrix(MatrixTools.createOrthographicMatrix(left, right, bottom, top, near, far), GL_PROJECTION);
         glMatrixMode(GL_MODELVIEW);
     }
 
