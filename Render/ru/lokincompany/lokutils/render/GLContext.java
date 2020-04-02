@@ -1,8 +1,6 @@
-package ru.lokincompany.render;
+package ru.lokincompany.lokutils.render;
 
 import org.lwjgl.opengl.GL;
-
-import java.util.ArrayList;
 
 import static org.lwjgl.glfw.GLFW.glfwGetCurrentContext;
 import static org.lwjgl.glfw.GLFW.glfwMakeContextCurrent;

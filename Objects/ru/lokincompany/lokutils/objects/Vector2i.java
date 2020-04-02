@@ -1,16 +1,15 @@
-package ru.lokincompany.objects;
+package ru.lokincompany.lokutils.objects;
 
 import java.util.Objects;
 
-public class Vector3i {
-    protected int x, y, z;
+public class Vector2i {
+    protected int x, y;
 
-    public Vector3i(){}
+    public Vector2i(){}
 
-    public Vector3i(int x, int y, int z){
+    public Vector2i(int x, int y){
         this.x = x;
         this.y = y;
-        this.z = z;
     }
 
     public int getX() {
@@ -29,35 +28,25 @@ public class Vector3i {
         this.y = y;
     }
 
-    public int getZ() {
-        return z;
-    }
-
-    public void setZ(int z) {
-        this.z = z;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Vector3i vector3i = (Vector3i) o;
-        return x == vector3i.x &&
-                y == vector3i.y &&
-                z == vector3i.z;
+        Vector2i vector2i = (Vector2i) o;
+        return x == vector2i.x &&
+                y == vector2i.y;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(x, y, z);
+        return Objects.hash(x, y);
     }
 
     @Override
     public String toString() {
-        return "Vector3i{" +
+        return "Vector2i{" +
                 "x=" + x +
                 ", y=" + y +
-                ", z=" + z +
                 '}';
     }
 }

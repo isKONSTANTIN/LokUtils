@@ -1,4 +1,4 @@
-package ru.lokincompany.render.tools;
+package ru.lokincompany.lokutils.render.tools;
 
 import org.lwjgl.util.vector.Vector2f;
 

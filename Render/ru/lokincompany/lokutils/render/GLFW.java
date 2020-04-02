@@ -1,4 +1,4 @@
-package ru.lokincompany.render;
+package ru.lokincompany.lokutils.render;
 
 import org.lwjgl.opengl.GL;
 

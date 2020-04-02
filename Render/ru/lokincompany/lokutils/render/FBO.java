@@ -1,20 +1,16 @@
-package ru.lokincompany.render;
+package ru.lokincompany.lokutils.render;
 
 import org.lwjgl.opengl.ARBFramebufferObject;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL30;
-import org.lwjgl.opengl.GL32;
 import org.lwjgl.util.vector.Matrix4f;
-import ru.lokincompany.objects.Vector2i;
-import ru.lokincompany.objects.Vector4i;
-import ru.lokincompany.render.tools.MatrixTools;
+import ru.lokincompany.lokutils.objects.Vector2i;
+import ru.lokincompany.lokutils.objects.Vector4i;
+import ru.lokincompany.lokutils.render.tools.MatrixTools;
 
 import java.nio.ByteBuffer;
 
 import static org.lwjgl.opengl.ARBFramebufferObject.*;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL12.GL_CLAMP_TO_EDGE;
-import static org.lwjgl.opengl.GL15.glIsQuery;
 import static org.lwjgl.opengl.GL32.glFramebufferTexture;
 import static org.lwjgl.util.glu.GLU.gluOrtho2D;
 

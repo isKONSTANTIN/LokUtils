@@ -1,10 +1,10 @@
-package ru.lokincompany.render;
+package ru.lokincompany.lokutils.render;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.PointerBuffer;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.util.vector.Vector2f;
-import ru.lokincompany.objects.Vector2i;
+import ru.lokincompany.lokutils.objects.Vector2i;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
