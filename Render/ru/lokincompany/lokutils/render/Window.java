@@ -2,6 +2,7 @@ package ru.lokincompany.lokutils.render;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.util.vector.Vector2f;
+import ru.lokincompany.lokutils.input.Inputs;
 import ru.lokincompany.lokutils.objects.Vector2i;
 import ru.lokincompany.lokutils.objects.Vector4i;
 
@@ -28,6 +29,7 @@ public class Window {
     protected boolean isShow;
     protected boolean isResizable;
     protected GLContext glContext;
+    protected Inputs inputs;
 
     public Window(){
 
@@ -36,6 +38,7 @@ public class Window {
     public void update(){
         glfwSwapBuffers(window);
         glfwPollEvents();
+        inputs.update();
 
         Vector2i resolution = getResolution();
         glViewport(0, 0, resolution.getX(), resolution.getY());
@@ -55,6 +58,10 @@ public class Window {
         if (!isCreated) return this;
 
         glContext = new GLContext(this);
+
+        glContext.bind();
+        inputs = new Inputs();
+        glContext.unbind();
 
         if (!isFullscreen){
             if (position.getX() == -1){
@@ -96,6 +103,10 @@ public class Window {
 
     public long getGLFWWindow() {
         return window;
+    }
+
+    public Inputs getInputs() {
+        return inputs;
     }
 
     public Window setResizable(boolean resizable){

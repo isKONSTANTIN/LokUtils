@@ -2,17 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3c9882d3-afd8-43a2-9739-2ef4c2b609e7" name="Default Changelist" comment="VBO: added FBO">
-      <change afterPath="$PROJECT_DIR$/Input/Input.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Objects/ru/lokincompany/lokutils/objects/glfw/KeyInfo.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Objects/ru/lokincompany/lokutils/objects/glfw/Keyboard.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Objects/ru/lokincompany/lokutils/objects/glfw/Mouse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Input/ru/lokincompany/lokutils/input/Inputs.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/UI/ru/lokincompany/lokutils/ui/UIObject.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/UI/ru/lokincompany/lokutils/ui/UIStyle.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/ru/lokincompany/lokutils/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Objects/Objects.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Objects/Objects.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Render/ru/lokincompany/lokutils/render/GLFW.java" beforeDir="false" afterPath="$PROJECT_DIR$/Render/ru/lokincompany/lokutils/render/GLFW.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Render/Render.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Render/Render.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Render/ru/lokincompany/lokutils/render/FBO.java" beforeDir="false" afterPath="$PROJECT_DIR$/Render/ru/lokincompany/lokutils/render/FBO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Render/ru/lokincompany/lokutils/render/GLContext.java" beforeDir="false" afterPath="$PROJECT_DIR$/Render/ru/lokincompany/lokutils/render/GLContext.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Render/ru/lokincompany/lokutils/render/Window.java" beforeDir="false" afterPath="$PROJECT_DIR$/Render/ru/lokincompany/lokutils/render/Window.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/UI/UI.iml" beforeDir="false" afterPath="$PROJECT_DIR$/UI/UI.iml" afterDir="false" />
     </list>
@@ -51,7 +49,7 @@
     <property name="Repository.Attach.Sources" value="false" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/libs/lwjgl-opengl/lwjgl-opengl.jar!/" />
-    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.14648438" />
     <property name="project.structure.side.proportion" value="0.2587007" />
   </component>
@@ -144,7 +142,21 @@
       <option name="project" value="LOCAL" />
       <updated>1585837102529</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Fixes &amp; added Keyboard, KeyInfo and Mouse">
+      <created>1585842854357</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1585842854357</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Refactoring">
+      <created>1585848351984</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1585848351984</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -153,17 +165,19 @@
     <MESSAGE value="VBO: added GLFastTools" />
     <MESSAGE value="VBO: added FBO" />
     <MESSAGE value="Refactor" />
-    <option name="LAST_COMMIT_MESSAGE" value="Refactor" />
+    <MESSAGE value="Fixes &amp; added Keyboard, KeyInfo and Mouse" />
+    <MESSAGE value="Refactoring" />
+    <option name="LAST_COMMIT_MESSAGE" value="Refactoring" />
   </component>
   <component name="WindowStateProjectService">
     <state x="423" y="202" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1585837049466">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state x="423" y="202" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1585837049466" />
-    <state x="893" y="217" key="#com.intellij.ide.util.MemberChooser" timestamp="1585838783552">
+    <state x="893" y="217" key="#com.intellij.ide.util.MemberChooser" timestamp="1585853682252">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state x="893" y="217" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1585838783552" />
+    <state x="893" y="217" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1585853682252" />
     <state x="696" y="330" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1585837048406">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
@@ -188,10 +202,10 @@
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state x="812" y="321" key="#com.intellij.util.ui.classpath.ChooseLibrariesDialog/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1585838682581" />
-    <state x="611" y="140" key="CommitChangelistDialog2" timestamp="1585837102431">
+    <state x="611" y="140" key="CommitChangelistDialog2" timestamp="1585848351874">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state x="611" y="140" key="CommitChangelistDialog2/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1585837102431" />
+    <state x="611" y="140" key="CommitChangelistDialog2/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1585848351874" />
     <state width="419" height="466" key="DebuggerActiveHint" timestamp="1585669741352">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
@@ -200,46 +214,46 @@
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state x="747" y="302" key="FileChooserDialogImpl/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1585838533371" />
-    <state width="937" height="250" key="GridCell.Tab.0.bottom" timestamp="1585839178351">
+    <state width="1874" height="200" key="GridCell.Tab.0.bottom" timestamp="1585855620355">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="937" height="250" key="GridCell.Tab.0.bottom/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1585839178351" />
-    <state width="937" height="250" key="GridCell.Tab.0.center" timestamp="1585839178351">
+    <state width="1874" height="200" key="GridCell.Tab.0.bottom/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1585855620355" />
+    <state width="1874" height="200" key="GridCell.Tab.0.center" timestamp="1585855620355">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="937" height="250" key="GridCell.Tab.0.center/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1585839178351" />
-    <state width="937" height="250" key="GridCell.Tab.0.left" timestamp="1585839178351">
+    <state width="1874" height="200" key="GridCell.Tab.0.center/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1585855620355" />
+    <state width="1874" height="200" key="GridCell.Tab.0.left" timestamp="1585855620355">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="937" height="250" key="GridCell.Tab.0.left/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1585839178351" />
-    <state width="937" height="250" key="GridCell.Tab.0.right" timestamp="1585839178351">
+    <state width="1874" height="200" key="GridCell.Tab.0.left/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1585855620355" />
+    <state width="1874" height="200" key="GridCell.Tab.0.right" timestamp="1585855620355">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="937" height="250" key="GridCell.Tab.0.right/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1585839178351" />
-    <state width="937" height="250" key="GridCell.Tab.1.bottom" timestamp="1585839178351">
+    <state width="1874" height="200" key="GridCell.Tab.0.right/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1585855620355" />
+    <state width="1874" height="250" key="GridCell.Tab.1.bottom" timestamp="1585855396764">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="937" height="250" key="GridCell.Tab.1.bottom/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1585839178351" />
-    <state width="937" height="250" key="GridCell.Tab.1.center" timestamp="1585839178351">
+    <state width="1874" height="250" key="GridCell.Tab.1.bottom/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1585855396764" />
+    <state width="1874" height="250" key="GridCell.Tab.1.center" timestamp="1585855396764">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="937" height="250" key="GridCell.Tab.1.center/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1585839178351" />
-    <state width="937" height="250" key="GridCell.Tab.1.left" timestamp="1585839178351">
+    <state width="1874" height="250" key="GridCell.Tab.1.center/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1585855396764" />
+    <state width="1874" height="250" key="GridCell.Tab.1.left" timestamp="1585855396764">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="937" height="250" key="GridCell.Tab.1.left/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1585839178351" />
-    <state width="937" height="250" key="GridCell.Tab.1.right" timestamp="1585839178351">
+    <state width="1874" height="250" key="GridCell.Tab.1.left/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1585855396764" />
+    <state width="1874" height="250" key="GridCell.Tab.1.right" timestamp="1585855396764">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="937" height="250" key="GridCell.Tab.1.right/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1585839178351" />
-    <state x="530" y="119" key="SettingsEditor" timestamp="1585838962404">
+    <state width="1874" height="250" key="GridCell.Tab.1.right/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1585855396764" />
+    <state x="530" y="119" key="SettingsEditor" timestamp="1585855615376">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state x="530" y="119" key="SettingsEditor/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1585838962404" />
-    <state x="559" y="280" key="Vcs.Push.Dialog.v2" timestamp="1585824597393">
+    <state x="530" y="119" key="SettingsEditor/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1585855615376" />
+    <state x="559" y="280" key="Vcs.Push.Dialog.v2" timestamp="1585842858681">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state x="559" y="280" key="Vcs.Push.Dialog.v2/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1585824597393" />
+    <state x="559" y="280" key="Vcs.Push.Dialog.v2/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1585842858681" />
     <state x="653" y="368" key="com.intellij.ide.util.TipDialog" timestamp="1585661021469">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
@@ -260,5 +274,16 @@
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state x="623" y="239" width="672" height="678" key="search.everywhere.popup/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1585765968927" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/Render/ru/lokincompany/lokutils/render/FBO.java</url>
+          <line>83</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

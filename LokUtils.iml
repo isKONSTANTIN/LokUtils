@@ -12,5 +12,8 @@
     <orderEntry type="library" name="lwjgl" level="project" />
     <orderEntry type="library" name="lwjgl-glfw" level="project" />
     <orderEntry type="library" name="lwjgl-opengl" level="project" />
+    <orderEntry type="module" module-name="Input" />
+    <orderEntry type="module" module-name="Tools" />
+    <orderEntry type="module" module-name="UI" />
   </component>
 </module>

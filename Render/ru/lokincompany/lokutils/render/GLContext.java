@@ -8,9 +8,13 @@ import static org.lwjgl.glfw.GLFW.glfwMakeContextCurrent;
 public class GLContext {
 
     private final Window window;
+    private final long threadID;
     private static volatile GLContext bindedContext;
 
     public GLContext(Window window) {
+        if (window.glContext != null) throw new RuntimeException("This window already has context!");
+
+        threadID = Thread.currentThread().getId();
         this.window = window;
     }
 
@@ -18,7 +22,15 @@ public class GLContext {
         return window;
     }
 
+    public long getThreadID(){ return threadID; }
+
     public synchronized void bind() {
+        if (check(this)) return;
+
+        if (bindedContext != null && bindedContext.getThreadID() == Thread.currentThread().getId()){
+            throw new RuntimeException("Cannot bind 2 contexts that have the same thread at the same time!");
+        }
+
         while (glfwGetCurrentContext() != 0) {
             try {
                 Thread.sleep(50);

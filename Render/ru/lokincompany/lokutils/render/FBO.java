@@ -200,10 +200,14 @@ public class FBO extends GLObject {
     }
 
     private void resolveMultisampled() {
+        int lastFrameBuffer = glGetInteger(GL_FRAMEBUFFER_BINDING);
+
         glBindFramebuffer(GL_READ_FRAMEBUFFER, multisampledFrameBuffer);
         glBindFramebuffer(GL_DRAW_FRAMEBUFFER, frameBuffer);
+
         glBlitFramebuffer(0, 0, resolution.getX(), resolution.getY(), 0, 0, resolution.getX(), resolution.getY(), GL_COLOR_BUFFER_BIT, GL_NEAREST);
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+        glBindFramebuffer(GL_FRAMEBUFFER, lastFrameBuffer);
     }
 
     private int createDepthAttachment() {
