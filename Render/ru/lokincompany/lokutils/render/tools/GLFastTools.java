@@ -2,6 +2,7 @@ package ru.lokincompany.lokutils.render.tools;
 
 import org.lwjgl.util.vector.Vector2f;
 
+import static java.lang.Math.*;
 import static org.lwjgl.opengl.GL11.*;
 
 public class GLFastTools {
@@ -45,4 +46,34 @@ public class GLFastTools {
 
         glEnd();
     }
+
+    public static void drawRoundedSquare(Vector2f position, Vector2f size, float radius) {
+        float glRadius = min(size.x, size.y) / 2 * radius;
+        int roundingPieces = (int)max(Math.ceil(glRadius / 2f), 2);
+
+        glBegin(GL_POLYGON);
+
+        drawRoundedCorner(position.x, position.y + glRadius, 3 * PI / 2, glRadius, roundingPieces);
+        drawRoundedCorner(position.x + size.x - glRadius, position.y, 0.0, glRadius, roundingPieces);
+        drawRoundedCorner(position.x + size.x, position.y + size.y - glRadius, PI / 2, glRadius, roundingPieces);
+        drawRoundedCorner(position.x + glRadius, position.y + size.y, PI, glRadius, roundingPieces);
+
+        glEnd();
+    }
+
+    private static void drawRoundedCorner(float x, float y, double sa, float r, int roundingPieces) {
+        double cent_x = x + r * cos(sa + PI / 2);
+        double cent_y = y + r * sin(sa + PI / 2);
+
+        int n = (int)ceil(roundingPieces * 1.5707963267948966 / PI * 2);
+        for (int i = 0; i <= n; i++) {
+            double ang = sa + 1.5707963267948966 * (double)i  / (double)n;
+
+            double next_x = cent_x + r * sin(ang);
+            double next_y = cent_y - r * cos(ang);
+
+            glVertex2d(next_x, next_y);
+        }
+    }
+
 }
