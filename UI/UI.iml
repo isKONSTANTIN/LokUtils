@@ -8,5 +8,11 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="Objects" />
+    <orderEntry type="module" module-name="Render" />
+    <orderEntry type="module" module-name="Tools" />
+    <orderEntry type="module" module-name="Input" />
+    <orderEntry type="library" name="lwjgl" level="project" />
+    <orderEntry type="library" name="lwjgl-opengl" level="project" />
   </component>
 </module>
