@@ -25,8 +25,10 @@ public class UIMainCanvas extends UICanvas {
         return multisampleSamples;
     }
 
-    public void setMultisampleSamples(int multisampleSamples) {
+    public UIMainCanvas setMultisampleSamples(int multisampleSamples) {
         this.multisampleSamples = multisampleSamples;
+
+        return this;
     }
 
     public FBO getFbo(){
