@@ -9,7 +9,7 @@ public abstract class UIObject {
 
     protected Vector2f position = new Vector2f();
     protected Vector2f size = new Vector2f();
-    protected UIStyle style = UIStyle.defaultStyle;
+    protected UIStyle style = UIStyle.getDefault();
     protected Animations animations = new Animations(this);
     protected String name = "UIObject";
 
