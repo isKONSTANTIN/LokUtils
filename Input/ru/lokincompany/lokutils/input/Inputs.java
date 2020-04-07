@@ -1,7 +1,5 @@
 package ru.lokincompany.lokutils.input;
 
-import ru.lokincompany.lokutils.render.GLContext;
-
 public class Inputs {
     public final Keyboard keyboard;
     public final Mouse mouse;
