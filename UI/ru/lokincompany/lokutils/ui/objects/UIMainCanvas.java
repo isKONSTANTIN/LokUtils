@@ -74,7 +74,7 @@ class UIMainCanvasRender extends UIRenderPart<UIMainCanvas> {
 
         ViewTools.setOrtho2DView(new Vector4f(0, object.getSize().getX(), object.getSize().getY(), 0));
 
-        glClearColor(0,0,0,0);
+        glClearColor(1,1,1,0);
         glClear(GL_COLOR_BUFFER_BIT);
 
         synchronized (object.updateSync) {
