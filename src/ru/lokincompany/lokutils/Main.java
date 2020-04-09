@@ -20,34 +20,69 @@ import ru.lokincompany.lokutils.ui.objects.UICanvas;
 import ru.lokincompany.lokutils.ui.objects.UIMainCanvas;
 import ru.lokincompany.lokutils.ui.objects.UIPanel;
 import ru.lokincompany.lokutils.ui.objects.UIText;
-
-import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.glfw.GLFW.GLFW_FALSE;
+import ru.lokincompany.lokutils.ui.positioning.Position;
+import ru.lokincompany.lokutils.ui.positioning.PositioningSetter;
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.util.glu.GLU.gluOrtho2D;
 
 public class Main {
     public static void main(String[] args) {
         GLFW.init();
 
-        Window window = new Window().create();
+        Window window = new Window().setResizable(true).create();
 
         window.getGlContext().bind();
         UIStyle.generateDefaultStyle();
         UIMainCanvas canvas = new UIMainCanvas();
+
         UIPanel panel = (UIPanel)new UIPanel().setName("Panel");
         canvas.addObject(panel);
-        panel.getCanvas().addObject(new UIText().setText("TEST"));
+
+        panel.getAnimations().addAnimation(new Animation("d") {
+            @Override
+            public void update() {
+                Vector2f pos = new Vector2f();
+                Vector2i mousePos = window.getInputs().mouse.getMousePosition();
+                pos.x = mousePos.getX();
+                pos.y = mousePos.getY();
+
+                panel.setSize(new Vector2f(
+                        softChange(panel.getSize().x, pos.x, 1f),
+                        softChange(panel.getSize().y, pos.y, 1f))
+                );
+
+                panel.setRounded((float)Math.sin(panel.getSize().x / 100f));
+            }
+
+            @Override
+            public void started() {
+
+            }
+
+            @Override
+            public void stopped() {
+
+            }
+        });
+
+        panel.getAnimations().startAnimation("d");
+
+        UIPanel panel2 = (UIPanel)new UIPanel().setName("Panel2");
+        panel.getCanvas().addObject(panel2.setSize(new PositioningSetter(panel.getCanvas()::getSize)));
+
+        panel2.getCanvas().addObject(new UIText().setText("TEST").setPosition(new PositioningSetter(Position.Center)));
         window.getGlContext().unbind();
 
         while (true) {
             Vector2i resolution = window.getResolution();
+
             canvas.update(null);
             window.getGlContext().bind();
 
             ViewTools.setOrtho2DView(new Vector4f(0, resolution.getX(), resolution.getY(), 0));
+
             canvas.setSize(new Vector2f(resolution.getX(), resolution.getY()));
             canvas.render();
+
             glBindTexture(GL_TEXTURE_2D, canvas.getFbo().getTextureBuffer());
             glClearColor(0.6f,0.6f,0.6f,1);
             glClear(GL_COLOR_BUFFER_BIT);

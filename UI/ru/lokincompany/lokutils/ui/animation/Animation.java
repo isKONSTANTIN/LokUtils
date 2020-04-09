@@ -1,5 +1,6 @@
 package ru.lokincompany.lokutils.ui.animation;
 
+import org.lwjgl.util.vector.Vector2f;
 import ru.lokincompany.lokutils.ui.UIObject;
 
 public abstract class Animation {
@@ -35,6 +36,16 @@ public abstract class Animation {
 
     public void init(UIObject object){
         this.object = object;
+    }
+
+    protected void setPosition(float x, float y){
+        object.getPosition().x = x;
+        object.getPosition().y = y;
+    }
+
+    protected void setSize(float x, float y){
+        object.getSize().x = x;
+        object.getSize().y = y;
     }
 
     protected void moveObject(float x, float y){

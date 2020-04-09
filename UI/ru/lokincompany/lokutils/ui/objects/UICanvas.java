@@ -101,7 +101,7 @@ class UICanvasRender extends UIRenderPart<UICanvas> {
     @Override
     public void render() {
         ViewTools.moveOrtho2DView(object.getPosition().x, object.getPosition().y);
-        GLFastTools.drawSquare(object.getPosition(), object.getSize());
+
         synchronized (object.updateSync) {
             for (RenderPart renderPart : object.renderParts)
                 renderPart.render();
