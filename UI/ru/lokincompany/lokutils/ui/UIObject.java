@@ -6,8 +6,7 @@ import ru.lokincompany.lokutils.input.Keyboard;
 import ru.lokincompany.lokutils.render.GLContext;
 import ru.lokincompany.lokutils.ui.animation.Animations;
 import ru.lokincompany.lokutils.ui.objects.UICanvas;
-import ru.lokincompany.lokutils.ui.positioning.PositionSetter;
-import ru.lokincompany.lokutils.ui.positioning.SizeSetter;
+import ru.lokincompany.lokutils.ui.positioning.PositioningSetter;
 
 public class UIObject {
 
@@ -19,27 +18,33 @@ public class UIObject {
     protected Animations animations = new Animations(this);
     protected EventHandler eventHandler;
 
-    protected PositionSetter positionSetter;
-    protected SizeSetter sizeSetter;
+    protected PositioningSetter positionSetter;
+    protected PositioningSetter sizeSetter;
 
-    public PositionSetter getPositionSetter() {
+    protected UICanvas lastParent;
+
+    public UICanvas getLastParent() {
+        return lastParent;
+    }
+
+    public PositioningSetter getPositionSetter() {
         return positionSetter;
     }
 
-    public UIObject setPosition(PositionSetter positionSetter) {
-        this.positionSetter = positionSetter;
+    public UIObject setPosition(PositioningSetter positionSetter) {
         positionSetter.init(this);
+        this.positionSetter = positionSetter;
 
         return this;
     }
 
-    public SizeSetter getSizeSetter() {
+    public PositioningSetter getSizeSetter() {
         return sizeSetter;
     }
 
-    public UIObject setSize(SizeSetter sizeSetter) {
-        this.sizeSetter = sizeSetter;
+    public UIObject setSize(PositioningSetter sizeSetter) {
         sizeSetter.init(this);
+        this.sizeSetter = sizeSetter;
 
         return this;
     }
@@ -103,6 +108,8 @@ public class UIObject {
     }
 
     public void update(UICanvas parent){
+        lastParent = parent;
+
         updateEvents(parent.getInputs());
     }
 }
