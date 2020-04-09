@@ -1,5 +1,6 @@
 package ru.lokincompany.lokutils.ui.objects;
 
+import org.lwjgl.util.vector.Vector2f;
 import ru.lokincompany.lokutils.objects.Color;
 import ru.lokincompany.lokutils.render.Font;
 import ru.lokincompany.lokutils.render.RenderPart;
@@ -41,6 +42,11 @@ public class UIText extends UIObject {
     }
 
     @Override
+    public Vector2f getSize() {
+       return style.getFont(styleFontName).getSize(text, size);
+    }
+
+    @Override
     public void update(UICanvas parent) {
         super.update(parent);
 
@@ -56,7 +62,7 @@ class UITextRender extends UIRenderPart<UIText> {
 
     @Override
     public void render() {
-        Font font = object.getStyle().getFont(object.getStyleFontName() != null ? object.getStyleFontName() : "default");
+        Font font = object.getStyle().getFont(object.getStyleFontName());
         Color color = object.getStyle().getColor("text");
 
         font.drawText(object.getText(), object.getPosition(), object.getSize(), color);
