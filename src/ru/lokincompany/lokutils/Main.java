@@ -27,110 +27,37 @@ import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.util.glu.GLU.gluOrtho2D;
 
 public class Main {
-    static int i = 0;
-
     public static void main(String[] args) {
         GLFW.init();
 
-        Window window = new Window().createAndShow();
+        Window window = new Window().create();
 
         window.getGlContext().bind();
         UIStyle.generateDefaultStyle();
-        UIMainCanvas mainCanvas = (UIMainCanvas) new UIMainCanvas().setSize(new Vector2f(500,500));
-        UIText text = new UIText().setText("Test Text!");
-
-        UIPanel panel = (UIPanel)new UIPanel().setSize(new Vector2f()).setSize(new Vector2f(512,0));
-        panel.getAnimations().addAnimation(new Animation("Test") {
-            @Override
-            public void update() {
-                UIPanel panel = (UIPanel)object;
-                panel.setRounded(softChange(panel.getRounded(), 0, 0.4f));
-                softSetSizeObject(512,512, 1f);
-            }
-
-            @Override
-            public void started() {
-            }
-
-            @Override
-            public void stopped() {
-
-            }
-        });
-
-        panel.getAnimations().addAnimation(new Animation("Test2") {
-            @Override
-            public void update() {
-                UIPanel panel = (UIPanel)object;
-                panel.setRounded(softChange(panel.getRounded(), 1, 1));
-                softSetSizeObject(512,0, 1f);
-            }
-
-            @Override
-            public void started() {
-
-            }
-
-            @Override
-            public void stopped() {
-
-            }
-        });
-
-        mainCanvas.addObject(panel).addObject(text);
-
-        glEnable(GL_TEXTURE_2D);
-        glEnable(GL_ALPHA_TEST);
-        glAlphaFunc(GL_GREATER, 0.0f);
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
+        UIMainCanvas canvas = new UIMainCanvas();
+        UIPanel panel = (UIPanel)new UIPanel().setName("Panel");
+        canvas.addObject(panel);
+        panel.getCanvas().addObject(new UIText().setText("TEST"));
         window.getGlContext().unbind();
 
-        Thread uiTread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (true){
-                    mainCanvas.update(null);
-                    try {
-                        Thread.sleep(16);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
-        uiTread.setPriority(Thread.MIN_PRIORITY);
-        uiTread.start();
-
         while (true) {
-            i++;
             Vector2i resolution = window.getResolution();
-
-            if (window.getInputs().keyboard.isKeyDown(GLFW_KEY_1)) {
-                panel.getAnimations().startAnimation("Test").stopAnimation("Test2");
-            }
-
-            if (window.getInputs().keyboard.isKeyDown(GLFW_KEY_2)) {
-                panel.getAnimations().startAnimation("Test2").stopAnimation("Test");
-            }
-
-            if (window.getInputs().keyboard.isKeyDown(GLFW_KEY_3)) {
-                panel.getAnimations().stopAnimation("Test").stopAnimation("Test2");
-            }
-
-            mainCanvas.setSize(new Vector2f(resolution.getX(),resolution.getY()));
+            canvas.update(null);
             window.getGlContext().bind();
-            ViewTools.setOrtho2DView(new Vector4f(0, resolution.getX(), resolution.getY(), 0));
-            mainCanvas.render();
 
-            glBindTexture(GL_TEXTURE_2D, mainCanvas.getFbo().getTextureBuffer());
+            ViewTools.setOrtho2DView(new Vector4f(0, resolution.getX(), resolution.getY(), 0));
+            canvas.setSize(new Vector2f(resolution.getX(), resolution.getY()));
+            canvas.render();
+            glBindTexture(GL_TEXTURE_2D, canvas.getFbo().getTextureBuffer());
             glClearColor(0.6f,0.6f,0.6f,1);
             glClear(GL_COLOR_BUFFER_BIT);
             glColor4f(1,1,1, 1);
 
             GLFastTools.drawSquare(new Vector2f(0,0),new Vector2f(resolution.getX(),resolution.getY()));
             glBindTexture(GL_TEXTURE_2D, 0);
+
+            if (!window.isShow())
+                window.show();
 
             window.update();
 

@@ -7,6 +7,8 @@ import ru.lokincompany.lokutils.render.RenderPart;
 import ru.lokincompany.lokutils.render.tools.GLFastTools;
 import ru.lokincompany.lokutils.ui.UIObject;
 import ru.lokincompany.lokutils.ui.UIRenderPart;
+import ru.lokincompany.lokutils.ui.positioning.PositionSetter;
+import ru.lokincompany.lokutils.ui.positioning.SizeSetter;
 
 import static org.lwjgl.opengl.GL11.glColor3f;
 import static org.lwjgl.opengl.GL11.glColor4f;
@@ -14,13 +16,23 @@ import static org.lwjgl.opengl.GL11.glColor4f;
 public class UIPanel extends UIObject {
 
     protected UIPanelRender render;
+    protected UICanvas canvas;
     protected float rounded;
 
-    public UIPanel(){
+    public UIPanel() {
         render = new UIPanelRender(this);
+        canvas = (UICanvas) new UICanvas()
+                .setSize((SizeSetter)
+                        ((SizeSetter) this::getSize).reduceModifier(5))
+                .setPosition((PositionSetter)
+                        ((PositionSetter) this::getPosition).increaseModifier(5));
 
         setSize(new Vector2f(100, 100));
         setRounded(0.3f);
+    }
+
+    public UICanvas getCanvas() {
+        return canvas;
     }
 
     public UIPanel setRounded(float rounded){
@@ -33,10 +45,11 @@ public class UIPanel extends UIObject {
     }
 
     @Override
-    public RenderPart update(UICanvas parent) {
+    public void update(UICanvas parent) {
         super.update(parent);
 
-        return render;
+        parent.addRenderPart(render);
+        canvas.update(parent);
     }
 }
 

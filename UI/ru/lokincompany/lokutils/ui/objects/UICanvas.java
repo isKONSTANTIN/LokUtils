@@ -4,6 +4,7 @@ import org.lwjgl.util.vector.Vector2f;
 import ru.lokincompany.lokutils.input.Inputs;
 import ru.lokincompany.lokutils.render.GLContext;
 import ru.lokincompany.lokutils.render.RenderPart;
+import ru.lokincompany.lokutils.render.tools.GLFastTools;
 import ru.lokincompany.lokutils.render.tools.ViewTools;
 import ru.lokincompany.lokutils.ui.UIObject;
 import ru.lokincompany.lokutils.ui.UIRenderPart;
@@ -15,6 +16,8 @@ public class UICanvas extends UIObject {
 
     protected Vector<UIObject> objects = new Vector<>();
     protected Vector<RenderPart> renderParts = new Vector<>();
+    protected ArrayList<RenderPart> additionalRenderList = new ArrayList<>();
+
     protected UICanvasRender render;
     protected Inputs inputs;
 
@@ -61,21 +64,31 @@ public class UICanvas extends UIObject {
         return false;
     }
 
+    public void addRenderPart(RenderPart renderPart){
+        additionalRenderList.add(renderPart);
+    }
+
     @Override
-    public RenderPart update(UICanvas parent) {
+    public void update(UICanvas parent) {
         super.update(parent != null ? parent : this);
 
-        ArrayList<RenderPart> rp = new ArrayList<>();
-
-        for (UIObject object : objects)
-            rp.add(object.update(this));
+        for (UIObject object : objects){
+            try{
+                object.update(this);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
 
         synchronized (updateSync){
             renderParts.clear();
-            renderParts.addAll(rp);
+            renderParts.addAll(additionalRenderList);
         }
 
-        return render;
+        additionalRenderList.clear();
+
+        if (parent != null)
+            parent.addRenderPart(render);
     }
 }
 
@@ -88,7 +101,7 @@ class UICanvasRender extends UIRenderPart<UICanvas> {
     @Override
     public void render() {
         ViewTools.moveOrtho2DView(object.getPosition().x, object.getPosition().y);
-
+        GLFastTools.drawSquare(object.getPosition(), object.getSize());
         synchronized (object.updateSync) {
             for (RenderPart renderPart : object.renderParts)
                 renderPart.render();

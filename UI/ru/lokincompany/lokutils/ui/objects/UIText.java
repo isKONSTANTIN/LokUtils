@@ -41,9 +41,10 @@ public class UIText extends UIObject {
     }
 
     @Override
-    public RenderPart update(UICanvas parent) {
+    public void update(UICanvas parent) {
         super.update(parent);
-        return render;
+
+        parent.addRenderPart(render);
     }
 }
 

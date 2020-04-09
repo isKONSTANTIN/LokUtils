@@ -60,7 +60,15 @@ public class Window {
         glContext = new GLContext(this);
 
         glContext.bind();
+
+        glEnable(GL_TEXTURE_2D);
+        glEnable(GL_ALPHA_TEST);
+        glAlphaFunc(GL_GREATER, 0.0f);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
         inputs = new Inputs();
+
         glContext.unbind();
 
         if (!isFullscreen){
