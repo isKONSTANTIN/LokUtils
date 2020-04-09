@@ -7,10 +7,9 @@ import ru.lokincompany.lokutils.render.RenderPart;
 import ru.lokincompany.lokutils.render.tools.GLFastTools;
 import ru.lokincompany.lokutils.ui.UIObject;
 import ru.lokincompany.lokutils.ui.UIRenderPart;
-import ru.lokincompany.lokutils.ui.positioning.PositionSetter;
-import ru.lokincompany.lokutils.ui.positioning.SizeSetter;
+import ru.lokincompany.lokutils.ui.positioning.PositioningSetter;
 
-import static org.lwjgl.opengl.GL11.glColor3f;
+import static java.lang.Math.min;
 import static org.lwjgl.opengl.GL11.glColor4f;
 
 public class UIPanel extends UIObject {
@@ -21,14 +20,31 @@ public class UIPanel extends UIObject {
 
     public UIPanel() {
         render = new UIPanelRender(this);
-        canvas = (UICanvas) new UICanvas()
-                .setSize((SizeSetter)
-                        ((SizeSetter) this::getSize).reduceModifier(5))
-                .setPosition((PositionSetter)
-                        ((PositionSetter) this::getPosition).increaseModifier(5));
+
+        PositioningSetter canvasPosition = new PositioningSetter(() -> {
+            Vector2f position = this.getPosition();
+            float pixelsRound = this.getPixelsIndentation();
+            position.x += pixelsRound;
+            position.y += pixelsRound;
+            return position;
+        });
+
+        PositioningSetter canvasSize = new PositioningSetter(() -> {
+            Vector2f size = this.getSize();
+            float pixelsRound = this.getPixelsIndentation();
+            size.x -= pixelsRound * 2;
+            size.y -= pixelsRound * 2;
+            return size;
+        });
+
+        canvas = (UICanvas) new UICanvas().setPosition(canvasPosition).setSize(canvasSize);
 
         setSize(new Vector2f(100, 100));
         setRounded(0.3f);
+    }
+
+    public float getPixelsIndentation(){
+        return min(size.x, size.y) * rounded / 5f;
     }
 
     public UICanvas getCanvas() {
@@ -36,7 +52,7 @@ public class UIPanel extends UIObject {
     }
 
     public UIPanel setRounded(float rounded){
-        this.rounded = rounded;
+        this.rounded = Math.max(Math.min(rounded, 1), 0);
         return this;
     }
 
