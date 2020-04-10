@@ -2,9 +2,8 @@ package ru.lokincompany.lokutils.ui;
 
 import org.lwjgl.util.vector.Vector2f;
 import ru.lokincompany.lokutils.input.Inputs;
-import ru.lokincompany.lokutils.input.Keyboard;
-import ru.lokincompany.lokutils.render.GLContext;
 import ru.lokincompany.lokutils.ui.animation.Animations;
+import ru.lokincompany.lokutils.ui.eventsystem.EventHandler;
 import ru.lokincompany.lokutils.ui.objects.UICanvas;
 import ru.lokincompany.lokutils.ui.positioning.PositioningSetter;
 
@@ -16,7 +15,7 @@ public class UIObject {
     protected String name = "UIObject";
 
     protected Animations animations = new Animations(this);
-    protected EventHandler eventHandler;
+    protected EventHandler eventHandler = new EventHandler();
 
     protected PositioningSetter positionSetter;
     protected PositioningSetter sizeSetter;
@@ -29,6 +28,10 @@ public class UIObject {
 
     public UICanvas getCanvasParent(){
         return lastParent.getCanvasParent();
+    }
+
+    public EventHandler getEventHandler() {
+        return eventHandler;
     }
 
     public PositioningSetter getPositionSetter() {
