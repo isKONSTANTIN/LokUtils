@@ -33,8 +33,14 @@ public class UICanvas extends UIObject {
         this(GLContext.getCurrent().getWindow().getInputs());
     }
 
+    @Override
     public Inputs getInputs() {
         return inputs;
+    }
+
+    @Override
+    public UICanvas getCanvasParent(){
+        return this;
     }
 
     public UIObject getObject(String name){
@@ -69,7 +75,7 @@ public class UICanvas extends UIObject {
     }
 
     @Override
-    public void update(UICanvas parent) {
+    public void update(UIObject parent) {
         super.update(parent != null ? parent : this);
 
         for (UIObject object : objects){
@@ -88,7 +94,7 @@ public class UICanvas extends UIObject {
         additionalRenderList.clear();
 
         if (parent != null)
-            parent.addRenderPart(render);
+            parent.getCanvasParent().addRenderPart(render);
     }
 }
 

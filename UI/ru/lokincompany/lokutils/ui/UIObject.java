@@ -21,10 +21,14 @@ public class UIObject {
     protected PositioningSetter positionSetter;
     protected PositioningSetter sizeSetter;
 
-    protected UICanvas lastParent;
+    protected UIObject lastParent;
 
-    public UICanvas getLastParent() {
+    public UIObject getLastParent() {
         return lastParent;
+    }
+
+    public UICanvas getCanvasParent(){
+        return lastParent.getCanvasParent();
     }
 
     public PositioningSetter getPositionSetter() {
@@ -90,6 +94,10 @@ public class UIObject {
         return this;
     }
 
+    public Inputs getInputs(){
+        return lastParent.getInputs();
+    }
+
     protected void updateEvents(Inputs inputs){
         if (eventHandler != null)
             eventHandler.update(this, inputs);
@@ -107,7 +115,7 @@ public class UIObject {
         animations.update();
     }
 
-    public void update(UICanvas parent){
+    public void update(UIObject parent){
         lastParent = parent;
 
         updateEvents(parent.getInputs());
