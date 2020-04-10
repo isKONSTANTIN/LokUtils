@@ -1,9 +1,10 @@
 package ru.lokincompany.lokutils.ui.animation;
 
 import org.lwjgl.util.vector.Vector2f;
+import ru.lokincompany.lokutils.objects.Color;
 import ru.lokincompany.lokutils.ui.UIObject;
 
-public abstract class Animation {
+public class Animation {
     protected String name;
     protected boolean isRun;
     protected UIObject object;
@@ -72,7 +73,14 @@ public abstract class Animation {
         return source + (end - source) * (speed / 10f);
     }
 
-    public abstract void update();
-    public abstract void started();
-    public abstract void stopped();
+    protected void softColorChange(Color source, Color end, float speed){
+        source.setRawRed(softChange(source.getRawRed(), end.getRawRed(), speed));
+        source.setRawGreen(softChange(source.getRawGreen(), end.getRawGreen(), speed));
+        source.setRawBlue(softChange(source.getRawBlue(), end.getRawBlue(), speed));
+        source.setRawAlpha(softChange(source.getRawAlpha(), end.getRawAlpha(), speed));
+    }
+
+    public void update() {}
+    public void started() {}
+    public void stopped() {}
 }
