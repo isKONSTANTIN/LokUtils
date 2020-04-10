@@ -12,6 +12,8 @@ public class UIStyle {
         defaultStyle = new UIStyle()
                 .setFont("default", new Font().load())
                 .setColor("background", new Color(0.2f, 0.2f, 0.2f, 0.7f))
+                .setColor("buttonPressed", new Color(0.35f, 0.35f, 0.35f, 1f))
+                .setColor("buttonBackground", new Color(0.3f, 0.3f, 0.3f, 1f))
                 .setColor("brightBackground", new Color(0.3f, 0.3f, 0.3f, 0.7f))
                 .setColor("text", new Color(0.9f, 0.9f, 0.9f, 1))
                 .setColor("highlightedText", new Color(1, 1, 0.9f, 1));
