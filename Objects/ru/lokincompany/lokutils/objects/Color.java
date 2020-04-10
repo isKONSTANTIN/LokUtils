@@ -55,6 +55,10 @@ public class Color {
         return this;
     }
 
+    public Color clone(){
+        return new Color(rawColor.x, rawColor.y, rawColor.z, rawColor.w);
+    }
+
     public float getRawRed() { return rawColor.x; }
     public float getRawGreen() { return rawColor.y; }
     public float getRawBlue() { return rawColor.z; }
