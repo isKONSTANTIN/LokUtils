@@ -13,6 +13,8 @@ import static org.lwjgl.opengl.GL14.glBlendFuncSeparate;
 
 public class UIText extends UIObject {
 
+    public Color overrideColor;
+
     protected String styleFontName;
     protected String text;
     protected UITextRender render;
@@ -63,7 +65,7 @@ class UITextRender extends UIRenderPart<UIText> {
     @Override
     public void render() {
         Font font = object.getStyle().getFont(object.getStyleFontName());
-        Color color = object.getStyle().getColor("text");
+        Color color = object.overrideColor != null ? object.overrideColor : object.getStyle().getColor("text");
 
         font.drawText(object.getText(), object.getPosition(), object.getSize(), color);
     }

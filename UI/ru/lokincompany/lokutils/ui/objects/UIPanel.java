@@ -14,6 +14,8 @@ import static org.lwjgl.opengl.GL11.glColor4f;
 
 public class UIPanel extends UIObject {
 
+    public Color overrideColor;
+
     protected UIPanelRender render;
     protected UICanvas canvas;
     protected float rounded;
@@ -77,7 +79,7 @@ class UIPanelRender extends UIRenderPart<UIPanel> {
 
     @Override
     public void render() {
-        Color color = object.getStyle().getColor("background");
+        Color color = object.overrideColor != null ? object.overrideColor : object.getStyle().getColor("background");
         glColor4f(color.getRawRed(), color.getRawGreen(), color.getRawBlue(), color.getRawAlpha());
         GLFastTools.drawRoundedSquare(object.getPosition(), object.getSize(), object.getRounded());
     }
