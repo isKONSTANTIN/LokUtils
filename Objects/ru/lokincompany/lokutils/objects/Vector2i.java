@@ -1,5 +1,7 @@
 package ru.lokincompany.lokutils.objects;
 
+import org.lwjgl.util.vector.Vector2f;
+
 import java.util.Objects;
 
 public class Vector2i {
@@ -10,6 +12,11 @@ public class Vector2i {
     public Vector2i(int x, int y){
         this.x = x;
         this.y = y;
+    }
+
+    public Vector2i(Vector2f vector2f){
+        this.x = (int)vector2f.x;
+        this.y = (int)vector2f.y;
     }
 
     public int getX() {
