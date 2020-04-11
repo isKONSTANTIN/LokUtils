@@ -1,9 +1,7 @@
 package ru.lokincompany.lokutils.ui.objects;
 
-import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector2f;
 import ru.lokincompany.lokutils.objects.Color;
-import ru.lokincompany.lokutils.render.RenderPart;
 import ru.lokincompany.lokutils.render.tools.GLFastTools;
 import ru.lokincompany.lokutils.ui.UIObject;
 import ru.lokincompany.lokutils.ui.UIRenderPart;
@@ -45,7 +43,7 @@ public class UIPanel extends UIObject {
         setRounded(0.3f);
     }
 
-    public float getPixelsIndentation(){
+    public float getPixelsIndentation() {
         return min(size.x, size.y) * rounded / 5f;
     }
 
@@ -53,13 +51,13 @@ public class UIPanel extends UIObject {
         return canvas;
     }
 
-    public UIPanel setRounded(float rounded){
-        this.rounded = Math.max(Math.min(rounded, 1), 0);
-        return this;
-    }
-
     public float getRounded() {
         return rounded;
+    }
+
+    public UIPanel setRounded(float rounded) {
+        this.rounded = Math.max(Math.min(rounded, 1), 0);
+        return this;
     }
 
     @Override

@@ -9,12 +9,13 @@ import java.util.ArrayList;
 public class VBO extends GLObject {
     protected int size;
 
-    public VBO(){
+    public VBO() {
     }
 
     @Override
     public void bind() {
-        if (!GLContext.check(GLcontext)) throw new RuntimeException("VBO cannot be binded without or another OpenGL context!");
+        if (!GLContext.check(GLcontext))
+            throw new RuntimeException("VBO cannot be binded without or another OpenGL context!");
 
         GL15C.glBindBuffer(GL15C.GL_ARRAY_BUFFER, id);
     }
@@ -34,7 +35,7 @@ public class VBO extends GLObject {
         return size;
     }
 
-    public VBO putData(float[] points){
+    public VBO putData(float[] points) {
         generate();
 
         bind();
@@ -68,7 +69,7 @@ public class VBO extends GLObject {
     }
 
     @Override
-    public void generate(){
+    public void generate() {
         GLcontext = GLContext.getCurrent();
         if (GLcontext == null) throw new RuntimeException("VBO cannot be created without OpenGL context!");
 

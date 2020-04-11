@@ -2,9 +2,9 @@ package ru.lokincompany.lokutils.render;
 
 import org.lwjgl.opengl.GL30;
 
-public class VAO extends GLObject{
+public class VAO extends GLObject {
 
-    public VAO(){
+    public VAO() {
         generate();
     }
 
@@ -18,14 +18,16 @@ public class VAO extends GLObject{
 
     @Override
     public void delete() {
-        if (!GLContext.check(GLcontext)) throw new RuntimeException("VBO cannot be binded without or another OpenGL context!");
+        if (!GLContext.check(GLcontext))
+            throw new RuntimeException("VBO cannot be binded without or another OpenGL context!");
 
         GL30.glDeleteVertexArrays(id);
         id = 0;
     }
 
     public void bind() {
-        if (!GLContext.check(GLcontext)) throw new RuntimeException("VBO cannot be binded without or another OpenGL context!");
+        if (!GLContext.check(GLcontext))
+            throw new RuntimeException("VBO cannot be binded without or another OpenGL context!");
 
         GL30.glBindVertexArray(id);
     }

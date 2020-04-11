@@ -102,14 +102,14 @@ public class Font {
         return result;
     }
 
-    public void inversionDrawText(String text, Vector2f position, Vector2f maxSize, Color color){
+    public void inversionDrawText(String text, Vector2f position, Vector2f maxSize, Color color) {
         float drawX = position.x + maxSize.x;
         float drawY = position.y;
 
         texture.bind();
         glBegin(GL_QUADS);
 
-        for (int i = text.length()-1; i >= 0 ; i--) {
+        for (int i = text.length() - 1; i >= 0; i--) {
             char ch = text.charAt(i);
 
             if (ch == '\r') continue;

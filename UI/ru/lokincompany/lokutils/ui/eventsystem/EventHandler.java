@@ -11,35 +11,34 @@ public class EventHandler {
     protected HashMap<String, EventAction> events = new HashMap<>();
     protected HashMap<EventAction, Boolean> eventsStatus = new HashMap<>();
 
-    public EventAction getEvent(String name){
+    public EventAction getEvent(String name) {
         return events.get(name);
     }
 
-    public EventHandler addEvent(String name, EventAction action){
+    public EventHandler addEvent(String name, EventAction action) {
         events.put(name, action);
 
         return this;
     }
 
-    public EventHandler removeEvent(String name){
+    public EventHandler removeEvent(String name) {
         events.remove(name);
 
         return this;
     }
 
-    public void update(UIObject object, Inputs inputs){
-        for (Map.Entry<String, EventAction> item : events.entrySet())
-        {
+    public void update(UIObject object, Inputs inputs) {
+        for (Map.Entry<String, EventAction> item : events.entrySet()) {
             EventAction action = item.getValue();
 
             boolean actionStatus = action.getDetector().detect(object, inputs);
             boolean lastStatus = eventsStatus.getOrDefault(action, false);
 
-            if (actionStatus && !lastStatus){
+            if (actionStatus && !lastStatus) {
                 action.start();
-            }else if (!actionStatus && lastStatus){
+            } else if (!actionStatus && lastStatus) {
                 action.stop();
-            }else if (actionStatus){
+            } else if (actionStatus) {
                 action.update();
             }
 

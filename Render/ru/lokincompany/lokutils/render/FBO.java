@@ -15,7 +15,7 @@ import static org.lwjgl.opengl.GL32.glFramebufferTexture;
 import static org.lwjgl.util.glu.GLU.gluOrtho2D;
 
 public class FBO extends GLObject {
-    
+
     protected int frameBuffer;
     protected int depthBuffer;
     protected int textureBuffer;
@@ -37,7 +37,7 @@ public class FBO extends GLObject {
 
     protected boolean generated;
 
-    public FBO(){
+    public FBO() {
 
     }
 
@@ -85,7 +85,7 @@ public class FBO extends GLObject {
         return textureBuffer;
     }
 
-    public FBO applyChanges(){
+    public FBO applyChanges() {
         delete();
         generate();
 
@@ -129,7 +129,8 @@ public class FBO extends GLObject {
 
     @Override
     public void bind() {
-        if (!GLContext.check(GLcontext)) throw new RuntimeException("FBO cannot be binded without or another OpenGL context!");
+        if (!GLContext.check(GLcontext))
+            throw new RuntimeException("FBO cannot be binded without or another OpenGL context!");
 
         lastFrameBuffer = glGetInteger(GL_FRAMEBUFFER_BINDING);
 
@@ -149,14 +150,15 @@ public class FBO extends GLObject {
         if (viewport != null)
             glViewport(viewport.getX(), viewport.getY(), viewport.getZ(), viewport.getW());
         else
-            glViewport(0,0, resolution.getX(), resolution.getY());
+            glViewport(0, 0, resolution.getX(), resolution.getY());
 
-        gluOrtho2D(-1,1,-1,1);
+        gluOrtho2D(-1, 1, -1, 1);
     }
 
     @Override
     public void unbind() {
-        if (!GLContext.check(GLcontext)) throw new RuntimeException("FBO cannot be unbinded without or another OpenGL context!");
+        if (!GLContext.check(GLcontext))
+            throw new RuntimeException("FBO cannot be unbinded without or another OpenGL context!");
 
         glBindFramebuffer(GL_FRAMEBUFFER, lastFrameBuffer);
         glViewport(lastViewport.getX(), lastViewport.getY(), lastViewport.getZ(), lastViewport.getW());

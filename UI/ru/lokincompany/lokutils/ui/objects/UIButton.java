@@ -25,7 +25,7 @@ public class UIButton extends UIObject {
         this.getAnimations().addAnimation(new Animation("pressed") {
             @Override
             public void update() {
-                Color source = ((UIButton)object).panel.overrideColor;
+                Color source = ((UIButton) object).panel.overrideColor;
                 Color end = object.getStyle().getColor("buttonPressed");
                 softColorChange(source, end, 2);
                 isRun = !softColorChangeDone(source, end);
@@ -35,14 +35,14 @@ public class UIButton extends UIObject {
         this.getAnimations().addAnimation(new Animation("unpressed") {
             @Override
             public void update() {
-                Color source = ((UIButton)object).panel.overrideColor;
+                Color source = ((UIButton) object).panel.overrideColor;
                 Color end = object.getStyle().getColor("buttonBackground");
                 softColorChange(source, end, 2);
                 isRun = !softColorChangeDone(source, end);
             }
         });
 
-        setSize(new Vector2f(100,30));
+        setSize(new Vector2f(100, 30));
     }
 
     public UIText getText() {
@@ -64,6 +64,7 @@ public class UIButton extends UIObject {
 class UIButtonEvent extends EventAction {
 
     UIButton button;
+
     public UIButtonEvent(UIButton button) {
         super(EventType.Click);
         this.button = button;

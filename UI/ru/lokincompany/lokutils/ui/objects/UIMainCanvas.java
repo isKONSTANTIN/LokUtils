@@ -4,7 +4,6 @@ import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector4f;
 import ru.lokincompany.lokutils.objects.Vector2i;
 import ru.lokincompany.lokutils.render.FBO;
-import ru.lokincompany.lokutils.render.GLContext;
 import ru.lokincompany.lokutils.render.RenderPart;
 import ru.lokincompany.lokutils.render.tools.ViewTools;
 import ru.lokincompany.lokutils.ui.UIRenderPart;
@@ -16,7 +15,7 @@ public class UIMainCanvas extends UICanvas {
     protected UIMainCanvasRender render;
     protected int multisampleSamples = 16;
 
-    public UIMainCanvas(){
+    public UIMainCanvas() {
         render = new UIMainCanvasRender(this);
         setSize(new Vector2f(256, 256));
     }
@@ -31,11 +30,11 @@ public class UIMainCanvas extends UICanvas {
         return this;
     }
 
-    public FBO getFbo(){
+    public FBO getFbo() {
         return render.getFbo();
     }
 
-    public void render(){
+    public void render() {
         render.render();
     }
 }
@@ -46,10 +45,10 @@ class UIMainCanvasRender extends UIRenderPart<UIMainCanvas> {
 
     public UIMainCanvasRender(UIMainCanvas object) {
         super(object);
-        fbo = new FBO().setResolution(new Vector2i((int)object.getSize().x, (int)object.getSize().y)).setMultisampled(true).setMultisampleSamples(object.getMultisampleSamples()).applyChanges();
+        fbo = new FBO().setResolution(new Vector2i((int) object.getSize().x, (int) object.getSize().y)).setMultisampled(true).setMultisampleSamples(object.getMultisampleSamples()).applyChanges();
     }
 
-    public FBO getFbo(){
+    public FBO getFbo() {
         return fbo;
     }
 
@@ -57,12 +56,12 @@ class UIMainCanvasRender extends UIRenderPart<UIMainCanvas> {
     public void render() {
         boolean fboBeenChanged = false;
 
-        if ((int)object.getSize().x != fbo.getResolution().getX() || (int)object.getSize().y != fbo.getResolution().getY()){
-            fbo.setResolution(new Vector2i((int)object.getSize().x, (int)object.getSize().y));
+        if ((int) object.getSize().x != fbo.getResolution().getX() || (int) object.getSize().y != fbo.getResolution().getY()) {
+            fbo.setResolution(new Vector2i((int) object.getSize().x, (int) object.getSize().y));
             fboBeenChanged = true;
         }
 
-        if (fbo.getMultisampleSamples() != object.getMultisampleSamples()){
+        if (fbo.getMultisampleSamples() != object.getMultisampleSamples()) {
             fbo.setMultisampleSamples(object.getMultisampleSamples());
             fboBeenChanged = true;
         }
@@ -74,7 +73,7 @@ class UIMainCanvasRender extends UIRenderPart<UIMainCanvas> {
 
         ViewTools.setOrtho2DView(new Vector4f(0, object.getSize().getX(), object.getSize().getY(), 0));
 
-        glClearColor(1,1,1,0);
+        glClearColor(1, 1, 1, 0);
         glClear(GL_COLOR_BUFFER_BIT);
 
         synchronized (object.updateSync) {

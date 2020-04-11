@@ -3,7 +3,6 @@ package ru.lokincompany.lokutils.render;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
-import org.lwjgl.opengl.GL30;
 import ru.lokincompany.lokutils.objects.Vector2i;
 
 import javax.imageio.ImageIO;
@@ -14,11 +13,11 @@ import java.nio.ByteBuffer;
 
 import static org.lwjgl.opengl.GL11.*;
 
-public class Texture extends GLObject{
+public class Texture extends GLObject {
     protected String path;
     protected Vector2i size;
 
-    public Texture(){
+    public Texture() {
 
     }
 
@@ -27,7 +26,7 @@ public class Texture extends GLObject{
         if (path.charAt(0) == '#') {
             try {
                 image = ImageIO.read(Texture.class.getResource(path.substring(1)));
-            }catch (Exception e){
+            } catch (Exception e) {
                 image = ImageIO.read(new File(path.substring(2)));
             }
         } else {
@@ -54,7 +53,7 @@ public class Texture extends GLObject{
         return load(textureBuffer, size);
     }
 
-    public Texture load(ByteBuffer byteBuffer, Vector2i size){
+    public Texture load(ByteBuffer byteBuffer, Vector2i size) {
         delete();
         generate();
 
@@ -94,20 +93,23 @@ public class Texture extends GLObject{
     public void delete() {
         if (id == 0) return;
 
-        if (!GLContext.check(GLcontext)) throw new RuntimeException("Texture cannot be deleted without or another OpenGL context!");
+        if (!GLContext.check(GLcontext))
+            throw new RuntimeException("Texture cannot be deleted without or another OpenGL context!");
 
         glDeleteTextures(id);
         id = 0;
     }
 
     public void bind() {
-        if (!GLContext.check(GLcontext)) throw new RuntimeException("Texture cannot be binded without or another OpenGL context!");
+        if (!GLContext.check(GLcontext))
+            throw new RuntimeException("Texture cannot be binded without or another OpenGL context!");
 
         glBindTexture(GL_TEXTURE_2D, id);
     }
 
     public void unbind() {
-        if (GLContext.getCurrent() == null) throw new RuntimeException("Texture cannot be unbinded without OpenGL context!");
+        if (GLContext.getCurrent() == null)
+            throw new RuntimeException("Texture cannot be unbinded without OpenGL context!");
 
         glBindTexture(GL_TEXTURE_2D, 0);
     }

@@ -2,7 +2,6 @@ package ru.lokincompany.lokutils.ui.positioning;
 
 import org.lwjgl.util.vector.Vector2f;
 import ru.lokincompany.lokutils.ui.UIObject;
-import ru.lokincompany.lokutils.ui.objects.UICanvas;
 
 public class PositioningAlgorithms {
     public static PositioningСonsider getAlgorithm(UIObject object, Position position) {

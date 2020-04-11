@@ -26,7 +26,7 @@ public class UIObject {
         return lastParent;
     }
 
-    public UICanvas getCanvasParent(){
+    public UICanvas getCanvasParent() {
         return lastParent.getCanvasParent();
     }
 
@@ -38,22 +38,8 @@ public class UIObject {
         return positionSetter;
     }
 
-    public UIObject setPosition(PositioningSetter positionSetter) {
-        positionSetter.init(this);
-        this.positionSetter = positionSetter;
-
-        return this;
-    }
-
     public PositioningSetter getSizeSetter() {
         return sizeSetter;
-    }
-
-    public UIObject setSize(PositioningSetter sizeSetter) {
-        sizeSetter.init(this);
-        this.sizeSetter = sizeSetter;
-
-        return this;
     }
 
     public Animations getAnimations() {
@@ -74,43 +60,57 @@ public class UIObject {
         return style;
     }
 
-    public UIObject setStyle(UIStyle style){
+    public UIObject setStyle(UIStyle style) {
         this.style = style;
         return this;
     }
 
-    public Vector2f getPosition(){
+    public Vector2f getPosition() {
         return new Vector2f(position.x, position.y);
     }
 
-    public Vector2f getSize(){
-        return new Vector2f(size.x, size.y);
+    public UIObject setPosition(PositioningSetter positionSetter) {
+        positionSetter.init(this);
+        this.positionSetter = positionSetter;
+
+        return this;
     }
 
-    public UIObject setPosition(Vector2f position){
+    public UIObject setPosition(Vector2f position) {
         this.position = position;
         return this;
     }
 
-    public UIObject setSize(Vector2f size){
+    public Vector2f getSize() {
+        return new Vector2f(size.x, size.y);
+    }
+
+    public UIObject setSize(PositioningSetter sizeSetter) {
+        sizeSetter.init(this);
+        this.sizeSetter = sizeSetter;
+
+        return this;
+    }
+
+    public UIObject setSize(Vector2f size) {
         this.size = size;
         return this;
     }
 
-    public Inputs getInputs(){
+    public Inputs getInputs() {
         return lastParent.getInputs();
     }
 
-    protected void updateEvents(Inputs inputs){
+    protected void updateEvents(Inputs inputs) {
         if (eventHandler != null)
             eventHandler.update(this, inputs);
 
-        if (positionSetter != null){
+        if (positionSetter != null) {
             Vector2f newPosition = positionSetter.get();
             position.set(newPosition.x, newPosition.y);
         }
 
-        if (sizeSetter != null){
+        if (sizeSetter != null) {
             Vector2f newSize = sizeSetter.get();
             size.set(newSize.x, newSize.y);
         }
@@ -118,7 +118,7 @@ public class UIObject {
         animations.update();
     }
 
-    public void update(UIObject parent){
+    public void update(UIObject parent) {
         lastParent = parent;
 
         updateEvents(parent.getInputs());

@@ -6,7 +6,6 @@ import org.lwjgl.util.vector.Matrix4f;
 import java.nio.FloatBuffer;
 
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL11.GL_MODELVIEW;
 
 public class MatrixTools {
     public static Matrix4f createPerspectiveMatrix(float fov, float aspect, float near, float far) {
@@ -59,7 +58,7 @@ public class MatrixTools {
         return matrix;
     }
 
-    public static FloatBuffer insertInBuffer(Matrix4f matrix){
+    public static FloatBuffer insertInBuffer(Matrix4f matrix) {
         FloatBuffer buffer = BufferUtils.createFloatBuffer(16);
         matrix.store(buffer);
         buffer.flip();
@@ -67,31 +66,31 @@ public class MatrixTools {
         return buffer;
     }
 
-    public static void bindMatrix(Matrix4f matrix4f, int GLMatrixMode){
+    public static void bindMatrix(Matrix4f matrix4f, int GLMatrixMode) {
         glMatrixMode(GLMatrixMode);
         glLoadIdentity();
 
         glMultMatrixf(insertInBuffer(matrix4f));
     }
 
-    public static Matrix4f getBindedMatrix(int GLMatrixType){
+    public static Matrix4f getBindedMatrix(int GLMatrixType) {
         FloatBuffer buffer = BufferUtils.createFloatBuffer(16);
         glGetFloatv(GLMatrixType, buffer);
 
-        return (Matrix4f)new Matrix4f().load(buffer);
+        return (Matrix4f) new Matrix4f().load(buffer);
     }
 
-    public static void bindPerspectiveMatrix(float fov, float aspect, float near, float far){
+    public static void bindPerspectiveMatrix(float fov, float aspect, float near, float far) {
         bindMatrix(MatrixTools.createPerspectiveMatrix(fov, aspect, near, far), GL_PROJECTION);
         glMatrixMode(GL_MODELVIEW);
     }
 
-    public static void bindOrthographicMatrix(float left, float right, float bottom, float top, float near, float far){
+    public static void bindOrthographicMatrix(float left, float right, float bottom, float top, float near, float far) {
         bindMatrix(MatrixTools.createOrthographicMatrix(left, right, bottom, top, near, far), GL_PROJECTION);
         glMatrixMode(GL_MODELVIEW);
     }
 
-    public static void bindOrthographicMatrix(float width, float height){
+    public static void bindOrthographicMatrix(float width, float height) {
         bindOrthographicMatrix(-width / 2, width / 2, -height / 2, height / 2, -1.0f, 1000.0f);
     }
 }

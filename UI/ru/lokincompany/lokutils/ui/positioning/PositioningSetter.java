@@ -10,11 +10,11 @@ public class PositioningSetter {
     Position position;
     UIObject object;
 
-    public PositioningSetter(PositioningСonsider consider){
+    public PositioningSetter(PositioningСonsider consider) {
         this.consider = consider;
     }
 
-    public PositioningSetter(Position position){
+    public PositioningSetter(Position position) {
         this.position = position;
     }
 
@@ -27,42 +27,42 @@ public class PositioningSetter {
         return result;
     }
 
-    public PositioningSetter increaseModifier(float factor){
+    public PositioningSetter increaseModifier(float factor) {
         modifier.x += factor;
         modifier.y += factor;
 
         return this;
     }
 
-    public PositioningSetter increaseModifier(Vector2f factor){
+    public PositioningSetter increaseModifier(Vector2f factor) {
         modifier.x += factor.x;
         modifier.y += factor.y;
 
         return this;
     }
 
-    public PositioningSetter reduceModifier(float factor){
+    public PositioningSetter reduceModifier(float factor) {
         modifier.x -= factor;
         modifier.y -= factor;
 
         return this;
     }
 
-    public PositioningSetter reduceModifier(Vector2f factor){
+    public PositioningSetter reduceModifier(Vector2f factor) {
         modifier.x -= factor.x;
         modifier.y -= factor.y;
 
         return this;
     }
 
-    public PositioningSetter setModifier(Vector2f modifier){
+    public PositioningSetter setModifier(Vector2f modifier) {
         this.modifier.x = modifier.x;
         this.modifier.y = modifier.y;
 
         return this;
     }
 
-    public void init(UIObject object){
+    public void init(UIObject object) {
         this.object = object;
 
         if (position != null)

@@ -7,16 +7,17 @@ import java.util.Objects;
 public class Vector2i {
     protected int x, y;
 
-    public Vector2i(){}
+    public Vector2i() {
+    }
 
-    public Vector2i(int x, int y){
+    public Vector2i(int x, int y) {
         this.x = x;
         this.y = y;
     }
 
-    public Vector2i(Vector2f vector2f){
-        this.x = (int)vector2f.x;
-        this.y = (int)vector2f.y;
+    public Vector2i(Vector2f vector2f) {
+        this.x = (int) vector2f.x;
+        this.y = (int) vector2f.y;
     }
 
     public int getX() {

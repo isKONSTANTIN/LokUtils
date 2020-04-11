@@ -2,18 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3c9882d3-afd8-43a2-9739-2ef4c2b609e7" name="Default Changelist" comment="VBO: added FBO">
-      <change afterPath="$PROJECT_DIR$/UI/ru/lokincompany/lokutils/ui/EventHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/UI/ru/lokincompany/lokutils/ui/objects/UIButton.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/UI/ru/lokincompany/lokutils/ui/positioning/PositionSetter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/UI/ru/lokincompany/lokutils/ui/positioning/PositioningSetter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/UI/ru/lokincompany/lokutils/ui/positioning/SizeSetter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/ru/lokincompany/lokutils/Main.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Input/ru/lokincompany/lokutils/input/Inputs.java" beforeDir="false" afterPath="$PROJECT_DIR$/Input/ru/lokincompany/lokutils/input/Inputs.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UI/ru/lokincompany/lokutils/ui/UIObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/UI/ru/lokincompany/lokutils/ui/UIObject.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UI/ru/lokincompany/lokutils/ui/animation/Animation.java" beforeDir="false" afterPath="$PROJECT_DIR$/UI/ru/lokincompany/lokutils/ui/animation/Animation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UI/ru/lokincompany/lokutils/ui/objects/UICanvas.java" beforeDir="false" afterPath="$PROJECT_DIR$/UI/ru/lokincompany/lokutils/ui/objects/UICanvas.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ru/lokincompany/lokutils/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ru/lokincompany/lokutils/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,7 +18,9 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="Interface" />
         <option value="Class" />
+        <option value="Enum" />
       </list>
     </option>
   </component>
@@ -48,11 +42,13 @@
     <property name="Repository.Attach.Annotations" value="false" />
     <property name="Repository.Attach.JavaDocs" value="false" />
     <property name="Repository.Attach.Sources" value="false" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/libs/lwjgl-opengl/lwjgl-opengl.jar!/" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.14648438" />
     <property name="project.structure.side.proportion" value="0.2587007" />
+    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
   </component>
   <component name="RecentsManager">
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
@@ -241,18 +237,101 @@
       <option name="project" value="LOCAL" />
       <updated>1586280242488</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="Fixes">
+      <created>1586457882773</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1586457882773</updated>
+    </task>
+    <task id="LOCAL-00021" summary="UIObject: added method and fixes">
+      <created>1586525555701</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1586525555701</updated>
+    </task>
+    <task id="LOCAL-00022" summary="UIObject: added method and fixes">
+      <created>1586525591837</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1586525591837</updated>
+    </task>
+    <task id="LOCAL-00023" summary="UIButton: added render">
+      <created>1586525617536</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1586525617536</updated>
+    </task>
+    <task id="LOCAL-00024" summary="Color: added clone method">
+      <created>1586548829089</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1586548829089</updated>
+    </task>
+    <task id="LOCAL-00025" summary="Vector2i: added Vector2f builder">
+      <created>1586548893780</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1586548893781</updated>
+    </task>
+    <task id="LOCAL-00026" summary="Animation: now not abstract class &amp; added soft color change method">
+      <created>1586548998373</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1586548998373</updated>
+    </task>
+    <task id="LOCAL-00027" summary="Added event system">
+      <created>1586549042771</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1586549042771</updated>
+    </task>
+    <task id="LOCAL-00028" summary="UIObject: added get event handler method">
+      <created>1586549108646</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1586549108646</updated>
+    </task>
+    <task id="LOCAL-00029" summary="UI: added override colors">
+      <created>1586549149401</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1586549149401</updated>
+    </task>
+    <task id="LOCAL-00030" summary="UIButton: added colors and animation">
+      <created>1586549189918</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1586549189918</updated>
+    </task>
+    <task id="LOCAL-00031" summary="Animation: added methods">
+      <created>1586603821060</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1586603821060</updated>
+    </task>
+    <task id="LOCAL-00032" summary="UIButton: fixed animation">
+      <created>1586603850524</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1586603850524</updated>
+    </task>
+    <option name="localTasksCounter" value="33" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="MatrixTools: added new methods" />
-    <MESSAGE value="VBO: added @Override" />
-    <MESSAGE value="VBO: added GLFastTools" />
-    <MESSAGE value="VBO: added FBO" />
-    <MESSAGE value="Refactor" />
-    <MESSAGE value="Fixes &amp; added Keyboard, KeyInfo and Mouse" />
-    <MESSAGE value="Refactoring" />
-    <MESSAGE value="Fixes and added Inputs" />
     <MESSAGE value="GLFastTools: added method to render rounded squares" />
     <MESSAGE value="Objects: added Color class" />
     <MESSAGE value="Render: added ViewTools and RenderPart classes" />
@@ -265,17 +344,32 @@
     <MESSAGE value="UIMainCanvas: small fix" />
     <MESSAGE value="Animation: added new methods" />
     <MESSAGE value="UICanvas: added getObject() and getInputs() methods, inputs field" />
-    <option name="LAST_COMMIT_MESSAGE" value="UICanvas: added getObject() and getInputs() methods, inputs field" />
+    <MESSAGE value="Fixes" />
+    <MESSAGE value="VBO: added FBO" />
+    <MESSAGE value="UIObject: added method and fixes" />
+    <MESSAGE value="UIButton: added render" />
+    <MESSAGE value="Color: added clone method" />
+    <MESSAGE value="Vector2i: added Vector2f builder" />
+    <MESSAGE value="Animation: now not abstract class &amp; added soft color change method" />
+    <MESSAGE value="Added event system" />
+    <MESSAGE value="UIObject: added get event handler method" />
+    <MESSAGE value="UI: added override colors" />
+    <MESSAGE value="UIButton: added colors and animation" />
+    <MESSAGE value="Animation: added methods" />
+    <MESSAGE value="UIButton: fixed animation" />
+    <option name="LAST_COMMIT_MESSAGE" value="UIButton: fixed animation" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="423" y="202" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1586018122211">
-      <screen x="0" y="0" width="1920" height="1080" />
+    <state x="423" y="231" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1586416364118">
+      <screen x="0" y="36" width="1920" height="1044" />
     </state>
     <state x="423" y="202" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1586018122211" />
-    <state x="893" y="217" key="#com.intellij.ide.util.MemberChooser" timestamp="1586280092691">
-      <screen x="0" y="0" width="1920" height="1080" />
+    <state x="423" y="231" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.36.1920.1044@0.36.1920.1044" timestamp="1586416364118" />
+    <state x="893" y="246" key="#com.intellij.ide.util.MemberChooser" timestamp="1586547773117">
+      <screen x="0" y="36" width="1920" height="1044" />
     </state>
     <state x="893" y="217" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1586280092691" />
+    <state x="893" y="246" key="#com.intellij.ide.util.MemberChooser/0.36.1920.1044@0.36.1920.1044" timestamp="1586547773117" />
     <state x="696" y="330" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1585837048406">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
@@ -292,94 +386,123 @@
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state x="689" y="437" key="#com.intellij.refactoring.move.MoveHandler.SelectRefactoringDialog/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1585661638882" />
-    <state x="752" y="406" width="415" height="279" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes" timestamp="1585837751526">
-      <screen x="0" y="0" width="1920" height="1080" />
+    <state x="752" y="428" width="462" height="298" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes" timestamp="1586450343548">
+      <screen x="0" y="36" width="1920" height="1044" />
     </state>
     <state x="752" y="406" width="415" height="279" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1585837751526" />
+    <state x="752" y="428" width="462" height="298" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes/0.36.1920.1044@0.36.1920.1044" timestamp="1586450343548" />
     <state x="914" y="401" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.packages" timestamp="1585661632845">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state x="914" y="401" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.packages/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1585661632845" />
+    <state x="695" y="303" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1586430698113">
+      <screen x="0" y="36" width="1920" height="1044" />
+    </state>
+    <state x="695" y="303" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.36.1920.1044@0.36.1920.1044" timestamp="1586430698113" />
     <state x="812" y="321" key="#com.intellij.util.ui.classpath.ChooseLibrariesDialog" timestamp="1585920267084">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state x="812" y="321" key="#com.intellij.util.ui.classpath.ChooseLibrariesDialog/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1585920267084" />
-    <state x="699" y="139" key="CommitChangelistDialog2" timestamp="1586280442082">
-      <screen x="0" y="0" width="1920" height="1080" />
+    <state x="571" y="154" key="CommitChangelistDialog2" timestamp="1586620851460">
+      <screen x="0" y="36" width="1920" height="1044" />
     </state>
     <state x="699" y="139" key="CommitChangelistDialog2/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1586280442082" />
-    <state width="419" height="466" key="DebuggerActiveHint" timestamp="1585923667664">
-      <screen x="0" y="0" width="1920" height="1080" />
+    <state x="571" y="154" key="CommitChangelistDialog2/0.36.1920.1044@0.36.1920.1044" timestamp="1586620851460" />
+    <state width="447" height="451" key="DebuggerActiveHint" timestamp="1586450164138">
+      <screen x="0" y="36" width="1920" height="1044" />
     </state>
     <state width="419" height="466" key="DebuggerActiveHint/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1585923667664" />
-    <state x="191" y="97" key="DiffContextDialog" timestamp="1586280285457">
-      <screen x="0" y="0" width="1920" height="1080" />
+    <state width="447" height="451" key="DebuggerActiveHint/0.36.1920.1044@0.36.1920.1044" timestamp="1586450164138" />
+    <state x="191" y="130" key="DiffContextDialog" timestamp="1586548853101">
+      <screen x="0" y="36" width="1920" height="1044" />
     </state>
     <state x="191" y="97" key="DiffContextDialog/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1586280285457" />
+    <state x="191" y="130" key="DiffContextDialog/0.36.1920.1044@0.36.1920.1044" timestamp="1586548853101" />
     <state x="747" y="302" key="FileChooserDialogImpl" timestamp="1585838533371">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state x="747" y="302" key="FileChooserDialogImpl/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1585838533371" />
-    <state width="1874" height="183" key="GridCell.Tab.0.bottom" timestamp="1586280022627">
-      <screen x="0" y="0" width="1920" height="1080" />
+    <state width="1874" height="241" key="GridCell.Tab.0.bottom" timestamp="1586603733513">
+      <screen x="0" y="36" width="1920" height="1044" />
     </state>
     <state width="1874" height="183" key="GridCell.Tab.0.bottom/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1586280022627" />
-    <state width="1874" height="183" key="GridCell.Tab.0.center" timestamp="1586280022627">
-      <screen x="0" y="0" width="1920" height="1080" />
+    <state width="1874" height="241" key="GridCell.Tab.0.bottom/0.36.1920.1044@0.36.1920.1044" timestamp="1586603733513" />
+    <state width="1874" height="241" key="GridCell.Tab.0.center" timestamp="1586603733512">
+      <screen x="0" y="36" width="1920" height="1044" />
     </state>
     <state width="1874" height="183" key="GridCell.Tab.0.center/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1586280022627" />
-    <state width="1874" height="183" key="GridCell.Tab.0.left" timestamp="1586280022627">
-      <screen x="0" y="0" width="1920" height="1080" />
+    <state width="1874" height="241" key="GridCell.Tab.0.center/0.36.1920.1044@0.36.1920.1044" timestamp="1586603733512" />
+    <state width="1874" height="241" key="GridCell.Tab.0.left" timestamp="1586603733511">
+      <screen x="0" y="36" width="1920" height="1044" />
     </state>
     <state width="1874" height="183" key="GridCell.Tab.0.left/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1586280022627" />
-    <state width="1874" height="183" key="GridCell.Tab.0.right" timestamp="1586280022627">
-      <screen x="0" y="0" width="1920" height="1080" />
+    <state width="1874" height="241" key="GridCell.Tab.0.left/0.36.1920.1044@0.36.1920.1044" timestamp="1586603733511" />
+    <state width="1874" height="241" key="GridCell.Tab.0.right" timestamp="1586603733512">
+      <screen x="0" y="36" width="1920" height="1044" />
     </state>
     <state width="1874" height="183" key="GridCell.Tab.0.right/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1586280022627" />
-    <state width="1874" height="83" key="GridCell.Tab.1.bottom" timestamp="1586023596042">
-      <screen x="0" y="0" width="1920" height="1080" />
+    <state width="1874" height="241" key="GridCell.Tab.0.right/0.36.1920.1044@0.36.1920.1044" timestamp="1586603733512" />
+    <state width="1874" height="224" key="GridCell.Tab.1.bottom" timestamp="1586603442040">
+      <screen x="0" y="36" width="1920" height="1044" />
     </state>
     <state width="1874" height="83" key="GridCell.Tab.1.bottom/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1586023596042" />
-    <state width="1874" height="83" key="GridCell.Tab.1.center" timestamp="1586023596042">
-      <screen x="0" y="0" width="1920" height="1080" />
+    <state width="1874" height="224" key="GridCell.Tab.1.bottom/0.36.1920.1044@0.36.1920.1044" timestamp="1586603442040" />
+    <state width="1874" height="224" key="GridCell.Tab.1.center" timestamp="1586603442035">
+      <screen x="0" y="36" width="1920" height="1044" />
     </state>
     <state width="1874" height="83" key="GridCell.Tab.1.center/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1586023596042" />
-    <state width="1874" height="83" key="GridCell.Tab.1.left" timestamp="1586023596042">
-      <screen x="0" y="0" width="1920" height="1080" />
+    <state width="1874" height="224" key="GridCell.Tab.1.center/0.36.1920.1044@0.36.1920.1044" timestamp="1586603442035" />
+    <state width="1874" height="224" key="GridCell.Tab.1.left" timestamp="1586603442034">
+      <screen x="0" y="36" width="1920" height="1044" />
     </state>
     <state width="1874" height="83" key="GridCell.Tab.1.left/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1586023596042" />
-    <state width="1874" height="83" key="GridCell.Tab.1.right" timestamp="1586023596042">
-      <screen x="0" y="0" width="1920" height="1080" />
+    <state width="1874" height="224" key="GridCell.Tab.1.left/0.36.1920.1044@0.36.1920.1044" timestamp="1586603442034" />
+    <state width="1874" height="224" key="GridCell.Tab.1.right" timestamp="1586603442036">
+      <screen x="0" y="36" width="1920" height="1044" />
     </state>
     <state width="1874" height="83" key="GridCell.Tab.1.right/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1586023596042" />
-    <state x="530" y="119" key="SettingsEditor" timestamp="1585920269177">
-      <screen x="0" y="0" width="1920" height="1080" />
+    <state width="1874" height="224" key="GridCell.Tab.1.right/0.36.1920.1044@0.36.1920.1044" timestamp="1586603442036" />
+    <state x="770" y="247" key="RollbackChangesDialog" timestamp="1586431802338">
+      <screen x="0" y="36" width="1920" height="1044" />
+    </state>
+    <state x="770" y="247" key="RollbackChangesDialog/0.36.1920.1044@0.36.1920.1044" timestamp="1586431802338" />
+    <state x="348" y="185" key="SettingsEditor" timestamp="1586524069704">
+      <screen x="0" y="36" width="1920" height="1044" />
     </state>
     <state x="530" y="119" key="SettingsEditor/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1585920269177" />
-    <state x="559" y="280" key="Vcs.Push.Dialog.v2" timestamp="1586020145389">
-      <screen x="0" y="0" width="1920" height="1080" />
+    <state x="348" y="185" key="SettingsEditor/0.36.1920.1044@0.36.1920.1044" timestamp="1586524069704" />
+    <state x="559" y="307" key="Vcs.Push.Dialog.v2" timestamp="1586620912844">
+      <screen x="0" y="36" width="1920" height="1044" />
     </state>
     <state x="559" y="280" key="Vcs.Push.Dialog.v2/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1586020145389" />
-    <state x="653" y="368" key="com.intellij.ide.util.TipDialog" timestamp="1586274762166">
-      <screen x="0" y="0" width="1920" height="1080" />
+    <state x="559" y="307" key="Vcs.Push.Dialog.v2/0.36.1920.1044@0.36.1920.1044" timestamp="1586620912844" />
+    <state x="653" y="392" key="com.intellij.ide.util.TipDialog" timestamp="1586620744881">
+      <screen x="0" y="36" width="1920" height="1044" />
     </state>
     <state x="653" y="368" key="com.intellij.ide.util.TipDialog/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1586274762166" />
+    <state x="653" y="392" key="com.intellij.ide.util.TipDialog/0.36.1920.1044@0.36.1920.1044" timestamp="1586620744881" />
     <state x="667" y="440" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD" timestamp="1585661242941">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state x="667" y="440" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1585661242941" />
+    <state x="685" y="347" key="git4idea.merge.GitPullDialog" timestamp="1586466348835">
+      <screen x="0" y="36" width="1920" height="1044" />
+    </state>
+    <state x="685" y="347" key="git4idea.merge.GitPullDialog/0.36.1920.1044@0.36.1920.1044" timestamp="1586466348835" />
     <state x="274" y="116" key="new project wizard" timestamp="1585945923173">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state x="339" y="157" key="new project wizard/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1585838387281" />
     <state x="274" y="116" key="new project wizard/0.0.1920.1080/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585945923173" />
-    <state x="623" y="249" width="672" height="677" key="run.anything.popup" timestamp="1586274891871">
-      <screen x="0" y="0" width="1920" height="1080" />
+    <state x="623" y="277" width="672" height="655" key="run.anything.popup" timestamp="1586540145615">
+      <screen x="0" y="36" width="1920" height="1044" />
     </state>
     <state x="623" y="249" width="672" height="677" key="run.anything.popup/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1586274891871" />
-    <state x="623" y="239" width="672" height="678" key="search.everywhere.popup" timestamp="1585924197286">
-      <screen x="0" y="0" width="1920" height="1080" />
+    <state x="623" y="277" width="672" height="655" key="run.anything.popup/0.36.1920.1044@0.36.1920.1044" timestamp="1586540145615" />
+    <state x="623" y="267" width="672" height="656" key="search.everywhere.popup" timestamp="1586545817443">
+      <screen x="0" y="36" width="1920" height="1044" />
     </state>
     <state x="623" y="239" width="672" height="678" key="search.everywhere.popup/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1585924197286" />
+    <state x="623" y="267" width="672" height="656" key="search.everywhere.popup/0.36.1920.1044@0.36.1920.1044" timestamp="1586545817443" />
   </component>
 </project>

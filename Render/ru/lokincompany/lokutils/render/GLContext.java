@@ -7,9 +7,9 @@ import static org.lwjgl.glfw.GLFW.glfwMakeContextCurrent;
 
 public class GLContext {
 
+    private static volatile GLContext bindedContext;
     private final Window window;
     private final long threadID;
-    private static volatile GLContext bindedContext;
 
     public GLContext(Window window) {
         if (window.glContext != null) throw new RuntimeException("This window already has context!");
@@ -18,16 +18,26 @@ public class GLContext {
         this.window = window;
     }
 
+    public static boolean check(GLContext context) {
+        return bindedContext != null && context != null && context.getWindow().getGLFWWindow() == bindedContext.getWindow().getGLFWWindow();
+    }
+
+    public static GLContext getCurrent() {
+        return bindedContext;
+    }
+
     public Window getWindow() {
         return window;
     }
 
-    public long getThreadID(){ return threadID; }
+    public long getThreadID() {
+        return threadID;
+    }
 
     public synchronized void bind() {
         if (check(this)) return;
 
-        if (bindedContext != null && bindedContext.getThreadID() == Thread.currentThread().getId()){
+        if (bindedContext != null && bindedContext.getThreadID() == Thread.currentThread().getId()) {
             throw new RuntimeException("Cannot bind 2 contexts that have the same thread at the same time!");
         }
 
@@ -41,14 +51,6 @@ public class GLContext {
         bindedContext = this;
         glfwMakeContextCurrent(window.getGLFWWindow());
         GL.createCapabilities();
-    }
-
-    public static boolean check(GLContext context){
-        return bindedContext != null && context != null && context.getWindow().getGLFWWindow() == bindedContext.getWindow().getGLFWWindow();
-    }
-
-    public static GLContext getCurrent(){
-        return bindedContext;
     }
 
     public synchronized void unbind() {

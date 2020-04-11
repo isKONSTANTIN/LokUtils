@@ -5,9 +5,10 @@ import java.util.Objects;
 public class Vector4i {
     protected int x, y, z, w;
 
-    public Vector4i(){}
+    public Vector4i() {
+    }
 
-    public Vector4i(int x, int y, int z, int w){
+    public Vector4i(int x, int y, int z, int w) {
         this.x = x;
         this.y = y;
         this.z = z;

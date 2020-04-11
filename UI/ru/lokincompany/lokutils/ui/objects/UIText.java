@@ -3,13 +3,8 @@ package ru.lokincompany.lokutils.ui.objects;
 import org.lwjgl.util.vector.Vector2f;
 import ru.lokincompany.lokutils.objects.Color;
 import ru.lokincompany.lokutils.render.Font;
-import ru.lokincompany.lokutils.render.RenderPart;
 import ru.lokincompany.lokutils.ui.UIObject;
 import ru.lokincompany.lokutils.ui.UIRenderPart;
-
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
-import static org.lwjgl.opengl.GL14.glBlendFuncSeparate;
 
 public class UIText extends UIObject {
 
@@ -19,7 +14,7 @@ public class UIText extends UIObject {
     protected String text;
     protected UITextRender render;
 
-    public UIText(){
+    public UIText() {
         render = new UITextRender(this);
     }
 
@@ -45,7 +40,7 @@ public class UIText extends UIObject {
 
     @Override
     public Vector2f getSize() {
-       return style.getFont(styleFontName).getSize(text, size);
+        return style.getFont(styleFontName).getSize(text, size);
     }
 
     @Override

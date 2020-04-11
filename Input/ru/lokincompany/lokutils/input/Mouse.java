@@ -58,17 +58,18 @@ public class Mouse {
     }
 
     public void update() {
-        if (!GLContext.check(GLcontext)) throw new RuntimeException("Mouse cannot be updated without or another OpenGL context!");
+        if (!GLContext.check(GLcontext))
+            throw new RuntimeException("Mouse cannot be updated without or another OpenGL context!");
 
         DoubleBuffer xBuffer = BufferUtils.createDoubleBuffer(1);
         DoubleBuffer yBuffer = BufferUtils.createDoubleBuffer(1);
         glfwGetCursorPos(GLcontext.getWindow().getGLFWWindow(), xBuffer, yBuffer);
 
-        mousePosition.setX((int)xBuffer.get(0));
-        mousePosition.setY((int)yBuffer.get(0));
+        mousePosition.setX((int) xBuffer.get(0));
+        mousePosition.setY((int) yBuffer.get(0));
 
-        if (lastMousePosition.getX() != -1){
-            mouseDeltaPosition.setX(mousePosition.getX()- lastMousePosition.getX());
+        if (lastMousePosition.getX() != -1) {
+            mouseDeltaPosition.setX(mousePosition.getX() - lastMousePosition.getX());
             mouseDeltaPosition.setY(mousePosition.getY() - lastMousePosition.getY());
         }
 
