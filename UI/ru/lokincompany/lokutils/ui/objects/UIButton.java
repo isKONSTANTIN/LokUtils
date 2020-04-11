@@ -1,6 +1,7 @@
 package ru.lokincompany.lokutils.ui.objects;
 
 import org.lwjgl.util.vector.Vector2f;
+import ru.lokincompany.lokutils.objects.Color;
 import ru.lokincompany.lokutils.ui.UIObject;
 import ru.lokincompany.lokutils.ui.animation.Animation;
 import ru.lokincompany.lokutils.ui.eventsystem.EventAction;
@@ -24,14 +25,20 @@ public class UIButton extends UIObject {
         this.getAnimations().addAnimation(new Animation("pressed") {
             @Override
             public void update() {
-                softColorChange(((UIButton)object).panel.overrideColor, object.getStyle().getColor("buttonPressed"), 2);
+                Color source = ((UIButton)object).panel.overrideColor;
+                Color end = object.getStyle().getColor("buttonPressed");
+                softColorChange(source, end, 2);
+                isRun = !softColorChangeDone(source, end);
             }
         });
 
         this.getAnimations().addAnimation(new Animation("unpressed") {
             @Override
             public void update() {
-                softColorChange(((UIButton)object).panel.overrideColor, object.getStyle().getColor("buttonBackground"), 2);
+                Color source = ((UIButton)object).panel.overrideColor;
+                Color end = object.getStyle().getColor("buttonBackground");
+                softColorChange(source, end, 2);
+                isRun = !softColorChangeDone(source, end);
             }
         });
 
@@ -64,7 +71,6 @@ class UIButtonEvent extends EventAction {
 
     @Override
     public void start() {
-        button.getAnimations().stopAnimation("unpressed");
         button.getAnimations().startAnimation("pressed");
     }
 
