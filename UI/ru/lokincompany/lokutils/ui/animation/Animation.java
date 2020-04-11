@@ -80,6 +80,17 @@ public class Animation {
         source.setRawAlpha(softChange(source.getRawAlpha(), end.getRawAlpha(), speed));
     }
 
+    protected boolean softChangeDone(float source, float end){
+        return Math.abs(end - source) < 0.001f;
+    }
+
+    protected boolean softColorChangeDone(Color source, Color end){
+        return softChangeDone(source.getRawRed(), end.getRawRed()) &&
+                softChangeDone(source.getRawGreen(), end.getRawGreen()) &&
+                softChangeDone(source.getRawBlue(), end.getRawBlue()) &&
+                softChangeDone(source.getRawAlpha(), end.getRawAlpha());
+    }
+
     public void update() {}
     public void started() {}
     public void stopped() {}
