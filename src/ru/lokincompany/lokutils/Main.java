@@ -10,6 +10,7 @@ import ru.lokincompany.lokutils.render.tools.ViewTools;
 import ru.lokincompany.lokutils.ui.UIStyle;
 import ru.lokincompany.lokutils.ui.objects.UIButton;
 import ru.lokincompany.lokutils.ui.objects.UIMainCanvas;
+import ru.lokincompany.lokutils.ui.positioning.PositioningSetter;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -43,7 +44,7 @@ public class Main {
             glClear(GL_COLOR_BUFFER_BIT);
             glColor4f(1, 1, 1, 1);
 
-            GLFastTools.drawSquare(new Vector2f(0, 0), new Vector2f(resolution.getX(), resolution.getY()));
+            GLFastTools.drawInvertedSquare(new Vector2f(0, 0), new Vector2f(resolution.getX(), resolution.getY()));
             glBindTexture(GL_TEXTURE_2D, 0);
 
             if (!window.isShow())
