@@ -22,7 +22,7 @@ public class Main {
 
         window.getGlContext().bind();
         UIStyle.generateDefaultStyle();
-        UIMainCanvas canvas = new UIMainCanvas();
+        UIMainCanvas canvas = new UIMainCanvas().setMultisampleSamples(16);
 
         canvas.addObject(new UIButton());
 

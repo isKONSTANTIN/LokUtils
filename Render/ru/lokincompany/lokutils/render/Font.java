@@ -156,8 +156,8 @@ public class Font {
     }
 
     public void drawText(String text, Vector2f position, Vector2f maxSize, Color color) {
-        float drawX = position.x;
-        float drawY = position.y;
+        int drawX = (int)position.x;
+        int drawY = (int)position.y;
 
         texture.bind();
         glBegin(GL_QUADS);
@@ -166,7 +166,7 @@ public class Font {
             char ch = text.charAt(i);
             if (ch == '\n') {
                 drawY += fontHeight;
-                drawX = position.x;
+                drawX = (int)position.x;
                 continue;
             }
             if (ch == '\r') continue;
@@ -182,7 +182,7 @@ public class Font {
                 if (maxSize.x > 0 && drawX + g.width > maxSize.x + position.x) {
                     if (maxSize.y > 0 && drawY + fontHeight + g.height > maxSize.y + position.y)
                         break;
-                    drawX = position.x;
+                    drawX = (int)position.x;
                     drawY += fontHeight;
                 }
             }
