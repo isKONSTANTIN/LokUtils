@@ -7,6 +7,13 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class GLFastTools {
     private static float[] defaultTexCoords = new float[]{
+            0, 0,
+            1, 0,
+            1, 1,
+            0, 1,
+    };
+
+    private static float[] invertedTexCoords = new float[]{
             0, 1,
             1, 1,
             1, 0,
@@ -33,6 +40,10 @@ public class GLFastTools {
 
     public static void drawSquare(Vector2f position, Vector2f size) {
         drawSquare(position, size, defaultTexCoords);
+    }
+
+    public static void drawInvertedSquare(Vector2f position, Vector2f size) {
+        drawSquare(position, size, invertedTexCoords);
     }
 
     public static void drawHollowSquare(Vector2f position, Vector2f size) {
