@@ -7,6 +7,13 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class GLFastTools {
     private static float[] defaultTexCoords = new float[]{
+            0, 0,
+            1, 0,
+            1, 1,
+            0, 1,
+    };
+
+    private static float[] invertedTexCoords = new float[]{
             0, 1,
             1, 1,
             1, 0,
@@ -26,13 +33,17 @@ public class GLFastTools {
         glVertex3f(size.x + position.x, size.y + position.y, 0);
 
         glTexCoord2f(texCoords[6], texCoords[7]);
-        glVertex3f(position.x,size.y + position.y, 0);
+        glVertex3f(position.x, size.y + position.y, 0);
 
         glEnd();
     }
 
     public static void drawSquare(Vector2f position, Vector2f size) {
         drawSquare(position, size, defaultTexCoords);
+    }
+
+    public static void drawInvertedSquare(Vector2f position, Vector2f size) {
+        drawSquare(position, size, invertedTexCoords);
     }
 
     public static void drawHollowSquare(Vector2f position, Vector2f size) {
@@ -49,7 +60,7 @@ public class GLFastTools {
 
     public static void drawRoundedSquare(Vector2f position, Vector2f size, float radius) {
         float glRadius = min(size.x, size.y) / 2 * radius;
-        int roundingPieces = (int)max(Math.ceil(glRadius / 2f), 2);
+        int roundingPieces = (int) max(Math.ceil(glRadius / 2f), 2);
 
         glBegin(GL_POLYGON);
 
@@ -65,9 +76,9 @@ public class GLFastTools {
         double cent_x = x + r * cos(sa + PI / 2);
         double cent_y = y + r * sin(sa + PI / 2);
 
-        int n = (int)ceil(roundingPieces * 1.5707963267948966 / PI * 2);
+        int n = (int) ceil(roundingPieces * 1.5707963267948966 / PI * 2);
         for (int i = 0; i <= n; i++) {
-            double ang = sa + 1.5707963267948966 * (double)i  / (double)n;
+            double ang = sa + 1.5707963267948966 * (double) i / (double) n;
 
             double next_x = cent_x + r * sin(ang);
             double next_y = cent_y - r * cos(ang);

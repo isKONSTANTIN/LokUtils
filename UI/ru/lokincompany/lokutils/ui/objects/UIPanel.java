@@ -1,9 +1,7 @@
 package ru.lokincompany.lokutils.ui.objects;
 
-import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector2f;
 import ru.lokincompany.lokutils.objects.Color;
-import ru.lokincompany.lokutils.render.RenderPart;
 import ru.lokincompany.lokutils.render.tools.GLFastTools;
 import ru.lokincompany.lokutils.ui.UIObject;
 import ru.lokincompany.lokutils.ui.UIRenderPart;
@@ -13,6 +11,8 @@ import static java.lang.Math.min;
 import static org.lwjgl.opengl.GL11.glColor4f;
 
 public class UIPanel extends UIObject {
+
+    public Color overrideColor;
 
     protected UIPanelRender render;
     protected UICanvas canvas;
@@ -43,7 +43,7 @@ public class UIPanel extends UIObject {
         setRounded(0.3f);
     }
 
-    public float getPixelsIndentation(){
+    public float getPixelsIndentation() {
         return min(size.x, size.y) * rounded / 5f;
     }
 
@@ -51,20 +51,20 @@ public class UIPanel extends UIObject {
         return canvas;
     }
 
-    public UIPanel setRounded(float rounded){
-        this.rounded = Math.max(Math.min(rounded, 1), 0);
-        return this;
-    }
-
     public float getRounded() {
         return rounded;
     }
 
+    public UIPanel setRounded(float rounded) {
+        this.rounded = Math.max(Math.min(rounded, 1), 0);
+        return this;
+    }
+
     @Override
-    public void update(UICanvas parent) {
+    public void update(UIObject parent) {
         super.update(parent);
 
-        parent.addRenderPart(render);
+        parent.getCanvasParent().addRenderPart(render);
         canvas.update(parent);
     }
 }
@@ -77,7 +77,7 @@ class UIPanelRender extends UIRenderPart<UIPanel> {
 
     @Override
     public void render() {
-        Color color = object.getStyle().getColor("background");
+        Color color = object.overrideColor != null ? object.overrideColor : object.getStyle().getColor("background");
         glColor4f(color.getRawRed(), color.getRawGreen(), color.getRawBlue(), color.getRawAlpha());
         GLFastTools.drawRoundedSquare(object.getPosition(), object.getSize(), object.getRounded());
     }

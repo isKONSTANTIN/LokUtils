@@ -10,17 +10,15 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
 import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.glfw.GLFW.glfwSetWindowPos;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
-import static org.lwjgl.system.MemoryUtil.memFree;
 
 public class Window {
 
     protected long window;
-    protected Vector2i resolution = new Vector2i(512,512);
-    protected Vector2i position = new Vector2i(-1,-1);
-    protected Vector2i aspectRatio = new Vector2i(-1,-1);
+    protected Vector2i resolution = new Vector2i(512, 512);
+    protected Vector2i position = new Vector2i(-1, -1);
+    protected Vector2i aspectRatio = new Vector2i(-1, -1);
     protected Vector4i resolutionLimits = new Vector4i(GLFW_DONT_CARE, GLFW_DONT_CARE, GLFW_DONT_CARE, GLFW_DONT_CARE);
     protected String title = "Window";
     protected Monitor monitor = Monitor.getPrimary();
@@ -31,11 +29,11 @@ public class Window {
     protected GLContext glContext;
     protected Inputs inputs;
 
-    public Window(){
+    public Window() {
 
     }
 
-    public void update(){
+    public void update() {
         glfwSwapBuffers(window);
         glfwPollEvents();
         inputs.update();
@@ -44,7 +42,7 @@ public class Window {
         glViewport(0, 0, resolution.getX(), resolution.getY());
     }
 
-    public Window create(){
+    public Window create() {
         if (isCreated) return this;
 
         Vector2i monitorResolution = new Vector2i(monitor.getVideoMode().width(), monitor.getVideoMode().height());
@@ -71,8 +69,8 @@ public class Window {
 
         glContext.unbind();
 
-        if (!isFullscreen){
-            if (position.getX() == -1){
+        if (!isFullscreen) {
+            if (position.getX() == -1) {
                 position = new Vector2i(
                         monitorResolution.getX() / 2 - resolution.getX() / 2,
                         monitorResolution.getY() / 2 - resolution.getY() / 2
@@ -90,7 +88,7 @@ public class Window {
         return this;
     }
 
-    public Window createAndShow(){
+    public Window createAndShow() {
         create();
         show();
 
@@ -117,7 +115,7 @@ public class Window {
         return inputs;
     }
 
-    public Window setResizable(boolean resizable){
+    public Window setResizable(boolean resizable) {
         if (isCreated) glfwSetWindowAttrib(window, GLFW_RESIZABLE, resizable ? GLFW_TRUE : GLFW_FALSE);
 
         this.isResizable = resizable;
@@ -125,7 +123,7 @@ public class Window {
         return this;
     }
 
-    public Vector2f getContentScale(){
+    public Vector2f getContentScale() {
         if (!isCreated) return new Vector2f();
 
         FloatBuffer xBuffer = BufferUtils.createFloatBuffer(1);
@@ -146,7 +144,7 @@ public class Window {
         return this;
     }
 
-    public Window setAspectRatio(Vector2i aspectRatio){
+    public Window setAspectRatio(Vector2i aspectRatio) {
         if (isCreated) glfwSetWindowAspectRatio(window, aspectRatio.getX(), aspectRatio.getY());
 
         this.aspectRatio = aspectRatio;
@@ -154,8 +152,12 @@ public class Window {
         return this;
     }
 
-    public Vector4i getResolutionLimits(){
+    public Vector4i getResolutionLimits() {
         return resolutionLimits;
+    }
+
+    public Window setResolutionLimits(Vector2i minResolution) {
+        return setResolutionLimits(minResolution, null);
     }
 
     public Window setResolutionLimits(Vector2i minResolution, Vector2i maxResolution) {
@@ -164,7 +166,7 @@ public class Window {
             resolutionLimits.setY(minResolution.getY());
         }
 
-        if (maxResolution != null){
+        if (maxResolution != null) {
             resolutionLimits.setZ(maxResolution.getX());
             resolutionLimits.setW(maxResolution.getY());
         }
@@ -172,10 +174,6 @@ public class Window {
         updateResolutionLimits();
 
         return this;
-    }
-
-    public Window setResolutionLimits(Vector2i minResolution) {
-        return setResolutionLimits(minResolution, null);
     }
 
     public Vector2i getResolution() {
@@ -216,7 +214,9 @@ public class Window {
         return this;
     }
 
-    public boolean isFullscreen() { return isFullscreen; }
+    public boolean isFullscreen() {
+        return isFullscreen;
+    }
 
     public Window setFullscreen(boolean fullscreen) {
         if (isCreated)
@@ -237,14 +237,14 @@ public class Window {
         return title;
     }
 
-    public Window setTitle(String title){
+    public Window setTitle(String title) {
         if (isCreated) glfwSetWindowTitle(window, title);
         this.title = title;
 
         return this;
     }
 
-    public Window show(){
+    public Window show() {
         if (!isCreated) return this;
 
         glfwShowWindow(window);
@@ -253,7 +253,7 @@ public class Window {
         return this;
     }
 
-    public Window hide(){
+    public Window hide() {
         if (!isCreated) return this;
 
         glfwHideWindow(window);
@@ -278,7 +278,7 @@ public class Window {
         return this;
     }
 
-    protected void updateResolutionLimits(){
+    protected void updateResolutionLimits() {
         if (isCreated)
             glfwSetWindowSizeLimits(window, resolutionLimits.getX(), resolutionLimits.getY(), resolutionLimits.getZ(), resolutionLimits.getW());
     }

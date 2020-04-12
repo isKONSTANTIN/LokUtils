@@ -3,21 +3,18 @@ package ru.lokincompany.lokutils.ui.objects;
 import org.lwjgl.util.vector.Vector2f;
 import ru.lokincompany.lokutils.objects.Color;
 import ru.lokincompany.lokutils.render.Font;
-import ru.lokincompany.lokutils.render.RenderPart;
 import ru.lokincompany.lokutils.ui.UIObject;
 import ru.lokincompany.lokutils.ui.UIRenderPart;
 
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
-import static org.lwjgl.opengl.GL14.glBlendFuncSeparate;
-
 public class UIText extends UIObject {
+
+    public Color overrideColor;
 
     protected String styleFontName;
     protected String text;
     protected UITextRender render;
 
-    public UIText(){
+    public UIText() {
         render = new UITextRender(this);
     }
 
@@ -43,14 +40,14 @@ public class UIText extends UIObject {
 
     @Override
     public Vector2f getSize() {
-       return style.getFont(styleFontName).getSize(text, size);
+        return style.getFont(styleFontName).getSize(text, size);
     }
 
     @Override
-    public void update(UICanvas parent) {
+    public void update(UIObject parent) {
         super.update(parent);
 
-        parent.addRenderPart(render);
+        parent.getCanvasParent().addRenderPart(render);
     }
 }
 
@@ -63,7 +60,7 @@ class UITextRender extends UIRenderPart<UIText> {
     @Override
     public void render() {
         Font font = object.getStyle().getFont(object.getStyleFontName());
-        Color color = object.getStyle().getColor("text");
+        Color color = object.overrideColor != null ? object.overrideColor : object.getStyle().getColor("text");
 
         font.drawText(object.getText(), object.getPosition(), object.getSize(), color);
     }

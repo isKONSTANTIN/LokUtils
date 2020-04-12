@@ -5,8 +5,8 @@ import org.lwjgl.opengl.ARBFragmentShader;
 import org.lwjgl.opengl.ARBShaderObjects;
 import org.lwjgl.opengl.ARBVertexShader;
 import org.lwjgl.util.vector.*;
-import ru.lokincompany.lokutils.objects.Vector3i;
 import ru.lokincompany.lokutils.objects.Vector2i;
+import ru.lokincompany.lokutils.objects.Vector3i;
 import ru.lokincompany.lokutils.objects.Vector4i;
 
 import java.io.*;
@@ -16,16 +16,13 @@ import java.util.HashMap;
 
 import static org.lwjgl.opengl.GL11.GL_FALSE;
 import static org.lwjgl.opengl.GL20.*;
-import static org.lwjgl.opengl.GL20.glUniformMatrix4fv;
 
 public class Shader {
 
+    protected static Shader bindedShader;
     protected int program;
     protected String vertPath;
     protected String fragPath;
-
-    protected static Shader bindedShader;
-
     HashMap<String, Integer> uniformsName = new HashMap<>();
 
     public Shader(String vertPath, String fragPath) throws IOException {
@@ -44,17 +41,17 @@ public class Shader {
         this.fragPath = fragPath;
     }
 
-    public void bind(){
+    public void bind() {
         ARBShaderObjects.glUseProgramObjectARB(program);
         bindedShader = this;
     }
 
-    public void unbind(){
+    public void unbind() {
         ARBShaderObjects.glUseProgramObjectARB(0);
         bindedShader = null;
     }
 
-    public Shader getBindedShader(){
+    public Shader getBindedShader() {
         return bindedShader;
     }
 

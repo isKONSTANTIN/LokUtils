@@ -10,43 +10,16 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
 import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.system.MemoryUtil.memFree;
 
 public class Monitor {
 
     protected long monitor;
 
-    public long getMonitor() {
-        return monitor;
-    }
-
-    public Monitor(long monitor){
+    public Monitor(long monitor) {
         this.monitor = monitor;
     }
 
-    public GLFWVidMode getVideoMode(){
-        return glfwGetVideoMode(monitor);
-    }
-
-    public Vector2i getPosition(){
-        IntBuffer xBuffer = BufferUtils.createIntBuffer(1);
-        IntBuffer yBuffer = BufferUtils.createIntBuffer(1);
-
-        glfwGetMonitorPos(monitor, xBuffer, yBuffer);
-
-        return new Vector2i(xBuffer.get(),yBuffer.get());
-    }
-
-    public Vector2f getContentScale(){
-        FloatBuffer xBuffer = BufferUtils.createFloatBuffer(1);
-        FloatBuffer yBuffer = BufferUtils.createFloatBuffer(1);
-
-        glfwGetMonitorContentScale(monitor, xBuffer, yBuffer);
-
-        return new Vector2f(xBuffer.get(),yBuffer.get());
-    }
-
-    public static Monitor[] getAll(){
+    public static Monitor[] getAll() {
         PointerBuffer monitorsBuffer = glfwGetMonitors();
 
         int countMonitors = monitorsBuffer == null ? 0 : monitorsBuffer.sizeof() / 4;
@@ -61,8 +34,34 @@ public class Monitor {
         return monitors;
     }
 
-    public static Monitor getPrimary(){
+    public static Monitor getPrimary() {
         return new Monitor(glfwGetPrimaryMonitor());
+    }
+
+    public long getMonitor() {
+        return monitor;
+    }
+
+    public GLFWVidMode getVideoMode() {
+        return glfwGetVideoMode(monitor);
+    }
+
+    public Vector2i getPosition() {
+        IntBuffer xBuffer = BufferUtils.createIntBuffer(1);
+        IntBuffer yBuffer = BufferUtils.createIntBuffer(1);
+
+        glfwGetMonitorPos(monitor, xBuffer, yBuffer);
+
+        return new Vector2i(xBuffer.get(), yBuffer.get());
+    }
+
+    public Vector2f getContentScale() {
+        FloatBuffer xBuffer = BufferUtils.createFloatBuffer(1);
+        FloatBuffer yBuffer = BufferUtils.createFloatBuffer(1);
+
+        glfwGetMonitorContentScale(monitor, xBuffer, yBuffer);
+
+        return new Vector2f(xBuffer.get(), yBuffer.get());
     }
 
 }
