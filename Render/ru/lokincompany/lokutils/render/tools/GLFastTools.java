@@ -58,6 +58,20 @@ public class GLFastTools {
         glEnd();
     }
 
+    public static void drawRoundedHollowSquare(Vector2f position, Vector2f size, float radius) {
+        float glRadius = min(size.x, size.y) / 2 * radius;
+        int roundingPieces = (int) max(Math.ceil(glRadius / 2f), 2);
+
+        glBegin(GL_LINE_LOOP);
+
+        drawRoundedCorner(position.x, position.y + glRadius, 3 * PI / 2, glRadius, roundingPieces);
+        drawRoundedCorner(position.x + size.x - glRadius, position.y, 0.0, glRadius, roundingPieces);
+        drawRoundedCorner(position.x + size.x, position.y + size.y - glRadius, PI / 2, glRadius, roundingPieces);
+        drawRoundedCorner(position.x + glRadius, position.y + size.y, PI, glRadius, roundingPieces);
+
+        glEnd();
+    }
+
     public static void drawRoundedSquare(Vector2f position, Vector2f size, float radius) {
         float glRadius = min(size.x, size.y) / 2 * radius;
         int roundingPieces = (int) max(Math.ceil(glRadius / 2f), 2);
