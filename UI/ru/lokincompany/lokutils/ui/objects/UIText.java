@@ -6,12 +6,14 @@ import ru.lokincompany.lokutils.render.Font;
 import ru.lokincompany.lokutils.ui.UIObject;
 import ru.lokincompany.lokutils.ui.UIRenderPart;
 
+import java.awt.event.TextEvent;
+
 public class UIText extends UIObject {
 
     public Color overrideColor;
 
     protected String styleFontName;
-    protected String text;
+    protected String text = "";
     protected UITextRender render;
 
     public UIText() {
