@@ -8,6 +8,7 @@ import ru.lokincompany.lokutils.render.tools.ViewTools;
 import ru.lokincompany.lokutils.ui.UIObject;
 import ru.lokincompany.lokutils.ui.UIRenderPart;
 
+import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.Vector;
 
@@ -38,6 +39,24 @@ public class UICanvas extends UIObject {
     @Override
     public UICanvas getCanvasParent() {
         return this;
+    }
+
+    public <T extends UIObject> T getObject(Class<T> objectType, String name) {
+        for (UIObject object : objects) {
+            if (object.getName().equals(name) && objectType.isInstance(object))
+                return (T)object;
+        }
+
+        return null;
+    }
+
+    public <T extends UIObject> T getObject(Class<T> objectType) {
+        for (UIObject object : objects) {
+            if (objectType.isInstance(object))
+                return (T)object;
+        }
+
+        return null;
     }
 
     public UIObject getObject(String name) {
