@@ -85,4 +85,10 @@ public class Mouse {
         return (mousePosition.getX() >= position.getX() && mousePosition.getX() <= size.getX() + position.getX()) &&
                 (mousePosition.getY() >= position.getY() && mousePosition.getY() <= size.getY() + position.getY());
     }
+
+    public boolean inField(Vector2f position, Vector2f size) {
+        return (mousePosition.getX() >= position.getX() && mousePosition.getX() <= size.getX() + position.getX()) &&
+                (mousePosition.getY() >= position.getY() && mousePosition.getY() <= size.getY() + position.getY());
+    }
+
 }

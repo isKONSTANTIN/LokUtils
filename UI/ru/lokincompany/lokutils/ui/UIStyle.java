@@ -18,7 +18,10 @@ public class UIStyle {
                 .setColor("buttonBackground", new Color(0.3f, 0.3f, 0.3f, 1f))
                 .setColor("brightBackground", new Color(0.3f, 0.3f, 0.3f, 0.7f))
                 .setColor("text", new Color(0.9f, 0.9f, 0.9f, 1))
-                .setColor("highlightedText", new Color(1, 1, 0.9f, 1));
+                .setColor("highlightedText", new Color(1, 1, 0.9f, 1))
+                .setColor("checkboxStroke", new Color(0.9f, 0.9f, 0.9f, 1))
+                .setColor("checkboxFillActive", new Color(0.8f, 0.8f, 0.8f, 1))
+                .setColor("checkboxFillInactive", new Color(0.5f, 0.5f, 0.5f, 1));
     }
 
     public static UIStyle getDefault() {
