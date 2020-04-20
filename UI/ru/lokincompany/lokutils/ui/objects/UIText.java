@@ -42,7 +42,7 @@ public class UIText extends UIObject {
 
     @Override
     public Vector2f getSize() {
-        return style.getFont(styleFontName).getSize(text, size);
+        return getStyle().getFont(styleFontName).getSize(text, size);
     }
 
     @Override

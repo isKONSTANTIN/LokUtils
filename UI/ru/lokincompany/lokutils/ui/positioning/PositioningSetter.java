@@ -5,10 +5,13 @@ import ru.lokincompany.lokutils.ui.UIObject;
 
 public class PositioningSetter {
 
-    Vector2f modifier = new Vector2f();
-    PositioningСonsider consider;
     Position position;
     UIObject object;
+
+    PositioningSetter childSetter;
+    PositioningСonsider consider;
+
+    Vector2f modifier = new Vector2f();
 
     public PositioningSetter(PositioningСonsider consider) {
         this.consider = consider;
@@ -19,12 +22,69 @@ public class PositioningSetter {
     }
 
     public Vector2f get() {
-        Vector2f result = consider.calculate();
+        Vector2f result = new Vector2f();
 
-        result.x += modifier.x;
-        result.y += modifier.y;
+        result.translate(modifier.x, modifier.y);
+
+        if (childSetter != null){
+            Vector2f childResult = childSetter.get();
+            result.translate(childResult.x, childResult.y);
+        }
+
+        if (consider != null){
+            Vector2f considerResult = consider.calculate();
+            result.translate(considerResult.x, considerResult.y);
+        }
 
         return result;
+    }
+
+    public void init(UIObject object) {
+        this.object = object;
+
+        if (position != null)
+            consider = PositioningAlgorithms.getAlgorithm(object, position);
+    }
+
+    public PositioningSetter setConsider(PositioningСonsider consider){
+        this.consider = consider;
+
+        return this;
+    }
+
+    public PositioningSetter setChildSetter(PositioningSetter childSetter){
+        childSetter.init(object);
+        this.childSetter = childSetter;
+
+        return this;
+    }
+
+    public PositioningSetter setChildSetter(PositioningСonsider consider){
+        PositioningSetter setter = new PositioningSetter(consider);
+        setter.init(object);
+        this.childSetter = setter;
+
+        return this;
+    }
+
+    public PositioningSetter setChildSetter(Position position){
+        PositioningSetter setter = new PositioningSetter(position);
+        setter.init(object);
+        this.childSetter = setter;
+
+        return this;
+    }
+
+    public PositioningSetter getChildSetter() {
+        return childSetter;
+    }
+
+    public PositioningСonsider getConsider() {
+        return consider;
+    }
+
+    public Vector2f getModifier() {
+        return modifier;
     }
 
     public PositioningSetter increaseModifier(float factor) {
@@ -60,12 +120,5 @@ public class PositioningSetter {
         this.modifier.y = modifier.y;
 
         return this;
-    }
-
-    public void init(UIObject object) {
-        this.object = object;
-
-        if (position != null)
-            consider = PositioningAlgorithms.getAlgorithm(object, position);
     }
 }

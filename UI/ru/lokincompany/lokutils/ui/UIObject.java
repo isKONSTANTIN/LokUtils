@@ -11,7 +11,7 @@ public class UIObject {
 
     protected Vector2f position = new Vector2f();
     protected Vector2f size = new Vector2f();
-    protected UIStyle style = UIStyle.getDefault();
+    protected UIStyle style;
     protected String name = "UIObject";
 
     protected Animations animations = new Animations(this);
@@ -57,7 +57,7 @@ public class UIObject {
     }
 
     public UIStyle getStyle() {
-        return style;
+        return style != null ? style : (lastParent != null ? lastParent.getCanvasParent().getStyle() : null);
     }
 
     public UIObject setStyle(UIStyle style) {
@@ -116,6 +116,10 @@ public class UIObject {
         }
 
         animations.update();
+    }
+
+    public void init(UIObject parent){
+        lastParent = parent;
     }
 
     public void update(UIObject parent) {
