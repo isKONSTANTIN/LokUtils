@@ -27,7 +27,7 @@ public class Main {
         UIMainCanvas canvas = new UIMainCanvas().setMultisampleSamples(16);
 
         canvas.addObject(new UICheckBox().setPosition(new PositioningSetter(Position.Center)));
-
+        canvas.addObject(new UIButton());
         window.getGlContext().unbind();
 
         while (true) {

@@ -15,6 +15,7 @@ import ru.lokincompany.lokutils.ui.eventsystem.EventType;
 import ru.lokincompany.lokutils.ui.positioning.PositioningSetter;
 
 import static org.lwjgl.opengl.GL11.glColor4f;
+import static org.lwjgl.opengl.GL11.glGetTexGenf;
 
 public class UICheckBox extends UIObject {
     protected UICheckBoxRender render;
@@ -52,33 +53,41 @@ public class UICheckBox extends UIObject {
         return text;
     }
 
-    public void setText(UIText text) {
+    public UICheckBox setText(UIText text) {
         this.text = text;
+
+        return this;
     }
 
     public float getRoundFactor() {
         return roundFactor;
     }
 
-    public void setRoundFactor(float roundFactor) {
+    public UICheckBox setRoundFactor(float roundFactor) {
         this.roundFactor = roundFactor;
+
+        return this;
     }
 
     public boolean getStatus() {
         return status;
     }
 
-    public void setStatus(boolean status) {
+    public UICheckBox setStatus(boolean status) {
         this.status = status;
         animations.startAnimation("changeStatus");
+
+        return this;
     }
 
     public Vector2f getBoxSize() {
         return boxSize;
     }
 
-    public void setBoxSize(Vector2f boxSize) {
+    public UICheckBox setBoxSize(Vector2f boxSize) {
         this.boxSize = boxSize;
+
+        return this;
     }
 
     @Override
