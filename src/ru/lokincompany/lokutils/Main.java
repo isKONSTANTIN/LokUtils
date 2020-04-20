@@ -16,10 +16,10 @@ import ru.lokincompany.lokutils.ui.positioning.PositioningSetter;
 
 import static org.lwjgl.opengl.GL11.*;
 
-public class Main {
-    public static void main(String[] args) {
-        GLFW.init();
+class App implements Runnable {
 
+    @Override
+    public void run() {
         Window window = new Window().setResizable(true).create();
 
         window.getGlContext().bind();
@@ -63,5 +63,14 @@ public class Main {
 
             window.getGlContext().unbind();
         }
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        GLFW.init();
+
+        new Thread(new App()).start();
+        new Thread(new App()).start();
     }
 }

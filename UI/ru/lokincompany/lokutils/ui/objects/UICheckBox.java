@@ -39,12 +39,14 @@ public class UICheckBox extends UIObject {
 
         eventHandler.addEvent("checkBoxClickEvent", new UICheckBoxEvent(this));
 
-        fillColor = style.getColor("checkboxFillInactive").clone();
         boxSize = new Vector2f(20,20);
         roundFactor = 0.6f;
 
         text = new UIText();
-        text.setPosition(new PositioningSetter(this::getPosition).increaseModifier(new Vector2f(boxSize.x + boxSize.x / 4f, boxSize.y / 2f - text.getSize().y / 2f + 1)));
+        text.setPosition(
+                new PositioningSetter(this::getPosition)
+                .setChildSetter(() -> new Vector2f(boxSize.x + boxSize.x / 4f, boxSize.y / 2f - text.getSize().y / 2f + 1))
+        );
         text.setText("CheckBox");
     }
 
@@ -94,6 +96,14 @@ public class UICheckBox extends UIObject {
     @Override
     public UIObject setSize(Vector2f size) {
         return this;
+    }
+
+    @Override
+    public void init(UIObject parent) {
+        super.init(parent);
+
+        text.init(parent);
+        fillColor = getStyle().getColor("checkboxFillInactive").clone();
     }
 
     @Override

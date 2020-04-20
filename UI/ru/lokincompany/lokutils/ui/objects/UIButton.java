@@ -18,7 +18,6 @@ public class UIButton extends UIObject {
         this.panel = (UIPanel) new UIPanel().setPosition(new PositioningSetter(this::getPosition)).setSize(new PositioningSetter(this::getSize));
         this.text = (UIText) new UIText().setText("Button").setPosition(new PositioningSetter(Position.Center));
         this.panel.getCanvas().addObject(text);
-        this.panel.overrideColor = getStyle().getColor("buttonBackground").clone();
 
         this.getEventHandler().addEvent("buttonClickEvent", new UIButtonEvent(this));
 
@@ -51,6 +50,13 @@ public class UIButton extends UIObject {
 
     public UIPanel getPanel() {
         return panel;
+    }
+
+    @Override
+    public void init(UIObject parent) {
+        super.init(parent);
+
+        panel.overrideColor = getStyle().getColor("buttonBackground").clone();
     }
 
     @Override

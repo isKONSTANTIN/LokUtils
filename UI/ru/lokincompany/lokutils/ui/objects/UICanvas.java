@@ -7,6 +7,7 @@ import ru.lokincompany.lokutils.render.RenderPart;
 import ru.lokincompany.lokutils.render.tools.ViewTools;
 import ru.lokincompany.lokutils.ui.UIObject;
 import ru.lokincompany.lokutils.ui.UIRenderPart;
+import ru.lokincompany.lokutils.ui.UIStyle;
 
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
@@ -21,10 +22,15 @@ public class UICanvas extends UIObject {
     protected UICanvasRender render;
     protected Inputs inputs;
 
-    public UICanvas(Inputs inputs) {
+    public UICanvas(Inputs inputs, UIStyle style) {
         this.inputs = inputs;
+        this.style = style;
         render = new UICanvasRender(this);
         setSize(new Vector2f(256, 256));
+    }
+
+    public UICanvas(Inputs inputs) {
+        this(inputs, UIStyle.getDefault());
     }
 
     public UICanvas() {
@@ -69,6 +75,7 @@ public class UICanvas extends UIObject {
     }
 
     public UICanvas addObject(UIObject object) {
+        object.init(this);
         objects.add(object);
         return this;
     }
