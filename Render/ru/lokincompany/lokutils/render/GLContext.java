@@ -2,6 +2,8 @@ package ru.lokincompany.lokutils.render;
 
 import org.lwjgl.opengl.GL;
 
+import java.util.concurrent.locks.ReentrantLock;
+
 import static org.lwjgl.glfw.GLFW.glfwGetCurrentContext;
 import static org.lwjgl.glfw.GLFW.glfwMakeContextCurrent;
 
@@ -10,7 +12,7 @@ public class GLContext {
     private static volatile GLContext bindedContext;
     private final Window window;
     private final long threadID;
-
+    private final static ReentrantLock lock = new ReentrantLock();
     public GLContext(Window window) {
         if (window.glContext != null) throw new RuntimeException("This window already has context!");
 
@@ -41,13 +43,12 @@ public class GLContext {
             throw new RuntimeException("Cannot bind 2 contexts that have the same thread at the same time!");
         }
 
-        while (glfwGetCurrentContext() != 0) {
-            try {
-                Thread.sleep(50);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+        try {
+            lock.lockInterruptibly();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
+
         bindedContext = this;
         glfwMakeContextCurrent(window.getGLFWWindow());
         GL.createCapabilities();
@@ -56,5 +57,6 @@ public class GLContext {
     public synchronized void unbind() {
         glfwMakeContextCurrent(0);
         bindedContext = null;
+        lock.unlock();
     }
 }

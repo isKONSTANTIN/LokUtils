@@ -16,16 +16,20 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 public class Window {
 
     protected long window;
+
     protected Vector2i resolution = new Vector2i(512, 512);
     protected Vector2i position = new Vector2i(-1, -1);
     protected Vector2i aspectRatio = new Vector2i(-1, -1);
     protected Vector4i resolutionLimits = new Vector4i(GLFW_DONT_CARE, GLFW_DONT_CARE, GLFW_DONT_CARE, GLFW_DONT_CARE);
+
     protected String title = "Window";
     protected Monitor monitor = Monitor.getPrimary();
+
     protected boolean isFullscreen;
     protected boolean isCreated;
     protected boolean isShow;
     protected boolean isResizable;
+
     protected GLContext glContext;
     protected Inputs inputs;
 
