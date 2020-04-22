@@ -1,23 +1,30 @@
 package ru.lokincompany.lokutils.tools;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 
 public class ExecutorServices {
     private static ExecutorService cachedThreadPool;
-    private static ExecutorService stealingThreadPool = Executors.newWorkStealingPool();
+    private static ExecutorService stealingThreadPool;
+    private static ScheduledExecutorService scheduledExecutorService;
 
-    public static ExecutorService getCachedThreadPool(){
+    public static ExecutorService getCachedService(){
         if (cachedThreadPool == null)
-            cachedThreadPool = Executors.newCachedThreadPool();
+            cachedThreadPool = new ThreadPoolExecutor(0, 2147483647, 5, TimeUnit.SECONDS, new SynchronousQueue());
 
         return cachedThreadPool;
     }
 
-    public static ExecutorService getStealingThreadPool(){
+    public static ExecutorService getStealingService(){
         if (stealingThreadPool == null)
             stealingThreadPool = Executors.newWorkStealingPool();
 
         return stealingThreadPool;
+    }
+
+    public static ScheduledExecutorService getScheduledService(){
+        if (scheduledExecutorService == null)
+            scheduledExecutorService = Executors.newScheduledThreadPool(Runtime.getRuntime().availableProcessors());
+
+        return scheduledExecutorService;
     }
 }
