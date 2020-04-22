@@ -274,6 +274,12 @@ public class Window {
         return this;
     }
 
+    public void destroy(){
+        if (!isCreated) return;
+
+        glfwDestroyWindow(window);
+    }
+
     public Window restore() {
         if (!isCreated) return this;
 
