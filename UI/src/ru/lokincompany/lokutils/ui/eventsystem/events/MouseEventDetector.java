@@ -6,6 +6,7 @@ import ru.lokincompany.lokutils.ui.eventsystem.EventDetector;
 public class MouseEventDetector extends EventDetector {
     protected boolean clicked;
     protected boolean pointed;
+    protected boolean realized;
     protected boolean unClicked;
     protected boolean unPointed;
 
@@ -14,12 +15,17 @@ public class MouseEventDetector extends EventDetector {
     @Override
     public void update(Inputs inputs) {
         lastPointed = pointed;
+        boolean inField = inputs.mouse.inField(uiObject.getPosition(), uiObject.getSize());
 
-        pointed = inputs.mouse.inField(uiObject.getPosition(),uiObject.getSize());
-        clicked = inputs.mouse.getPressedStatus() && !inputs.mouse.getLastMousePressed() && pointed;
-
-        unClicked = !inputs.mouse.getPressedStatus() && !clicked;
+        pointed = inField;
+        clicked = inField && inputs.mouse.getPressedStatus();
+        unClicked = !inputs.mouse.getPressedStatus() && inputs.mouse.getLastMousePressed();
+        realized = unClicked && inField;
         unPointed = !pointed && lastPointed;
+    }
+
+    public boolean isRealized() {
+        return realized;
     }
 
     public boolean isUnClicked() {

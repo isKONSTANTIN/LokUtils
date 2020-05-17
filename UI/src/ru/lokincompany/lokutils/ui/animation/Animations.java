@@ -3,6 +3,7 @@ package ru.lokincompany.lokutils.ui.animation;
 import ru.lokincompany.lokutils.ui.UIObject;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class Animations {
 
@@ -29,6 +30,26 @@ public class Animations {
 
         animationHashMap.get(name).stop();
         return this;
+    }
+
+    public Animations stopAll() {
+        for (Animation animation : animationHashMap.values())
+            animation.stop();
+
+        return this;
+    }
+
+    public boolean animationIsRun(String name){
+        if (!animationHashMap.containsKey(name)) return false;
+
+        return animationHashMap.get(name).isRun;
+    }
+
+    public boolean somethingIsRun(){
+        for (Animation animation : animationHashMap.values())
+            if (animation.isRun) return true;
+
+        return false;
     }
 
     public Animations startAnimation(String name) {

@@ -5,6 +5,7 @@ import ru.lokincompany.lokutils.input.Inputs;
 import ru.lokincompany.lokutils.objects.Color;
 import ru.lokincompany.lokutils.ui.UIObject;
 import ru.lokincompany.lokutils.ui.animation.Animation;
+import ru.lokincompany.lokutils.ui.animation.Animations;
 import ru.lokincompany.lokutils.ui.eventsystem.Event;
 import ru.lokincompany.lokutils.ui.eventsystem.events.MouseEvent;
 import ru.lokincompany.lokutils.ui.positioning.Position;
@@ -22,13 +23,29 @@ public class UIButton extends UIObject {
 
         MouseEvent mouseEvent = new MouseEvent();
 
-        mouseEvent.setClickedAction((event) ->
-            event.getUiObject().getAnimations().startAnimation("pressed")
-        );
+        mouseEvent.setClickedAction((event) -> {
+            event.getUiObject().getAnimations().stopAll();
+            event.getUiObject().getAnimations().startAnimation("pressed");
+        });
 
         mouseEvent.setUnClickedAction((event) -> {
-                event.getUiObject().getAnimations().stopAnimation("pressed");
-                event.getUiObject().getAnimations().startAnimation("unpressed");
+            event.getUiObject().getAnimations().stopAll();
+            event.getUiObject().getAnimations().startAnimation("unpressed");
+        });
+
+        mouseEvent.setPointedAction((event) -> {
+            Animations animations = event.getUiObject().getAnimations();
+            if (animations.somethingIsRun()) return;
+
+            event.getUiObject().getAnimations().startAnimation("pointed");
+        });
+
+        mouseEvent.setUnPointedAction((event) -> {
+            Animations animations = event.getUiObject().getAnimations();
+            if (animations.somethingIsRun() && !animations.animationIsRun("pointed")) return;
+
+            animations.stopAll();
+            animations.startAnimation("unpressed");
         });
 
         this.getEventHandler().putEvent(mouseEvent);
@@ -38,6 +55,16 @@ public class UIButton extends UIObject {
             public void update() {
                 Color source = ((UIButton) object).panel.overrideColor;
                 Color end = object.getStyle().getColor("buttonPressed");
+                softColorChange(source, end, 2);
+                isRun = !softColorChangeDone(source, end);
+            }
+        });
+
+        this.getAnimations().addAnimation(new Animation("pointed") {
+            @Override
+            public void update() {
+                Color source = ((UIButton) object).panel.overrideColor;
+                Color end = object.getStyle().getColor("buttonPointed");
                 softColorChange(source, end, 2);
                 isRun = !softColorChangeDone(source, end);
             }

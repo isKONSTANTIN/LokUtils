@@ -7,6 +7,7 @@ import ru.lokincompany.lokutils.ui.eventsystem.EventAction;
 public class MouseEvent extends Event<MouseEventDetector> {
     protected EventAction<MouseEvent> clickedAction;
     protected EventAction<MouseEvent> pointedAction;
+    protected EventAction<MouseEvent> realizedAction;
     protected EventAction<MouseEvent> unClickedAction;
     protected EventAction<MouseEvent> unPointedAction;
 
@@ -14,12 +15,16 @@ public class MouseEvent extends Event<MouseEventDetector> {
         super(new MouseEventDetector());
     }
 
-    public void setUnClickedAction(EventAction<MouseEvent> unClickedAction) {
+    public MouseEvent setUnClickedAction(EventAction<MouseEvent> unClickedAction) {
         this.unClickedAction = unClickedAction;
+
+        return this;
     }
 
-    public void setUnPointedAction(EventAction<MouseEvent> unPointedAction) {
+    public MouseEvent setUnPointedAction(EventAction<MouseEvent> unPointedAction) {
         this.unPointedAction = unPointedAction;
+
+        return this;
     }
 
     public MouseEvent setClickedAction(EventAction<MouseEvent> eventAction){
@@ -34,11 +39,18 @@ public class MouseEvent extends Event<MouseEventDetector> {
         return this;
     }
 
+    public MouseEvent setRealizedAction(EventAction<MouseEvent> realizedAction) {
+        this.realizedAction = realizedAction;
+
+        return this;
+    }
+
     @Override
     public void touch(Inputs inputs) {
         detector.update(inputs);
 
         if (clickedAction != null && detector.isClicked()) clickedAction.handle(this);
+        if (realizedAction != null && detector.isRealized()) realizedAction.handle(this);
         if (pointedAction != null && detector.isPointed()) pointedAction.handle(this);
         if (unClickedAction != null && detector.isUnClicked()) unClickedAction.handle(this);
         if (unPointedAction != null && detector.isUnPointed()) unPointedAction.handle(this);
