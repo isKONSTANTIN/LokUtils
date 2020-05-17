@@ -3,19 +3,21 @@ package ru.lokincompany.lokutils.ui.objects;
 import org.lwjgl.util.vector.Vector2f;
 import ru.lokincompany.lokutils.input.Inputs;
 import ru.lokincompany.lokutils.objects.Color;
+import ru.lokincompany.lokutils.objects.Vector2i;
 import ru.lokincompany.lokutils.render.Font;
 import ru.lokincompany.lokutils.render.tools.GLFastTools;
 import ru.lokincompany.lokutils.tools.Vector2fTools;
 import ru.lokincompany.lokutils.ui.UIObject;
 import ru.lokincompany.lokutils.ui.UIRenderPart;
 import ru.lokincompany.lokutils.ui.animation.Animation;
+import ru.lokincompany.lokutils.ui.eventsystem.Event;
 import ru.lokincompany.lokutils.ui.eventsystem.EventAction;
 import ru.lokincompany.lokutils.ui.eventsystem.EventDetector;
-import ru.lokincompany.lokutils.ui.eventsystem.EventType;
+import ru.lokincompany.lokutils.ui.eventsystem.events.MouseEvent;
+import ru.lokincompany.lokutils.ui.eventsystem.events.SimpleCustomEvent;
 import ru.lokincompany.lokutils.ui.positioning.PositioningSetter;
 
 import static org.lwjgl.opengl.GL11.glColor4f;
-import static org.lwjgl.opengl.GL11.glGetTexGenf;
 
 public class UICheckBox extends UIObject {
     protected UICheckBoxRender render;
@@ -38,7 +40,12 @@ public class UICheckBox extends UIObject {
             }
         });
 
-        eventHandler.addEvent("checkBoxClickEvent", new UICheckBoxEvent(this));
+        this.getEventHandler().putEvent(new SimpleCustomEvent((event) -> {
+            Inputs inputs = getInputs();
+
+            if (inputs.mouse.inField(position, boxSize) && inputs.mouse.getPressedStatus() && !inputs.mouse.getLastMousePressed())
+                switchStatus();
+        }));
 
         boxSize = new Vector2f(20,20);
         roundFactor = 0.6f;
@@ -67,6 +74,12 @@ public class UICheckBox extends UIObject {
 
     public UICheckBox setRoundFactor(float roundFactor) {
         this.roundFactor = roundFactor;
+
+        return this;
+    }
+
+    public UICheckBox switchStatus(){
+        setStatus(!status);
 
         return this;
     }
@@ -121,22 +134,6 @@ public class UICheckBox extends UIObject {
 
         parent.getCanvasParent().addRenderPart(render);
         text.update(parent);
-    }
-}
-
-class UICheckBoxEvent extends EventAction {
-    UICheckBox checkBox;
-
-    public UICheckBoxEvent(UICheckBox button) {
-        super(
-                (object, inputs) -> inputs.mouse.inField(object.getPosition(), ((UICheckBox)object).getBoxSize()) && inputs.mouse.getPressedStatus()
-        );
-        this.checkBox = button;
-    }
-
-    @Override
-    public void stop() {
-        checkBox.setStatus(!checkBox.getStatus());
     }
 }
 

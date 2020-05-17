@@ -15,7 +15,7 @@ public class UIObject {
     protected String name = "UIObject";
 
     protected Animations animations = new Animations(this);
-    protected EventHandler eventHandler = new EventHandler();
+    protected EventHandler eventHandler = new EventHandler(this);
 
     protected PositioningSetter positionSetter;
     protected PositioningSetter sizeSetter;
@@ -102,8 +102,7 @@ public class UIObject {
     }
 
     protected void updateEvents(Inputs inputs) {
-        if (eventHandler != null)
-            eventHandler.update(this, inputs);
+        eventHandler.update(inputs);
 
         if (positionSetter != null) {
             Vector2f newPosition = positionSetter.get();

@@ -3,47 +3,31 @@ package ru.lokincompany.lokutils.ui.eventsystem;
 import ru.lokincompany.lokutils.input.Inputs;
 import ru.lokincompany.lokutils.ui.UIObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class EventHandler {
+    protected HashMap<Class<? extends Event>, ArrayList<Event>> events = new HashMap<>();
+    protected UIObject object;
 
-    protected HashMap<String, EventAction> events = new HashMap<>();
-    protected HashMap<EventAction, Boolean> eventsStatus = new HashMap<>();
-
-    public EventAction getEvent(String name) {
-        return events.get(name);
+    public EventHandler(UIObject object){
+        this.object = object;
     }
 
-    public EventHandler addEvent(String name, EventAction action) {
-        events.put(name, action);
+    public Removable putEvent(Event event){
+        event.init(object);
 
-        return this;
+        Class<? extends Event> eventClass = event.getClass();
+
+        if (!events.containsKey(eventClass)) events.put(eventClass, new ArrayList<>());
+        events.get(eventClass).add(event);
+
+        return () -> events.get(eventClass).remove(event);
     }
 
-    public EventHandler removeEvent(String name) {
-        events.remove(name);
-
-        return this;
+    public void update(Inputs inputs){
+        for (Map.Entry<Class<? extends Event>, ArrayList<Event>> eventEntry : events.entrySet())
+            for(Event event : eventEntry.getValue()) event.touch(inputs);
     }
-
-    public void update(UIObject object, Inputs inputs) {
-        for (Map.Entry<String, EventAction> item : events.entrySet()) {
-            EventAction action = item.getValue();
-
-            boolean actionStatus = action.getDetector().detect(object, inputs);
-            boolean lastStatus = eventsStatus.getOrDefault(action, false);
-
-            if (actionStatus && !lastStatus) {
-                action.start();
-            } else if (!actionStatus && lastStatus) {
-                action.stop();
-            } else if (actionStatus) {
-                action.update();
-            }
-
-            eventsStatus.put(action, actionStatus);
-        }
-    }
-
 }

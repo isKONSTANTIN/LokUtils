@@ -1,11 +1,12 @@
 package ru.lokincompany.lokutils.ui.objects;
 
 import org.lwjgl.util.vector.Vector2f;
+import ru.lokincompany.lokutils.input.Inputs;
 import ru.lokincompany.lokutils.objects.Color;
 import ru.lokincompany.lokutils.ui.UIObject;
 import ru.lokincompany.lokutils.ui.animation.Animation;
-import ru.lokincompany.lokutils.ui.eventsystem.EventAction;
-import ru.lokincompany.lokutils.ui.eventsystem.EventType;
+import ru.lokincompany.lokutils.ui.eventsystem.Event;
+import ru.lokincompany.lokutils.ui.eventsystem.events.MouseEvent;
 import ru.lokincompany.lokutils.ui.positioning.Position;
 import ru.lokincompany.lokutils.ui.positioning.PositioningSetter;
 
@@ -19,7 +20,18 @@ public class UIButton extends UIObject {
         this.text = (UIText) new UIText().setText("Button").setPosition(new PositioningSetter(Position.Center));
         this.panel.getCanvas().addObject(text);
 
-        this.getEventHandler().addEvent("buttonClickEvent", new UIButtonEvent(this));
+        MouseEvent mouseEvent = new MouseEvent();
+
+        mouseEvent.setClickedAction((event) ->
+            event.getUiObject().getAnimations().startAnimation("pressed")
+        );
+
+        mouseEvent.setUnClickedAction((event) -> {
+                event.getUiObject().getAnimations().stopAnimation("pressed");
+                event.getUiObject().getAnimations().startAnimation("unpressed");
+        });
+
+        this.getEventHandler().putEvent(mouseEvent);
 
         this.getAnimations().addAnimation(new Animation("pressed") {
             @Override
@@ -64,26 +76,5 @@ public class UIButton extends UIObject {
         super.update(parent);
 
         panel.update(this);
-    }
-}
-
-class UIButtonEvent extends EventAction {
-
-    UIButton button;
-
-    public UIButtonEvent(UIButton button) {
-        super(EventType.Click);
-        this.button = button;
-    }
-
-    @Override
-    public void start() {
-        button.getAnimations().startAnimation("pressed");
-    }
-
-    @Override
-    public void stop() {
-        button.getAnimations().stopAnimation("pressed");
-        button.getAnimations().startAnimation("unpressed");
     }
 }
