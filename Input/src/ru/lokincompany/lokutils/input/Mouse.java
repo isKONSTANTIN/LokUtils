@@ -13,12 +13,16 @@ import static org.lwjgl.glfw.GLFW.*;
 
 public class Mouse {
     public int buttonID = GLFW_MOUSE_BUTTON_LEFT;
+
     protected Vector2i mousePosition = new Vector2i();
     protected Vector2i lastMousePosition = new Vector2i(-1, 0);
     protected Vector2i mouseDeltaPosition = new Vector2i();
     protected Vector2f mouseScroll = new Vector2f();
     protected Vector2f lastMouseScroll = new Vector2f();
-    protected boolean mousePressed = false;
+
+    protected boolean mousePressed;
+    private boolean mousePressedGLFW;
+    protected boolean lastMousePressed;
     protected GLContext GLcontext;
 
     public Mouse() {
@@ -28,7 +32,7 @@ public class Mouse {
         glfwSetMouseButtonCallback(GLcontext.getWindow().getGLFWWindow(), new GLFWMouseButtonCallback() {
             @Override
             public void invoke(long window, int button, int action, int mods) {
-                mousePressed = button == buttonID && action == GLFW_PRESS;
+                mousePressedGLFW = button == buttonID && action == GLFW_PRESS;
             }
         });
 
@@ -43,6 +47,10 @@ public class Mouse {
 
     public boolean getPressedStatus() {
         return mousePressed;
+    }
+
+    public boolean getLastMousePressed() {
+        return lastMousePressed;
     }
 
     public Vector2i getMousePosition() {
@@ -77,6 +85,10 @@ public class Mouse {
             mouseScroll.x = 0;
             mouseScroll.y = 0;
         }
+        lastMousePressed = mousePressed;
+
+        mousePressed = mousePressedGLFW;
+
         lastMouseScroll = getMouseScroll();
         lastMousePosition = getMousePosition();
     }
