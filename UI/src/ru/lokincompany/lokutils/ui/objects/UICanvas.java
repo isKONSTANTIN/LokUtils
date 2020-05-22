@@ -9,7 +9,6 @@ import ru.lokincompany.lokutils.ui.UIObject;
 import ru.lokincompany.lokutils.ui.UIRenderPart;
 import ru.lokincompany.lokutils.ui.UIStyle;
 
-import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.Vector;
 

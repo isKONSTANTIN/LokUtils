@@ -1,7 +1,6 @@
 package ru.lokincompany.lokutils.ui.eventsystem.events;
-
+/*
 import ru.lokincompany.lokutils.input.Inputs;
-import ru.lokincompany.lokutils.ui.eventsystem.EventDetector;
 
 public class MouseEventDetector extends EventDetector {
     protected boolean clicked;
@@ -43,4 +42,4 @@ public class MouseEventDetector extends EventDetector {
     public boolean isPointed() {
         return pointed;
     }
-}
+}*/

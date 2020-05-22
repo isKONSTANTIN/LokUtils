@@ -1,13 +1,10 @@
 package ru.lokincompany.lokutils.ui.objects;
 
 import org.lwjgl.util.vector.Vector2f;
-import ru.lokincompany.lokutils.input.Inputs;
 import ru.lokincompany.lokutils.objects.Color;
 import ru.lokincompany.lokutils.ui.UIObject;
 import ru.lokincompany.lokutils.ui.animation.Animation;
 import ru.lokincompany.lokutils.ui.animation.Animations;
-import ru.lokincompany.lokutils.ui.eventsystem.Event;
-import ru.lokincompany.lokutils.ui.eventsystem.events.MouseEvent;
 import ru.lokincompany.lokutils.ui.positioning.Position;
 import ru.lokincompany.lokutils.ui.positioning.PositioningSetter;
 
@@ -20,7 +17,7 @@ public class UIButton extends UIObject {
         this.panel = (UIPanel) new UIPanel().setPosition(new PositioningSetter(this::getPosition)).setSize(new PositioningSetter(this::getSize));
         this.text = (UIText) new UIText().setText("Button").setPosition(new PositioningSetter(Position.Center));
         this.panel.getCanvas().addObject(text);
-
+/*
         MouseEvent mouseEvent = new MouseEvent();
 
         mouseEvent.setClickedAction((event) -> {
@@ -48,7 +45,7 @@ public class UIButton extends UIObject {
             animations.startAnimation("unpressed");
         });
 
-        this.getEventHandler().putEvent(mouseEvent);
+        this.getEventHandler().putEvent(mouseEvent); */
 
         this.getAnimations().addAnimation(new Animation("pressed") {
             @Override
@@ -95,7 +92,7 @@ public class UIButton extends UIObject {
     public void init(UIObject parent) {
         super.init(parent);
 
-        panel.overrideColor = getStyle().getColor("buttonBackground").clone();
+        panel.overrideColor = getStyle().getColor("buttonBackground");
     }
 
     @Override

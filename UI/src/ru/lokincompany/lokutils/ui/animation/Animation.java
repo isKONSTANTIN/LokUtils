@@ -72,11 +72,13 @@ public class Animation {
         return source + (end - source) * (speed / 10f);
     }
 
-    protected void softColorChange(Color source, Color end, float speed) {
-        source.setRawRed(softChange(source.getRawRed(), end.getRawRed(), speed));
-        source.setRawGreen(softChange(source.getRawGreen(), end.getRawGreen(), speed));
-        source.setRawBlue(softChange(source.getRawBlue(), end.getRawBlue(), speed));
-        source.setRawAlpha(softChange(source.getRawAlpha(), end.getRawAlpha(), speed));
+    protected Color softColorChange(Color source, Color end, float speed) {
+        return new Color(
+                softChange(source.red, end.red, speed),
+                softChange(source.green, end.green, speed),
+                softChange(source.blue, end.blue, speed),
+                softChange(source.alpha, end.alpha, speed)
+        );
     }
 
     protected boolean softChangeDone(float source, float end) {
@@ -84,10 +86,10 @@ public class Animation {
     }
 
     protected boolean softColorChangeDone(Color source, Color end) {
-        return softChangeDone(source.getRawRed(), end.getRawRed()) &&
-                softChangeDone(source.getRawGreen(), end.getRawGreen()) &&
-                softChangeDone(source.getRawBlue(), end.getRawBlue()) &&
-                softChangeDone(source.getRawAlpha(), end.getRawAlpha());
+        return softChangeDone(source.red, end.red) &&
+                softChangeDone(source.green, end.green) &&
+                softChangeDone(source.blue, end.blue) &&
+                softChangeDone(source.alpha, end.alpha);
     }
 
     public void update() {

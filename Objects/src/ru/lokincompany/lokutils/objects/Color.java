@@ -1,95 +1,58 @@
 package ru.lokincompany.lokutils.objects;
 
-import org.lwjgl.util.vector.Vector4f;
+import java.util.Objects;
 
 public class Color {
+    public static final Color RED = new Color(1, 0, 0, 1);
+    public static final Color GREEN = new Color(0, 1, 0, 1);
+    public static final Color BLUE = new Color(0, 0, 1, 1);
+    public static final Color YELLOW = new Color(1, 1, 0, 1);
+    public static final Color TURQUOISE = new Color(0, 1, 1, 1);
+    public static final Color VIOLET = new Color(1, 0, 1, 1);
+    public static final Color WHITE = new Color(1, 1, 1, 1);
+    public static final Color BLACK = new Color(0, 0, 0, 1);
 
-    protected Vector4f rawColor = new Vector4f();
-
-    public Color() {
-    }
+    public final float red;
+    public final float green;
+    public final float blue;
+    public final float alpha;
 
     public Color(float red, float green, float blue, float alpha) {
-        rawColor.x = red;
-        rawColor.y = green;
-        rawColor.z = blue;
-        rawColor.w = alpha;
+        this.red = red;
+        this.green = green;
+        this.blue = blue;
+        this.alpha = alpha;
     }
 
-    public Color clone() {
-        return new Color(rawColor.x, rawColor.y, rawColor.z, rawColor.w);
+    public Color setRed(float red) {
+        return new Color(red, green, blue, alpha);
     }
 
-    public float getRawRed() {
-        return rawColor.x;
+    public Color setGreen(float green) {
+        return new Color(red, green, blue, alpha);
     }
 
-    public Color setRawRed(float red) {
-        rawColor.x = red;
-        return this;
+    public Color setBlue(float blue) {
+        return new Color(red, green, blue, alpha);
     }
 
-    public float getRawGreen() {
-        return rawColor.y;
+    public Color setAlpha(float alpha) {
+        return new Color(red, green, blue, alpha);
     }
 
-    public Color setRawGreen(float green) {
-        rawColor.y = green;
-        return this;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Color color = (Color) o;
+        return Float.compare(color.red, red) == 0 &&
+                Float.compare(color.green, green) == 0 &&
+                Float.compare(color.blue, blue) == 0 &&
+                Float.compare(color.alpha, alpha) == 0;
     }
 
-    public float getRawBlue() {
-        return rawColor.z;
+    @Override
+    public int hashCode() {
+        return Objects.hash(red, green, blue, alpha);
     }
-
-    public Color setRawBlue(float blue) {
-        rawColor.z = blue;
-        return this;
-    }
-
-    public float getRawAlpha() {
-        return rawColor.w;
-    }
-
-    public Color setRawAlpha(float alpha) {
-        rawColor.w = alpha;
-        return this;
-    }
-
-    public int getRGBRed() {
-        return (int) (rawColor.x * 255);
-    }
-
-    public Color setRGBRed(int red) {
-        rawColor.x = red / 255f;
-        return this;
-    }
-
-    public int getRGBGreen() {
-        return (int) (rawColor.y * 255);
-    }
-
-    public Color setRGBGreen(int green) {
-        rawColor.y = green / 255f;
-        return this;
-    }
-
-    public int getRGBBlue() {
-        return (int) (rawColor.z * 255);
-    }
-
-    public Color setRGBBlue(int blue) {
-        rawColor.z = blue / 255f;
-        return this;
-    }
-
-    public int getRGBAlpha() {
-        return (int) (rawColor.w * 255);
-    }
-
-    public Color setRGBAlpha(int alpha) {
-        rawColor.w = alpha / 255f;
-        return this;
-    }
-
 }

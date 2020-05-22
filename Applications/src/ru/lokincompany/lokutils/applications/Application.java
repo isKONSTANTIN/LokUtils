@@ -1,6 +1,5 @@
 package ru.lokincompany.lokutils.applications;
 
-import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector4f;
 import ru.lokincompany.lokutils.objects.Vector2i;

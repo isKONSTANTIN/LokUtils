@@ -8,8 +8,6 @@ import ru.lokincompany.lokutils.render.RenderPart;
 import ru.lokincompany.lokutils.render.tools.ViewTools;
 import ru.lokincompany.lokutils.ui.UIRenderPart;
 
-import static org.lwjgl.opengl.GL11.*;
-
 public class UIMainCanvas extends UICanvas {
 
     protected UIMainCanvasRender render;

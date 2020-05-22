@@ -45,7 +45,7 @@ public class UIStyle {
     }
 
     public Color getColor(String name) {
-        return colors.getOrDefault(name, new Color());
+        return colors.getOrDefault(name, Color.BLACK);
     }
 
     public Font getFont(String name) {

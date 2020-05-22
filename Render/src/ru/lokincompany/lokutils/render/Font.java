@@ -134,7 +134,7 @@ public class Font {
             float glTexWidth = (g.x + g.width) / (float) texture.getSize().getX();
             float glTexHeight = (g.y + g.height) / (float) texture.getSize().getY();
 
-            glColor4d(color.getRawRed(), color.getRawGreen(), color.getRawBlue(), color.getRawAlpha());
+            glColor4d(color.red, color.green, color.blue, color.alpha);
 
             glTexCoord2f(glTexX, glTexHeight);
             glVertex3f(drawX, drawY, 0);
@@ -195,7 +195,7 @@ public class Font {
             float glTexWidth = (g.x + g.width) / (float) texture.getSize().getX();
             float glTexHeight = (g.y + g.height) / (float) texture.getSize().getY();
 
-            glColor4d(color.getRawRed(), color.getRawGreen(), color.getRawBlue(), color.getRawAlpha());
+            glColor4d(color.red, color.green, color.blue, color.alpha);
 
             glTexCoord2f(glTexX, glTexHeight);
             glVertex3f(drawX, drawY, 0);

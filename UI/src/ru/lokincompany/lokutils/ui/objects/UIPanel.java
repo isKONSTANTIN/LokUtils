@@ -78,7 +78,7 @@ class UIPanelRender extends UIRenderPart<UIPanel> {
     @Override
     public void render() {
         Color color = object.overrideColor != null ? object.overrideColor : object.getStyle().getColor("background");
-        glColor4f(color.getRawRed(), color.getRawGreen(), color.getRawBlue(), color.getRawAlpha());
+        glColor4f(color.red, color.green, color.blue, color.alpha);
         GLFastTools.drawRoundedSquare(object.getPosition(), object.getSize(), object.getRounded());
     }
 }

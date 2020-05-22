@@ -3,7 +3,6 @@ package ru.lokincompany.lokutils.ui.animation;
 import ru.lokincompany.lokutils.ui.UIObject;
 
 import java.util.HashMap;
-import java.util.Map;
 
 public class Animations {
 

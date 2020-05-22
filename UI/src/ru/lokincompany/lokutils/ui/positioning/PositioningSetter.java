@@ -9,11 +9,11 @@ public class PositioningSetter {
     UIObject object;
 
     PositioningSetter childSetter;
-    PositioningСonsider consider;
+    PositioningConsider consider;
 
     Vector2f modifier = new Vector2f();
 
-    public PositioningSetter(PositioningСonsider consider) {
+    public PositioningSetter(PositioningConsider consider) {
         this.consider = consider;
     }
 
@@ -46,7 +46,7 @@ public class PositioningSetter {
             consider = PositioningAlgorithms.getAlgorithm(object, position);
     }
 
-    public PositioningSetter setConsider(PositioningСonsider consider){
+    public PositioningSetter setConsider(PositioningConsider consider){
         this.consider = consider;
 
         return this;
@@ -59,7 +59,7 @@ public class PositioningSetter {
         return this;
     }
 
-    public PositioningSetter setChildSetter(PositioningСonsider consider){
+    public PositioningSetter setChildSetter(PositioningConsider consider){
         PositioningSetter setter = new PositioningSetter(consider);
         setter.init(object);
         this.childSetter = setter;
@@ -79,7 +79,7 @@ public class PositioningSetter {
         return childSetter;
     }
 
-    public PositioningСonsider getConsider() {
+    public PositioningConsider getConsider() {
         return consider;
     }
 

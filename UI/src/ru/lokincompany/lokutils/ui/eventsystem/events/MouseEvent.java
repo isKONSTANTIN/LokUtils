@@ -1,8 +1,7 @@
-package ru.lokincompany.lokutils.ui.eventsystem.events;
 
+package ru.lokincompany.lokutils.ui.eventsystem.events;
+/*
 import ru.lokincompany.lokutils.input.Inputs;
-import ru.lokincompany.lokutils.ui.eventsystem.Event;
-import ru.lokincompany.lokutils.ui.eventsystem.EventAction;
 
 public class MouseEvent extends Event<MouseEventDetector> {
     protected EventAction<MouseEvent> clickedAction;
@@ -55,4 +54,4 @@ public class MouseEvent extends Event<MouseEventDetector> {
         if (unClickedAction != null && detector.isUnClicked()) unClickedAction.handle(this);
         if (unPointedAction != null && detector.isUnPointed()) unPointedAction.handle(this);
     }
-}
+}*/

@@ -4,7 +4,6 @@ import org.lwjgl.opengl.GL;
 
 import java.util.concurrent.locks.ReentrantLock;
 
-import static org.lwjgl.glfw.GLFW.glfwGetCurrentContext;
 import static org.lwjgl.glfw.GLFW.glfwMakeContextCurrent;
 
 public class GLContext {

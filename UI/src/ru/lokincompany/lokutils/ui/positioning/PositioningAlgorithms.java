@@ -4,8 +4,8 @@ import org.lwjgl.util.vector.Vector2f;
 import ru.lokincompany.lokutils.ui.UIObject;
 
 public class PositioningAlgorithms {
-    public static PositioningСonsider getAlgorithm(UIObject object, Position position) {
-        PositioningСonsider algorithm;
+    public static PositioningConsider getAlgorithm(UIObject object, Position position) {
+        PositioningConsider algorithm;
 
         switch (position) {
             case TopLeft:
