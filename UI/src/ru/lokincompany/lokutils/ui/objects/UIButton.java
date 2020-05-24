@@ -5,6 +5,8 @@ import ru.lokincompany.lokutils.objects.Color;
 import ru.lokincompany.lokutils.ui.UIObject;
 import ru.lokincompany.lokutils.ui.animation.Animation;
 import ru.lokincompany.lokutils.ui.animation.Animations;
+import ru.lokincompany.lokutils.ui.eventsystem.events.ClickType;
+import ru.lokincompany.lokutils.ui.eventsystem.events.MouseClickedEvent;
 import ru.lokincompany.lokutils.ui.positioning.Position;
 import ru.lokincompany.lokutils.ui.positioning.PositioningSetter;
 
@@ -17,6 +19,13 @@ public class UIButton extends UIObject {
         this.panel = (UIPanel) new UIPanel().setPosition(new PositioningSetter(this::getPosition)).setSize(new PositioningSetter(this::getSize));
         this.text = (UIText) new UIText().setText("Button").setPosition(new PositioningSetter(Position.Center));
         this.panel.getCanvas().addObject(text);
+
+        customersContainer.addCustomer(event -> {
+            if (event.clickType != ClickType.REALIZED) return;
+
+            getAnimations().stopAll();
+            getAnimations().startAnimation("pressed");
+        }, MouseClickedEvent.class);
 /*
         MouseEvent mouseEvent = new MouseEvent();
 

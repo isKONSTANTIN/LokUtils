@@ -3,6 +3,7 @@ package ru.lokincompany.lokutils.ui;
 import org.lwjgl.util.vector.Vector2f;
 import ru.lokincompany.lokutils.input.Inputs;
 import ru.lokincompany.lokutils.ui.animation.Animations;
+import ru.lokincompany.lokutils.ui.eventsystem.CustomersContainer;
 import ru.lokincompany.lokutils.ui.objects.UICanvas;
 import ru.lokincompany.lokutils.ui.positioning.PositioningSetter;
 
@@ -16,6 +17,7 @@ public class UIObject {
     protected String name = "UIObject";
 
     protected Animations animations = new Animations(this);
+    protected CustomersContainer customersContainer = new CustomersContainer();
 
     protected PositioningSetter positionSetter;
     protected PositioningSetter sizeSetter;
@@ -97,7 +99,7 @@ public class UIObject {
         return lastParent.getInputs();
     }
 
-    protected void updateEvents(Inputs inputs) {
+    protected void updateSetters() {
         if (positionSetter != null) {
             Vector2f newPosition = positionSetter.get();
             position.set(newPosition.x, newPosition.y);
@@ -111,6 +113,10 @@ public class UIObject {
         animations.update();
     }
 
+    public CustomersContainer getCustomersContainer(){
+        return customersContainer;
+    }
+
     public void init(UIObject parent){
         lastParent = parent;
     }
@@ -118,6 +124,6 @@ public class UIObject {
     public void update(UIObject parent) {
         lastParent = parent;
 
-        updateEvents(parent.getInputs());
+        updateSetters();
     }
 }

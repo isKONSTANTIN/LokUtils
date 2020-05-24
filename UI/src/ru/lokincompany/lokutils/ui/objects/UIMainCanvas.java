@@ -2,11 +2,16 @@ package ru.lokincompany.lokutils.ui.objects;
 
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector4f;
+import ru.lokincompany.lokutils.input.Mouse;
+import ru.lokincompany.lokutils.objects.Point;
 import ru.lokincompany.lokutils.objects.Vector2i;
 import ru.lokincompany.lokutils.render.FBO;
 import ru.lokincompany.lokutils.render.RenderPart;
 import ru.lokincompany.lokutils.render.tools.ViewTools;
+import ru.lokincompany.lokutils.ui.UIObject;
 import ru.lokincompany.lokutils.ui.UIRenderPart;
+import ru.lokincompany.lokutils.ui.eventsystem.events.ClickType;
+import ru.lokincompany.lokutils.ui.eventsystem.events.MouseClickedEvent;
 
 public class UIMainCanvas extends UICanvas {
 
@@ -26,6 +31,35 @@ public class UIMainCanvas extends UICanvas {
         this.multisampleSamples = multisampleSamples;
 
         return this;
+    }
+
+    @Override
+    public void update(UIObject parent) {
+        Mouse mouse = inputs.mouse;
+
+        if (mouse.inField(position, size)) {
+
+            boolean pressedStatus = mouse.getPressedStatus();
+            boolean lastMousePressed = mouse.getLastMousePressed();
+
+            if (pressedStatus)
+                System.out.println("C");
+
+            if (pressedStatus && !lastMousePressed)
+                customersContainer.handle(new MouseClickedEvent(new Point(
+                        mouse.getMousePosition().getX(),
+                        mouse.getMousePosition().getY()),
+                        ClickType.CLICKED, mouse.buttonID)
+                );
+            else if (!pressedStatus && lastMousePressed)
+                customersContainer.handle(new MouseClickedEvent(new Point(
+                        mouse.getMousePosition().getX(),
+                        mouse.getMousePosition().getY()),
+                        ClickType.REALIZED, mouse.buttonID)
+                );
+        }
+
+        super.update(parent);
     }
 
     public FBO getFbo() {

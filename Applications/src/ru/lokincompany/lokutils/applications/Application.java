@@ -14,33 +14,12 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class Application implements Runnable {
 
-    protected Runnable canvasTask;
     protected Window window;
     protected UIMainCanvas canvas;
     protected boolean opened;
 
     public Application(ApplicationPreference preference){
         window = preference.window;
-
-        canvasTask = () -> {
-            long time;
-            long sleepTime;
-
-            try {
-
-                while (opened) {
-                    time = System.nanoTime();
-                    canvas.update(null);
-                    sleepTime = 16 - (System.nanoTime() - time) / 1000000;
-
-                    if (sleepTime > 0)
-                        Thread.sleep(16);
-                }
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        };
 
         opened = true;
     }
@@ -89,11 +68,11 @@ public class Application implements Runnable {
 
         window.getGlContext().unbind();
 
-        ExecutorServices.getCachedService().submit(canvasTask);
-
         window.show();
         while (opened){
             Vector2i resolution = window.getResolution();
+
+            canvas.update(null);
 
             updateEvent();
 
