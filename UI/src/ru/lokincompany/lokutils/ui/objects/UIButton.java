@@ -2,31 +2,44 @@ package ru.lokincompany.lokutils.ui.objects;
 
 import org.lwjgl.util.vector.Vector2f;
 import ru.lokincompany.lokutils.objects.Color;
+import ru.lokincompany.lokutils.objects.Point;
+import ru.lokincompany.lokutils.objects.Size;
 import ru.lokincompany.lokutils.ui.UIObject;
 import ru.lokincompany.lokutils.ui.animation.Animation;
-import ru.lokincompany.lokutils.ui.eventsystem.EventAction;
-import ru.lokincompany.lokutils.ui.eventsystem.EventType;
-import ru.lokincompany.lokutils.ui.positioning.Position;
-import ru.lokincompany.lokutils.ui.positioning.PositioningSetter;
+import ru.lokincompany.lokutils.ui.eventsystem.events.ClickType;
+import ru.lokincompany.lokutils.ui.eventsystem.events.MouseClickedEvent;
+import ru.lokincompany.lokutils.ui.positioning.PositioningLink;
+
+import static ru.lokincompany.lokutils.ui.positioning.AdvancedRect.CENTER;
 
 public class UIButton extends UIObject {
 
-    UIText text;
-    UIPanel panel;
+    protected UIText text;
+    protected UIPanel panel;
 
     public UIButton() {
-        this.panel = (UIPanel) new UIPanel().setPosition(new PositioningSetter(this::getPosition)).setSize(new PositioningSetter(this::getSize));
-        this.text = (UIText) new UIText().setText("Button").setPosition(new PositioningSetter(Position.Center));
+        this.panel = (UIPanel) new UIPanel().bindArea(this.getArea());
+        this.text = (UIText) new UIText().setText("Button").setPosition(CENTER);
         this.panel.getCanvas().addObject(text);
 
-        this.getEventHandler().addEvent("buttonClickEvent", new UIButtonEvent(this));
+        customersContainer.addCustomer(event -> {
+            if (event.clickType == ClickType.CLICKED) {
+                getAnimations().stopAll();
+                getAnimations().startAnimation("pressed");
+            } else
+                getAnimations().addAnimationToTaskList("unpressed");
+        }, MouseClickedEvent.class);
 
         this.getAnimations().addAnimation(new Animation("pressed") {
             @Override
             public void update() {
-                Color source = ((UIButton) object).panel.overrideColor;
-                Color end = object.getStyle().getColor("buttonPressed");
-                softColorChange(source, end, 2);
+                UIButton button = (UIButton) object;
+
+                Color source = button.panel.overrideColor;
+                Color end = button.getStyle().getColor("buttonPressed");
+
+                button.panel.overrideColor = softColorChange(source, end, 2);
+
                 isRun = !softColorChangeDone(source, end);
             }
         });
@@ -34,14 +47,18 @@ public class UIButton extends UIObject {
         this.getAnimations().addAnimation(new Animation("unpressed") {
             @Override
             public void update() {
-                Color source = ((UIButton) object).panel.overrideColor;
+                UIButton button = (UIButton) object;
+
+                Color source = button.panel.overrideColor;
                 Color end = object.getStyle().getColor("buttonBackground");
-                softColorChange(source, end, 2);
+
+                button.panel.overrideColor = softColorChange(source, end, 2);
+
                 isRun = !softColorChangeDone(source, end);
             }
         });
 
-        setSize(new Vector2f(100, 30));
+        setSize(new Size(100, 30));
     }
 
     public UIText getText() {
@@ -56,7 +73,7 @@ public class UIButton extends UIObject {
     public void init(UIObject parent) {
         super.init(parent);
 
-        panel.overrideColor = getStyle().getColor("buttonBackground").clone();
+        panel.overrideColor = getStyle().getColor("buttonBackground");
     }
 
     @Override
@@ -64,26 +81,5 @@ public class UIButton extends UIObject {
         super.update(parent);
 
         panel.update(this);
-    }
-}
-
-class UIButtonEvent extends EventAction {
-
-    UIButton button;
-
-    public UIButtonEvent(UIButton button) {
-        super(EventType.Click);
-        this.button = button;
-    }
-
-    @Override
-    public void start() {
-        button.getAnimations().startAnimation("pressed");
-    }
-
-    @Override
-    public void stop() {
-        button.getAnimations().stopAnimation("pressed");
-        button.getAnimations().startAnimation("unpressed");
     }
 }

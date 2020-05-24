@@ -2,14 +2,20 @@ package ru.lokincompany.lokutils.ui.objects;
 
 import org.lwjgl.util.vector.Vector2f;
 import ru.lokincompany.lokutils.input.Inputs;
+import ru.lokincompany.lokutils.objects.Point;
+import ru.lokincompany.lokutils.objects.Size;
 import ru.lokincompany.lokutils.render.GLContext;
 import ru.lokincompany.lokutils.render.RenderPart;
 import ru.lokincompany.lokutils.render.tools.ViewTools;
 import ru.lokincompany.lokutils.ui.UIObject;
 import ru.lokincompany.lokutils.ui.UIRenderPart;
 import ru.lokincompany.lokutils.ui.UIStyle;
+import ru.lokincompany.lokutils.ui.eventsystem.Event;
+import ru.lokincompany.lokutils.ui.eventsystem.EventHandler;
+import ru.lokincompany.lokutils.ui.eventsystem.events.MouseClickedEvent;
+import ru.lokincompany.lokutils.ui.eventsystem.events.MousePointedEvent;
+import sun.security.util.math.intpoly.P256OrderField;
 
-import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.Vector;
 
@@ -18,7 +24,6 @@ public class UICanvas extends UIObject {
     protected final Object updateSync = new Object();
     protected Vector<UIObject> objects = new Vector<>();
     protected Vector<RenderPart> renderParts = new Vector<>();
-    protected ArrayList<RenderPart> additionalRenderList = new ArrayList<>();
     protected UICanvasRender render;
     protected Inputs inputs;
 
@@ -26,7 +31,19 @@ public class UICanvas extends UIObject {
         this.inputs = inputs;
         this.style = style;
         render = new UICanvasRender(this);
-        setSize(new Vector2f(256, 256));
+        setSize(new Size(256, 256));
+
+        customersContainer.addCustomer(event -> {
+
+            for (UIObject object : objects) {
+                if (!object.inField(inputs.mouse.getMousePosition())) continue;
+
+                object.getCustomersContainer().handle(
+                        new MouseClickedEvent(event.position.relativeTo(area.getX(), area.getY()), event.clickType, event.button)
+                );
+            }
+
+        }, MouseClickedEvent.class);
     }
 
     public UICanvas(Inputs inputs) {
@@ -94,12 +111,14 @@ public class UICanvas extends UIObject {
     }
 
     public void addRenderPart(RenderPart renderPart) {
-        additionalRenderList.add(renderPart);
+        renderParts.add(renderPart);
     }
 
     @Override
     public void update(UIObject parent) {
         super.update(parent != null ? parent : this);
+
+        renderParts.clear();
 
         for (UIObject object : objects) {
             try {
@@ -108,13 +127,6 @@ public class UICanvas extends UIObject {
                 e.printStackTrace();
             }
         }
-
-        synchronized (updateSync) {
-            renderParts.clear();
-            renderParts.addAll(additionalRenderList);
-        }
-
-        additionalRenderList.clear();
 
         if (parent != null)
             parent.getCanvasParent().addRenderPart(render);
@@ -129,12 +141,11 @@ class UICanvasRender extends UIRenderPart<UICanvas> {
 
     @Override
     public void render() {
-        ViewTools.moveOrtho2DView(object.getPosition().x, object.getPosition().y);
+        ViewTools.moveOrtho2DView(object.getArea().getX(), object.getArea().getY());
 
-        synchronized (object.updateSync) {
-            for (RenderPart renderPart : object.renderParts)
-                renderPart.render();
-        }
-        ViewTools.moveOrtho2DView(-object.getPosition().x, -object.getPosition().y);
+        for (RenderPart renderPart : object.renderParts)
+            renderPart.render();
+
+        ViewTools.moveOrtho2DView(-object.getArea().getX(), -object.getArea().getY());
     }
 }

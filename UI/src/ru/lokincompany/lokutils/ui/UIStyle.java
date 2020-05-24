@@ -19,7 +19,8 @@ public class UIStyle {
                 new UIStyle()
                         .setFont("default", new Font().load())
                         .setColor("background", new Color(0.2f, 0.2f, 0.2f, 0.7f))
-                        .setColor("buttonPressed", new Color(0.35f, 0.35f, 0.35f, 1f))
+                        .setColor("buttonPressed", new Color(0.4f, 0.4f, 0.4f, 1f))
+                        .setColor("buttonPointed", new Color(0.35f, 0.35f, 0.35f, 1f))
                         .setColor("buttonBackground", new Color(0.3f, 0.3f, 0.3f, 1f))
                         .setColor("brightBackground", new Color(0.3f, 0.3f, 0.3f, 0.7f))
                         .setColor("text", new Color(0.9f, 0.9f, 0.9f, 1))
@@ -44,7 +45,7 @@ public class UIStyle {
     }
 
     public Color getColor(String name) {
-        return colors.getOrDefault(name, new Color());
+        return colors.getOrDefault(name, Color.BLACK);
     }
 
     public Font getFont(String name) {

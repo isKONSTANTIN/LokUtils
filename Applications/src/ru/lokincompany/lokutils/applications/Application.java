@@ -1,8 +1,9 @@
 package ru.lokincompany.lokutils.applications;
 
-import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector4f;
+import ru.lokincompany.lokutils.objects.Rect;
+import ru.lokincompany.lokutils.objects.Size;
 import ru.lokincompany.lokutils.objects.Vector2i;
 import ru.lokincompany.lokutils.render.Window;
 import ru.lokincompany.lokutils.render.tools.GLFastTools;
@@ -15,33 +16,12 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class Application implements Runnable {
 
-    protected Runnable canvasTask;
     protected Window window;
     protected UIMainCanvas canvas;
     protected boolean opened;
 
     public Application(ApplicationPreference preference){
         window = preference.window;
-
-        canvasTask = () -> {
-            long time;
-            long sleepTime;
-
-            try {
-
-                while (opened) {
-                    time = System.nanoTime();
-                    canvas.update(null);
-                    sleepTime = 16 - (System.nanoTime() - time) / 1000000;
-
-                    if (sleepTime > 0)
-                        Thread.sleep(16);
-                }
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        };
 
         opened = true;
     }
@@ -90,18 +70,18 @@ public class Application implements Runnable {
 
         window.getGlContext().unbind();
 
-        ExecutorServices.getCachedService().submit(canvasTask);
-
         window.show();
         while (opened){
             Vector2i resolution = window.getResolution();
+
+            canvas.update(null);
 
             updateEvent();
 
             window.getGlContext().bind();
 
             ViewTools.setOrtho2DView(new Vector4f(0, resolution.getX(), resolution.getY(), 0));
-            canvas.setSize(new Vector2f(resolution.getX(), resolution.getY()));
+            canvas.setSize(new Size(resolution.getX(), resolution.getY()));
 
             canvas.getFbo().bind();
 
@@ -115,7 +95,7 @@ public class Application implements Runnable {
 
             glColor4f(1, 1, 1, 1);
 
-            GLFastTools.drawInvertedSquare(new Vector2f(0, 0), new Vector2f(resolution.getX(), resolution.getY()));
+            GLFastTools.drawInvertedSquare(new Rect(0, 0, resolution.getX(), resolution.getY()));
             glBindTexture(GL_TEXTURE_2D, 0);
 
             window.update();

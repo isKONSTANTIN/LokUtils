@@ -1,6 +1,7 @@
 package ru.lokincompany.lokutils.render.tools;
 
 import org.lwjgl.util.vector.Vector2f;
+import ru.lokincompany.lokutils.objects.Rect;
 
 import static java.lang.Math.*;
 import static org.lwjgl.opengl.GL11.*;
@@ -20,68 +21,68 @@ public class GLFastTools {
             0, 0,
     };
 
-    public static void drawSquare(Vector2f position, Vector2f size, float[] texCoords) {
+    public static void drawSquare(Rect rect, float[] texCoords) {
         glBegin(GL_POLYGON);
 
         glTexCoord2f(texCoords[0], texCoords[1]);
-        glVertex3f(position.x, position.y, 0);
+        glVertex3f(rect.getX(), rect.getY(), 0);
 
         glTexCoord2f(texCoords[2], texCoords[3]);
-        glVertex3f(size.x + position.x, position.y, 0);
+        glVertex3f(rect.getWidth() + rect.getX(), rect.getY(), 0);
 
         glTexCoord2f(texCoords[4], texCoords[5]);
-        glVertex3f(size.x + position.x, size.y + position.y, 0);
+        glVertex3f(rect.getWidth() + rect.getX(), rect.getHeight() + rect.getY(), 0);
 
         glTexCoord2f(texCoords[6], texCoords[7]);
-        glVertex3f(position.x, size.y + position.y, 0);
+        glVertex3f(rect.getX(), rect.getHeight() + rect.getY(), 0);
 
         glEnd();
     }
 
-    public static void drawSquare(Vector2f position, Vector2f size) {
-        drawSquare(position, size, defaultTexCoords);
+    public static void drawSquare(Rect rect) {
+        drawSquare(rect, defaultTexCoords);
     }
 
-    public static void drawInvertedSquare(Vector2f position, Vector2f size) {
-        drawSquare(position, size, invertedTexCoords);
+    public static void drawInvertedSquare(Rect rect) {
+        drawSquare(rect, invertedTexCoords);
     }
 
-    public static void drawHollowSquare(Vector2f position, Vector2f size) {
+    public static void drawHollowSquare(Rect rect) {
         glBegin(GL_LINE_STRIP);
 
-        glVertex3f(position.x, position.y, 0);
-        glVertex3f(size.x + position.x, position.y, 0);
-        glVertex3f(size.x + position.x, size.y + position.y, 0);
-        glVertex3f(position.x, size.y + position.y, 0);
-        glVertex3f(position.x, position.y, 0);
+        glVertex3f(rect.getX(), rect.getY(), 0);
+        glVertex3f(rect.getWidth() + rect.getX(), rect.getY(), 0);
+        glVertex3f(rect.getWidth() + rect.getX(), rect.getWidth() + rect.getY(), 0);
+        glVertex3f(rect.getX(), rect.getWidth() + rect.getY(), 0);
+        glVertex3f(rect.getX(), rect.getY(), 0);
 
         glEnd();
     }
 
-    public static void drawRoundedHollowSquare(Vector2f position, Vector2f size, float radius) {
-        float glRadius = min(size.x, size.y) / 2 * radius;
+    public static void drawRoundedHollowSquare(Rect rect, float radius) {
+        float glRadius = min(rect.getWidth(), rect.getHeight()) / 2 * radius;
         int roundingPieces = (int) max(Math.ceil(glRadius / 2f), 2);
 
         glBegin(GL_LINE_LOOP);
 
-        drawRoundedCorner(position.x, position.y + glRadius, 3 * PI / 2, glRadius, roundingPieces);
-        drawRoundedCorner(position.x + size.x - glRadius, position.y, 0.0, glRadius, roundingPieces);
-        drawRoundedCorner(position.x + size.x, position.y + size.y - glRadius, PI / 2, glRadius, roundingPieces);
-        drawRoundedCorner(position.x + glRadius, position.y + size.y, PI, glRadius, roundingPieces);
+        drawRoundedCorner(rect.getX(), rect.getY() + glRadius, 3 * PI / 2, glRadius, roundingPieces);
+        drawRoundedCorner(rect.getX() + rect.getWidth() - glRadius, rect.getY(), 0.0, glRadius, roundingPieces);
+        drawRoundedCorner(rect.getX() + rect.getWidth(), rect.getY() + rect.getHeight() - glRadius, PI / 2, glRadius, roundingPieces);
+        drawRoundedCorner(rect.getX() + glRadius, rect.getY() + rect.getHeight(), PI, glRadius, roundingPieces);
 
         glEnd();
     }
 
-    public static void drawRoundedSquare(Vector2f position, Vector2f size, float radius) {
-        float glRadius = min(size.x, size.y) / 2 * radius;
+    public static void drawRoundedSquare(Rect rect, float radius) {
+        float glRadius = min(rect.getWidth(), rect.getHeight()) / 2 * radius;
         int roundingPieces = (int) max(Math.ceil(glRadius / 2f), 2);
 
         glBegin(GL_POLYGON);
 
-        drawRoundedCorner(position.x, position.y + glRadius, 3 * PI / 2, glRadius, roundingPieces);
-        drawRoundedCorner(position.x + size.x - glRadius, position.y, 0.0, glRadius, roundingPieces);
-        drawRoundedCorner(position.x + size.x, position.y + size.y - glRadius, PI / 2, glRadius, roundingPieces);
-        drawRoundedCorner(position.x + glRadius, position.y + size.y, PI, glRadius, roundingPieces);
+        drawRoundedCorner(rect.getX(), rect.getY() + glRadius, 3 * PI / 2, glRadius, roundingPieces);
+        drawRoundedCorner(rect.getX() + rect.getWidth() - glRadius, rect.getY(), 0.0, glRadius, roundingPieces);
+        drawRoundedCorner(rect.getX() + rect.getWidth(), rect.getY() + rect.getHeight() - glRadius, PI / 2, glRadius, roundingPieces);
+        drawRoundedCorner(rect.getX() + glRadius, rect.getY() + rect.getHeight(), PI, glRadius, roundingPieces);
 
         glEnd();
     }

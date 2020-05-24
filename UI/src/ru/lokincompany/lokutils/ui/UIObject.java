@@ -1,24 +1,24 @@
 package ru.lokincompany.lokutils.ui;
 
-import org.lwjgl.util.vector.Vector2f;
 import ru.lokincompany.lokutils.input.Inputs;
+import ru.lokincompany.lokutils.objects.Point;
+import ru.lokincompany.lokutils.objects.Rect;
+import ru.lokincompany.lokutils.objects.Size;
 import ru.lokincompany.lokutils.ui.animation.Animations;
-import ru.lokincompany.lokutils.ui.eventsystem.EventHandler;
+import ru.lokincompany.lokutils.ui.eventsystem.CustomersContainer;
 import ru.lokincompany.lokutils.ui.objects.UICanvas;
-import ru.lokincompany.lokutils.ui.positioning.PositioningSetter;
+import ru.lokincompany.lokutils.ui.positioning.AdvancedRect;
+import ru.lokincompany.lokutils.ui.positioning.PositioningAlgorithm;
+import ru.lokincompany.lokutils.ui.positioning.PositioningLink;
 
 public class UIObject {
+    protected AdvancedRect area = new AdvancedRect();
 
-    protected Vector2f position = new Vector2f();
-    protected Vector2f size = new Vector2f();
     protected UIStyle style;
     protected String name = "UIObject";
 
     protected Animations animations = new Animations(this);
-    protected EventHandler eventHandler = new EventHandler();
-
-    protected PositioningSetter positionSetter;
-    protected PositioningSetter sizeSetter;
+    protected CustomersContainer customersContainer = new CustomersContainer();
 
     protected UIObject lastParent;
 
@@ -28,18 +28,6 @@ public class UIObject {
 
     public UICanvas getCanvasParent() {
         return lastParent.getCanvasParent();
-    }
-
-    public EventHandler getEventHandler() {
-        return eventHandler;
-    }
-
-    public PositioningSetter getPositionSetter() {
-        return positionSetter;
-    }
-
-    public PositioningSetter getSizeSetter() {
-        return sizeSetter;
     }
 
     public Animations getAnimations() {
@@ -65,57 +53,67 @@ public class UIObject {
         return this;
     }
 
-    public Vector2f getPosition() {
-        return new Vector2f(position.x, position.y);
+    public AdvancedRect getArea() {
+        return area;
     }
 
-    public UIObject setPosition(PositioningSetter positionSetter) {
-        positionSetter.init(this);
-        this.positionSetter = positionSetter;
+    public UIObject bindArea(AdvancedRect area) {
+        this.area.bind(area);
 
         return this;
     }
 
-    public UIObject setPosition(Vector2f position) {
-        this.position = position;
-        return this;
-    }
-
-    public Vector2f getSize() {
-        return new Vector2f(size.x, size.y);
-    }
-
-    public UIObject setSize(PositioningSetter sizeSetter) {
-        sizeSetter.init(this);
-        this.sizeSetter = sizeSetter;
+    public UIObject setPosition(PositioningLink<Point> positionAlgorithm){
+        this.area.setPosition(positionAlgorithm);
 
         return this;
     }
 
-    public UIObject setSize(Vector2f size) {
-        this.size = size;
+    public UIObject setSize(PositioningLink<Size> sizeAlgorithm){
+        this.area.setSize(sizeAlgorithm);
+
         return this;
+    }
+
+    public UIObject setPosition(PositioningAlgorithm<Point> positionAlgorithm){
+        this.area.setPosition(positionAlgorithm);
+
+        return this;
+    }
+
+    public UIObject setSize(PositioningAlgorithm<Size> sizeAlgorithm){
+        this.area.setSize(sizeAlgorithm);
+
+        return this;
+    }
+
+    public UIObject setPosition(Point position){
+        this.area.setPosition(position);
+
+        return this;
+    }
+
+    public UIObject setSize(Size size){
+        this.area.setSize(size);
+
+        return this;
+    }
+
+    public boolean inField(Point point) {
+        return inField(point, area.getRect());
+    }
+
+    protected boolean inField(Point point, Rect area) {
+        return  (point.x >= area.getX() && point.x <= area.getWidth() + area.getX()) &&
+                (point.y >= area.getY() && point.y <= area.getHeight() + area.getY());
     }
 
     public Inputs getInputs() {
         return lastParent.getInputs();
     }
 
-    protected void updateEvents(Inputs inputs) {
-        if (eventHandler != null)
-            eventHandler.update(this, inputs);
-
-        if (positionSetter != null) {
-            Vector2f newPosition = positionSetter.get();
-            position.set(newPosition.x, newPosition.y);
-        }
-
-        if (sizeSetter != null) {
-            Vector2f newSize = sizeSetter.get();
-            size.set(newSize.x, newSize.y);
-        }
-
-        animations.update();
+    public CustomersContainer getCustomersContainer(){
+        return customersContainer;
     }
 
     public void init(UIObject parent){
@@ -125,6 +123,7 @@ public class UIObject {
     public void update(UIObject parent) {
         lastParent = parent;
 
-        updateEvents(parent.getInputs());
+        area.update(this);
+        animations.update();
     }
 }
