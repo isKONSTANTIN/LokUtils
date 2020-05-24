@@ -2,6 +2,8 @@ package ru.lokincompany.lokutils.applications;
 
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector4f;
+import ru.lokincompany.lokutils.objects.Rect;
+import ru.lokincompany.lokutils.objects.Size;
 import ru.lokincompany.lokutils.objects.Vector2i;
 import ru.lokincompany.lokutils.render.Window;
 import ru.lokincompany.lokutils.render.tools.GLFastTools;
@@ -79,7 +81,7 @@ public class Application implements Runnable {
             window.getGlContext().bind();
 
             ViewTools.setOrtho2DView(new Vector4f(0, resolution.getX(), resolution.getY(), 0));
-            canvas.setSize(new Vector2f(resolution.getX(), resolution.getY()));
+            canvas.setSize(new Size(resolution.getX(), resolution.getY()));
 
             canvas.getFbo().bind();
 
@@ -93,7 +95,7 @@ public class Application implements Runnable {
 
             glColor4f(1, 1, 1, 1);
 
-            GLFastTools.drawInvertedSquare(new Vector2f(0, 0), new Vector2f(resolution.getX(), resolution.getY()));
+            GLFastTools.drawInvertedSquare(new Rect(0, 0, resolution.getX(), resolution.getY()));
             glBindTexture(GL_TEXTURE_2D, 0);
 
             window.update();

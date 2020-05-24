@@ -1,5 +1,7 @@
 package ru.lokincompany.lokutils.objects;
 
+import org.lwjgl.util.vector.Vector2f;
+
 import java.util.Objects;
 
 public class Size {
@@ -7,6 +9,16 @@ public class Size {
 
     public final float width;
     public final float height;
+
+    public Size(Vector2i vector2i) {
+        this.width = vector2i.x;
+        this.height = vector2i.y;
+    }
+
+    public Size(Vector2f vector2f) {
+        this.width = vector2f.x;
+        this.height = vector2f.y;
+    }
 
     public Size(float width, float height) {
         this.width = width;

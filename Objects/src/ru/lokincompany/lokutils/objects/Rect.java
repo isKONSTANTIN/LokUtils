@@ -3,6 +3,8 @@ package ru.lokincompany.lokutils.objects;
 import java.util.Objects;
 
 public class Rect {
+    public static final Rect ZERO = new Rect(Point.ZERO, Size.ZERO);
+
     protected final Point position;
     protected final Size size;
 
@@ -37,6 +39,14 @@ public class Rect {
 
     public float getHeight() {
         return size.height;
+    }
+
+    public Point getPosition() {
+        return position;
+    }
+
+    public Size getSize() {
+        return size;
     }
 
     public Rect relativeTo(Point origin) {

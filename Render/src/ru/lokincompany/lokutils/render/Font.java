@@ -4,6 +4,8 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector2f;
 import ru.lokincompany.lokutils.objects.Color;
+import ru.lokincompany.lokutils.objects.Rect;
+import ru.lokincompany.lokutils.objects.Size;
 import ru.lokincompany.lokutils.objects.Vector2i;
 
 import java.awt.*;
@@ -55,7 +57,7 @@ public class Font {
         return spaceSize;
     }
 
-    public Vector2f getSize(String text, Vector2f maxSize) {
+    public Vector2f getSize(String text, Size maxSize) {
         Vector2f result = new Vector2f(0, fontHeight);
 
         int drawX = 0;
@@ -80,8 +82,8 @@ public class Font {
             }
 
             if (maxSize != null) {
-                if (maxSize.x > 0 && drawX + g.width > maxSize.x) {
-                    if (maxSize.y > 0 && drawY + fontHeight + g.height > maxSize.y)
+                if (maxSize.width > 0 && drawX + g.width > maxSize.width) {
+                    if (maxSize.height > 0 && drawY + fontHeight + g.height > maxSize.height)
                         break;
                     drawX = 0;
                     drawY += fontHeight;
@@ -155,9 +157,9 @@ public class Font {
         GL11.glBindTexture(GL_TEXTURE_2D, 0);
     }
 
-    public void drawText(String text, Vector2f position, Vector2f maxSize, Color color) {
-        int drawX = (int)position.x;
-        int drawY = (int)position.y;
+    public void drawText(String text, Rect area, Color color) {
+        int drawX = (int)area.getX();
+        int drawY = (int)area.getY();
 
         texture.bind();
         glBegin(GL_QUADS);
@@ -166,7 +168,7 @@ public class Font {
             char ch = text.charAt(i);
             if (ch == '\n') {
                 drawY += fontHeight;
-                drawX = (int)position.x;
+                drawX = (int)area.getX();
                 continue;
             }
             if (ch == '\r') continue;
@@ -178,11 +180,12 @@ public class Font {
                 continue;
             }
 
-            if (maxSize != null) {
-                if (maxSize.x > 0 && drawX + g.width > maxSize.x + position.x) {
-                    if (maxSize.y > 0 && drawY + fontHeight + g.height > maxSize.y + position.y)
+            if (area.getSize() != null) {
+                Size maxSize = area.getSize();
+                if (maxSize.width > 0 && drawX + g.width > maxSize.width + area.getX()) {
+                    if (maxSize.height > 0 && drawY + fontHeight + g.height > maxSize.height + area.getY())
                         break;
-                    drawX = (int)position.x;
+                    drawX = (int)area.getX();
                     drawY += fontHeight;
                 }
             }

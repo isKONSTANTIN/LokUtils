@@ -1,6 +1,7 @@
 package ru.lokincompany.lokutils.ui.objects;
 
 import org.lwjgl.util.vector.Vector2f;
+import ru.lokincompany.lokutils.objects.Size;
 import ru.lokincompany.lokutils.render.Texture;
 import ru.lokincompany.lokutils.render.tools.GLFastTools;
 import ru.lokincompany.lokutils.ui.UIObject;
@@ -43,12 +44,12 @@ class UIImageRender extends UIRenderPart<UIImage> {
         Texture texture = object.getTexture();
         if (texture == null) return;
 
-        Vector2f size = object.getSize();
-        if (size.x <= 0 || size.y <= 0)
-            size.set(texture.getSize().getX(), texture.getSize().getY());
+        Size size = object.getArea().getSize();
+        if (size.width <= 0 || size.height <= 0)
+            size = new Size(texture.getSize().getX(), texture.getSize().getY());
 
         object.getTexture().bind();
-        GLFastTools.drawSquare(object.getPosition(), size);
+        GLFastTools.drawSquare(object.getArea().getRect().setSize(size));
         object.getTexture().unbind();
     }
 }

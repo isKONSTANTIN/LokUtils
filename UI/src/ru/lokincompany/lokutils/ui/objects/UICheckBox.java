@@ -1,21 +1,27 @@
 package ru.lokincompany.lokutils.ui.objects;
 
 import org.lwjgl.util.vector.Vector2f;
-import ru.lokincompany.lokutils.input.Inputs;
 import ru.lokincompany.lokutils.objects.Color;
+import ru.lokincompany.lokutils.objects.Point;
+import ru.lokincompany.lokutils.objects.Rect;
+import ru.lokincompany.lokutils.objects.Size;
 import ru.lokincompany.lokutils.render.tools.GLFastTools;
 import ru.lokincompany.lokutils.tools.Vector2fTools;
 import ru.lokincompany.lokutils.ui.UIObject;
 import ru.lokincompany.lokutils.ui.UIRenderPart;
 import ru.lokincompany.lokutils.ui.animation.Animation;
-import ru.lokincompany.lokutils.ui.positioning.PositioningSetter;
+import ru.lokincompany.lokutils.ui.eventsystem.Event;
+import ru.lokincompany.lokutils.ui.eventsystem.EventCustomer;
+import ru.lokincompany.lokutils.ui.eventsystem.events.ClickType;
+import ru.lokincompany.lokutils.ui.eventsystem.events.MouseClickedEvent;
+import ru.lokincompany.lokutils.ui.positioning.AdvancedRect;
 
 import static org.lwjgl.opengl.GL11.glColor4f;
 
 public class UICheckBox extends UIObject {
     protected UICheckBoxRender render;
     protected Color fillColor;
-    protected Vector2f boxSize;
+    protected Size boxSize;
     protected UIText text;
 
     protected float roundFactor;
@@ -28,25 +34,24 @@ public class UICheckBox extends UIObject {
             @Override
             public void update() {
                 Color end = object.getStyle().getColor(status ? "checkboxFillActive" : "checkboxFillInactive");
-                softColorChange(fillColor, end, 2);
+                fillColor = softColorChange(fillColor, end, 2);
                 isRun = !softColorChangeDone(fillColor, end);
             }
         });
-        /*
-        this.getEventHandler().putEvent(new SimpleCustomEvent((event) -> {
-            Inputs inputs = getInputs();
 
-            if (inputs.mouse.inField(position, boxSize) && inputs.mouse.getPressedStatus() && !inputs.mouse.getLastMousePressed())
+        customersContainer.addCustomer(event -> {
+            if (event.clickType != ClickType.REALIZED) return;
+
+            if (inField(event.position, area.getRect().setSize(boxSize)))
                 switchStatus();
-        }));*/
+        }, MouseClickedEvent.class);
 
-        boxSize = new Vector2f(20,20);
+        boxSize = new Size(20,20);
         roundFactor = 0.6f;
 
         text = new UIText();
         text.setPosition(
-                new PositioningSetter(this::getPosition)
-                .setChildSetter(() -> new Vector2f(boxSize.x + boxSize.x / 4f, boxSize.y / 2f - text.getSize().y / 2f + 1))
+                () -> this.getArea().getPosition().offset(boxSize.width + boxSize.width / 4f, boxSize.height / 2f - text.getArea().getHeight() / 2f + 1)
         );
         text.setText("CheckBox");
     }
@@ -88,29 +93,20 @@ public class UICheckBox extends UIObject {
         return this;
     }
 
-    public Vector2f getBoxSize() {
+    public Size getBoxSize() {
         return boxSize;
     }
 
-    public UICheckBox setBoxSize(Vector2f boxSize) {
+    public UICheckBox setBoxSize(Size boxSize) {
         this.boxSize = boxSize;
 
         return this;
     }
 
     @Override
-    public Vector2f getSize() {
-        return Vector2fTools.max(boxSize, text.getSize()).translate(boxSize.x + boxSize.x / 4f,0);
-    }
-
-    @Override
-    public UIObject setSize(PositioningSetter sizeSetter) {
-        return this;
-    }
-
-    @Override
-    public UIObject setSize(Vector2f size) {
-        return this;
+    public AdvancedRect getArea() {
+        Size textSize = text.getArea().getSize();
+        return super.getArea().setSize(new Size(Vector2fTools.max(new Vector2f(boxSize.width, boxSize.height), new Vector2f(textSize.width, textSize.height)).translate(boxSize.width + boxSize.width / 4f,0)));
     }
 
     @Override
@@ -140,9 +136,9 @@ class UICheckBoxRender extends UIRenderPart<UICheckBox> {
         Color colorStroke = object.getStyle().getColor("checkboxStroke");
 
         glColor4f(object.fillColor.red, object.fillColor.green, object.fillColor.blue, object.fillColor.alpha);
-        GLFastTools.drawRoundedSquare(object.getPosition(), object.boxSize, object.roundFactor);
+        GLFastTools.drawRoundedSquare(object.getArea().getRect().setSize(object.boxSize), object.roundFactor);
 
         glColor4f(colorStroke.red, colorStroke.green, colorStroke.blue, colorStroke.alpha);
-        GLFastTools.drawRoundedHollowSquare(object.getPosition(), object.boxSize, object.roundFactor);
+        GLFastTools.drawRoundedHollowSquare(object.getArea().getRect().setSize(object.boxSize), object.roundFactor);
     }
 }

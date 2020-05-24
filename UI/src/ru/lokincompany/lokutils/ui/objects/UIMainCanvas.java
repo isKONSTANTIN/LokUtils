@@ -4,6 +4,7 @@ import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector4f;
 import ru.lokincompany.lokutils.input.Mouse;
 import ru.lokincompany.lokutils.objects.Point;
+import ru.lokincompany.lokutils.objects.Size;
 import ru.lokincompany.lokutils.objects.Vector2i;
 import ru.lokincompany.lokutils.render.FBO;
 import ru.lokincompany.lokutils.render.RenderPart;
@@ -20,7 +21,7 @@ public class UIMainCanvas extends UICanvas {
 
     public UIMainCanvas() {
         render = new UIMainCanvasRender(this);
-        setSize(new Vector2f(256, 256));
+        setSize(new Size(256, 256));
     }
 
     public int getMultisampleSamples() {
@@ -37,24 +38,17 @@ public class UIMainCanvas extends UICanvas {
     public void update(UIObject parent) {
         Mouse mouse = inputs.mouse;
 
-        if (mouse.inField(position, size)) {
-
+        if (inField(mouse.getMousePosition())) {
             boolean pressedStatus = mouse.getPressedStatus();
             boolean lastMousePressed = mouse.getLastMousePressed();
 
-            if (pressedStatus)
-                System.out.println("C");
-
             if (pressedStatus && !lastMousePressed)
-                customersContainer.handle(new MouseClickedEvent(new Point(
-                        mouse.getMousePosition().getX(),
-                        mouse.getMousePosition().getY()),
+                customersContainer.handle(new MouseClickedEvent(mouse.getMousePosition(),
                         ClickType.CLICKED, mouse.buttonID)
                 );
             else if (!pressedStatus && lastMousePressed)
-                customersContainer.handle(new MouseClickedEvent(new Point(
-                        mouse.getMousePosition().getX(),
-                        mouse.getMousePosition().getY()),
+                customersContainer.handle(new MouseClickedEvent(
+                        mouse.getMousePosition(),
                         ClickType.REALIZED, mouse.buttonID)
                 );
         }
@@ -77,7 +71,8 @@ class UIMainCanvasRender extends UIRenderPart<UIMainCanvas> {
 
     public UIMainCanvasRender(UIMainCanvas object) {
         super(object);
-        fbo = new FBO().setResolution(new Vector2i((int) object.getSize().x, (int) object.getSize().y)).setMultisampled(true).setMultisampleSamples(object.getMultisampleSamples()).applyChanges();
+        Size objectSize = object.getArea().getSize();
+        fbo = new FBO().setResolution(new Vector2i((int) objectSize.width, (int) objectSize.height)).setMultisampled(true).setMultisampleSamples(object.getMultisampleSamples()).applyChanges();
     }
 
     public FBO getFbo() {
@@ -87,9 +82,10 @@ class UIMainCanvasRender extends UIRenderPart<UIMainCanvas> {
     @Override
     public void render() {
         boolean fboBeenChanged = false;
+        Size objectSize = object.getArea().getSize();
 
-        if ((int) object.getSize().x != fbo.getResolution().getX() || (int) object.getSize().y != fbo.getResolution().getY()) {
-            fbo.setResolution(new Vector2i((int) object.getSize().x, (int) object.getSize().y));
+        if ((int) objectSize.width != fbo.getResolution().getX() || (int) objectSize.height != fbo.getResolution().getY()) {
+            fbo.setResolution(new Vector2i((int) objectSize.width, (int) objectSize.height));
             fboBeenChanged = true;
         }
 
@@ -103,7 +99,7 @@ class UIMainCanvasRender extends UIRenderPart<UIMainCanvas> {
 
         fbo.bind();
 
-        ViewTools.setOrtho2DView(new Vector4f(0, object.getSize().getX(), object.getSize().getY(), 0));
+        ViewTools.setOrtho2DView(new Vector4f(0, objectSize.width, objectSize.height, 0));
 
         synchronized (object.updateSync) {
             for (RenderPart renderPart : object.renderParts)

@@ -2,11 +2,13 @@ package ru.lokincompany.lokutils.ui.animation;
 
 import ru.lokincompany.lokutils.ui.UIObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Animations {
 
     protected HashMap<String, Animation> animationHashMap = new HashMap<>();
+    protected ArrayList<String> animationsTasks = new ArrayList<>();
     protected UIObject source;
 
     public Animations(UIObject source) {
@@ -51,6 +53,12 @@ public class Animations {
         return false;
     }
 
+    public Animations addAnimationToTaskList(String name){
+        animationsTasks.add(name);
+
+        return this;
+    }
+
     public Animations startAnimation(String name) {
         if (!animationHashMap.containsKey(name)) return this;
 
@@ -63,6 +71,12 @@ public class Animations {
             if (animation.isRun())
                 animation.update();
         }
+
+        if (animationsTasks.size() > 0 && !somethingIsRun()) {
+            startAnimation(animationsTasks.get(0));
+            animationsTasks.remove(0);
+        }
+
     }
 
 }

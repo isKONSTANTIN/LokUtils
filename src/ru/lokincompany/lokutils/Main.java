@@ -4,10 +4,12 @@ import ru.lokincompany.lokutils.applications.Application;
 
 import ru.lokincompany.lokutils.applications.ApplicationPreference;
 import ru.lokincompany.lokutils.render.GLFW;
+import ru.lokincompany.lokutils.render.Window;
+import ru.lokincompany.lokutils.ui.UIObject;
 import ru.lokincompany.lokutils.ui.objects.UIButton;
 import ru.lokincompany.lokutils.ui.objects.UICheckBox;
-import ru.lokincompany.lokutils.ui.positioning.Position;
-import ru.lokincompany.lokutils.ui.positioning.PositioningSetter;
+
+import static ru.lokincompany.lokutils.ui.positioning.AdvancedRect.*;
 
 public class Main extends Application {
     public static void main(String[] args) {
@@ -17,15 +19,12 @@ public class Main extends Application {
     }
 
     Main(){
-        super(new ApplicationPreference());
+        super(new ApplicationPreference().setWindow(new Window().setResizable(true)));
     }
 
     @Override
     public void initEvent(){
-        canvas.addObject(new UICheckBox().setPosition(new PositioningSetter(Position.Center)));
-        UIButton button = new UIButton();
-        //button.getEventHandler().putEvent(new MouseEvent().setRealizedAction((event) -> System.out.println("На меня кликнули!")));
-        canvas.addObject(button);
+        canvas.addObject(new UIButton().setPosition(CENTER));
     }
 
 }

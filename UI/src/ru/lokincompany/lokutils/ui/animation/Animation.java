@@ -1,7 +1,11 @@
 package ru.lokincompany.lokutils.ui.animation;
 
 import ru.lokincompany.lokutils.objects.Color;
+import ru.lokincompany.lokutils.objects.Point;
+import ru.lokincompany.lokutils.objects.Rect;
+import ru.lokincompany.lokutils.objects.Size;
 import ru.lokincompany.lokutils.ui.UIObject;
+import ru.lokincompany.lokutils.ui.positioning.AdvancedRect;
 
 public class Animation {
     protected String name;
@@ -39,33 +43,35 @@ public class Animation {
     }
 
     protected void setPosition(float x, float y) {
-        object.getPosition().x = x;
-        object.getPosition().y = y;
+        object.getArea().setPosition(new Point(x, y));
     }
 
-    protected void setSize(float x, float y) {
-        object.getSize().x = x;
-        object.getSize().y = y;
+    protected void setSize(float width, float height) {
+        object.getArea().setSize(new Size(width, height));
     }
 
     protected void moveObject(float x, float y) {
-        object.getPosition().x += x;
-        object.getPosition().y += y;
+        object.getArea().setPosition(object.getArea().getRect().getPosition().offset(x, y));
     }
 
     protected void stretchObject(float x, float y) {
-        object.getSize().x += x;
-        object.getSize().y += y;
+        object.getArea().setSize(object.getArea().getRect().getSize().offset(x, y));
     }
 
     protected void softSetPositionObject(float x, float y, float speed) {
-        object.getPosition().x = softChange(object.getPosition().x, x, speed);
-        object.getPosition().y = softChange(object.getPosition().y, y, speed);
+        AdvancedRect rect = object.getArea();
+        rect.setPosition(new Point(
+                softChange(rect.getPosition().x, x, speed),
+                softChange(rect.getPosition().y, y, speed)
+        ));
     }
 
-    protected void softSetSizeObject(float x, float y, float speed) {
-        object.getSize().x = softChange(object.getSize().x, x, speed);
-        object.getSize().y = softChange(object.getSize().y, y, speed);
+    protected void softSetSizeObject(float width, float height, float speed) {
+        AdvancedRect rect = object.getArea();
+        rect.setSize(new Size(
+                softChange(rect.getSize().width, width, speed),
+                softChange(rect.getSize().height, height, speed)
+        ));
     }
 
     protected float softChange(float source, float end, float speed) {
@@ -81,8 +87,12 @@ public class Animation {
         );
     }
 
+    protected boolean softChangeDone(float source, float end, float measurementError) {
+        return Math.abs(end - source) < measurementError;
+    }
+
     protected boolean softChangeDone(float source, float end) {
-        return Math.abs(end - source) < 0.001f;
+        return softChangeDone(source, end, 0.02f);
     }
 
     protected boolean softColorChangeDone(Color source, Color end) {

@@ -4,6 +4,7 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFWMouseButtonCallback;
 import org.lwjgl.glfw.GLFWScrollCallback;
 import org.lwjgl.util.vector.Vector2f;
+import ru.lokincompany.lokutils.objects.Point;
 import ru.lokincompany.lokutils.objects.Vector2i;
 import ru.lokincompany.lokutils.render.GLContext;
 
@@ -14,9 +15,9 @@ import static org.lwjgl.glfw.GLFW.*;
 public class Mouse {
     public int buttonID = GLFW_MOUSE_BUTTON_LEFT;
 
-    protected Vector2i mousePosition = new Vector2i();
-    protected Vector2i lastMousePosition = new Vector2i(-1, 0);
-    protected Vector2i mouseDeltaPosition = new Vector2i();
+    protected Point mousePosition = Point.ZERO;
+    protected Point lastMousePosition = new Point(-1, 0);
+    protected Point mouseDeltaPosition = Point.ZERO;
     protected Vector2f mouseScroll = new Vector2f();
     protected Vector2f lastMouseScroll = new Vector2f();
 
@@ -53,12 +54,12 @@ public class Mouse {
         return lastMousePressed;
     }
 
-    public Vector2i getMousePosition() {
-        return new Vector2i(mousePosition.getX(), mousePosition.getY());
+    public Point getMousePosition() {
+        return mousePosition;
     }
 
-    public Vector2i getMouseDeltaPosition() {
-        return new Vector2i(mouseDeltaPosition.getX(), mouseDeltaPosition.getY());
+    public Point getMouseDeltaPosition() {
+        return mouseDeltaPosition;
     }
 
     public Vector2f getMouseScroll() {
@@ -73,18 +74,18 @@ public class Mouse {
         DoubleBuffer yBuffer = BufferUtils.createDoubleBuffer(1);
         glfwGetCursorPos(GLcontext.getWindow().getGLFWWindow(), xBuffer, yBuffer);
 
-        mousePosition.setX((int) xBuffer.get(0));
-        mousePosition.setY((int) yBuffer.get(0));
+        mousePosition = mousePosition.setX((int) xBuffer.get(0)).setY((int) yBuffer.get(0));
 
-        if (lastMousePosition.getX() != -1) {
-            mouseDeltaPosition.setX(mousePosition.getX() - lastMousePosition.getX());
-            mouseDeltaPosition.setY(mousePosition.getY() - lastMousePosition.getY());
-        }
+        if (lastMousePosition.x != -1)
+            mouseDeltaPosition = mouseDeltaPosition
+                    .setX(mousePosition.x - lastMousePosition.x)
+                    .setY(mousePosition.y - lastMousePosition.y);
 
         if (lastMouseScroll.equals(mouseScroll) && (mouseScroll.x != 0 || mouseScroll.y != 0)) {
             mouseScroll.x = 0;
             mouseScroll.y = 0;
         }
+
         lastMousePressed = mousePressed;
 
         mousePressed = mousePressedGLFW;
@@ -92,15 +93,4 @@ public class Mouse {
         lastMouseScroll = getMouseScroll();
         lastMousePosition = getMousePosition();
     }
-
-    public boolean inField(Vector2i position, Vector2i size) {
-        return (mousePosition.getX() >= position.getX() && mousePosition.getX() <= size.getX() + position.getX()) &&
-                (mousePosition.getY() >= position.getY() && mousePosition.getY() <= size.getY() + position.getY());
-    }
-
-    public boolean inField(Vector2f position, Vector2f size) {
-        return (mousePosition.getX() >= position.getX() && mousePosition.getX() <= size.getX() + position.getX()) &&
-                (mousePosition.getY() >= position.getY() && mousePosition.getY() <= size.getY() + position.getY());
-    }
-
 }
