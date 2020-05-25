@@ -57,6 +57,50 @@ public class Rect {
         return new Rect(this.position.x + position.x, this.position.y + position.y, size.width, size.height);
     }
 
+    public boolean inside(Rect rect){
+        return inside(rect.position) && inside(rect.position.offset(rect.size.width, rect.size.height));
+    }
+
+    public boolean inside(Point point) {
+        return  (point.x >= this.getX() && point.x <= this.getWidth() + this.getX()) &&
+                (point.y >= this.getY() && point.y <= this.getHeight() + this.getY());
+    }
+
+    public Rect cutIfNotInside(Rect rect){
+        float myX = getX();
+        float myY = getY();
+        float myWidth = getWidth() + myX;
+        float myHeight = getHeight() + myY;
+
+        float otherX = rect.getX();
+        float otherY = rect.getY();
+        float otherWidth = rect.getWidth() + otherX;
+        float otherHeight = rect.getHeight() + otherY;
+
+        Point position = new Point(
+                otherX < myX ? myX : Math.min(otherX, myWidth),
+                otherY < myY ? myY : Math.min(otherY, myHeight)
+        );
+
+        Size size = new Size(
+                otherWidth > myWidth ? myWidth : Math.max(otherWidth, myX),
+                otherHeight > myHeight ? myHeight : Math.max(otherHeight, myY)
+        );
+
+        return new Rect(position, size.relativeTo(position.x, position.y));
+    }
+
+    public Point cutIfNotInside(Point point){
+        float myX = getX();
+        float myY = getY();
+        float myWidth = getWidth() + myX;
+        float myHeight = getHeight() + myY;
+
+        return new Point(
+                point.x < myX ? myX : Math.min(point.x, myWidth),
+                point.y < myY ? myY : Math.min(point.y, myHeight)
+        );
+    }
 
     public Rect offset(float x, float y) {
         return new Rect(this.position.x + x, this.position.y + y, size.width, size.height);

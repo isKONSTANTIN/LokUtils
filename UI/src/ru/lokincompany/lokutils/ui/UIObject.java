@@ -99,15 +99,6 @@ public class UIObject {
         return this;
     }
 
-    public boolean inField(Point point) {
-        return inField(point, area.getRect());
-    }
-
-    protected boolean inField(Point point, Rect area) {
-        return  (point.x >= area.getX() && point.x <= area.getWidth() + area.getX()) &&
-                (point.y >= area.getY() && point.y <= area.getHeight() + area.getY());
-    }
-
     public Inputs getInputs() {
         return lastParent.getInputs();
     }
