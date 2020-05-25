@@ -1,11 +1,13 @@
 package ru.lokincompany.lokutils.ui.objects;
 
+import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector2f;
 import ru.lokincompany.lokutils.input.Inputs;
 import ru.lokincompany.lokutils.objects.Point;
 import ru.lokincompany.lokutils.objects.Size;
 import ru.lokincompany.lokutils.render.GLContext;
 import ru.lokincompany.lokutils.render.RenderPart;
+import ru.lokincompany.lokutils.render.tools.GLFastTools;
 import ru.lokincompany.lokutils.render.tools.ViewTools;
 import ru.lokincompany.lokutils.ui.UIObject;
 import ru.lokincompany.lokutils.ui.UIRenderPart;
@@ -36,14 +38,17 @@ public class UICanvas extends UIObject {
         customersContainer.addCustomer(event -> {
 
             for (UIObject object : objects) {
-                if (!object.inField(inputs.mouse.getMousePosition())) continue;
+                Point newMouseClickPosition = event.position.relativeTo(area.getX(), area.getY());
+
+                if (!object.getArea().getRect().inside(newMouseClickPosition)) continue;
 
                 object.getCustomersContainer().handle(
-                        new MouseClickedEvent(event.position.relativeTo(area.getX(), area.getY()), event.clickType, event.button)
+                        new MouseClickedEvent(newMouseClickPosition, event.clickType, event.button)
                 );
             }
 
         }, MouseClickedEvent.class);
+
     }
 
     public UICanvas(Inputs inputs) {
@@ -141,11 +146,11 @@ class UICanvasRender extends UIRenderPart<UICanvas> {
 
     @Override
     public void render() {
-        ViewTools.moveOrtho2DView(object.getArea().getX(), object.getArea().getY());
+        GLContext.getCurrent().getViewTools().pushLook(object.getArea().getRect());
 
         for (RenderPart renderPart : object.renderParts)
             renderPart.render();
 
-        ViewTools.moveOrtho2DView(-object.getArea().getX(), -object.getArea().getY());
+        GLContext.getCurrent().getViewTools().popLook();
     }
 }
