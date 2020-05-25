@@ -1,21 +1,24 @@
 package ru.lokincompany.lokutils.render;
 
 import org.lwjgl.opengl.GL;
+import ru.lokincompany.lokutils.render.tools.ViewTools;
 
 import java.util.concurrent.locks.ReentrantLock;
 
 import static org.lwjgl.glfw.GLFW.glfwMakeContextCurrent;
 
 public class GLContext {
-
     private static volatile GLContext bindedContext;
     private final Window window;
     private final long threadID;
     private final static ReentrantLock lock = new ReentrantLock();
+    private ViewTools viewTools;
+
     public GLContext(Window window) {
         if (window.glContext != null) throw new RuntimeException("This window already has context!");
 
         threadID = Thread.currentThread().getId();
+        viewTools = new ViewTools(window);
         this.window = window;
     }
 
@@ -29,6 +32,10 @@ public class GLContext {
 
     public Window getWindow() {
         return window;
+    }
+
+    public ViewTools getViewTools() {
+        return viewTools;
     }
 
     public long getThreadID() {
