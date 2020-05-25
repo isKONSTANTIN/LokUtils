@@ -12,15 +12,13 @@ import ru.lokincompany.lokutils.ui.positioning.PositioningLink;
 
 import static ru.lokincompany.lokutils.ui.positioning.AdvancedRect.CENTER;
 
-public class UIButton extends UIObject {
+public class UIButton extends UIPanel {
 
     protected UIText text;
-    protected UIPanel panel;
 
     public UIButton() {
-        this.panel = (UIPanel) new UIPanel().bindArea(this.getArea());
         this.text = (UIText) new UIText().setText("Button").setPosition(CENTER);
-        this.panel.getCanvas().addObject(text);
+        this.getCanvas().addObject(text);
 
         customersContainer.addCustomer(event -> {
             if (event.clickType == ClickType.CLICKED) {
@@ -35,10 +33,10 @@ public class UIButton extends UIObject {
             public void update() {
                 UIButton button = (UIButton) object;
 
-                Color source = button.panel.overrideColor;
+                Color source = overrideColor;
                 Color end = button.getStyle().getColor("buttonPressed");
 
-                button.panel.overrideColor = softColorChange(source, end, 2);
+                overrideColor = softColorChange(source, end, 2);
 
                 isRun = !softColorChangeDone(source, end);
             }
@@ -49,10 +47,10 @@ public class UIButton extends UIObject {
             public void update() {
                 UIButton button = (UIButton) object;
 
-                Color source = button.panel.overrideColor;
-                Color end = object.getStyle().getColor("buttonBackground");
+                Color source = overrideColor;
+                Color end = button.getStyle().getColor("buttonBackground");
 
-                button.panel.overrideColor = softColorChange(source, end, 2);
+                overrideColor = softColorChange(source, end, 2);
 
                 isRun = !softColorChangeDone(source, end);
             }
@@ -65,21 +63,11 @@ public class UIButton extends UIObject {
         return text;
     }
 
-    public UIPanel getPanel() {
-        return panel;
-    }
-
     @Override
     public void init(UIObject parent) {
         super.init(parent);
 
-        panel.overrideColor = getStyle().getColor("buttonBackground");
+        overrideColor = getStyle().getColor("buttonBackground");
     }
 
-    @Override
-    public void update(UIObject parent) {
-        super.update(parent);
-
-        panel.update(this);
-    }
 }

@@ -30,6 +30,8 @@ public class Window {
     protected boolean isShow;
     protected boolean isResizable;
 
+    protected int MSAASamples = 8;
+
     protected GLContext glContext;
     protected Inputs inputs;
 
@@ -54,6 +56,7 @@ public class Window {
         if (isFullscreen)
             resolution = monitorResolution;
 
+        glfwWindowHint(GLFW_SAMPLES, MSAASamples);
         window = glfwCreateWindow(resolution.getX(), resolution.getY(), title, isFullscreen ? monitor.getMonitor() : NULL, NULL);
 
         isCreated = window != NULL;
@@ -176,6 +179,16 @@ public class Window {
         }
 
         updateResolutionLimits();
+
+        return this;
+    }
+
+    public int getMSAASamples() {
+        return MSAASamples;
+    }
+
+    public Window setMSAASamples(int MSAASamples) {
+        this.MSAASamples = MSAASamples;
 
         return this;
     }

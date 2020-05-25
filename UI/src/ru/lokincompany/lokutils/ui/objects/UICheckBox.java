@@ -42,8 +42,9 @@ public class UICheckBox extends UIObject {
         customersContainer.addCustomer(event -> {
             if (event.clickType != ClickType.REALIZED) return;
 
-            if (inField(event.position, area.getRect().setSize(boxSize)))
+            if (area.getRect().setSize(boxSize).inside(event.position))
                 switchStatus();
+
         }, MouseClickedEvent.class);
 
         boxSize = new Size(20,20);

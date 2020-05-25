@@ -7,13 +7,13 @@ import ru.lokincompany.lokutils.objects.Size;
 import ru.lokincompany.lokutils.render.tools.GLFastTools;
 import ru.lokincompany.lokutils.ui.UIObject;
 import ru.lokincompany.lokutils.ui.UIRenderPart;
+import ru.lokincompany.lokutils.ui.eventsystem.Event;
 import ru.lokincompany.lokutils.ui.positioning.PositioningLink;
 
 import static java.lang.Math.min;
 import static org.lwjgl.opengl.GL11.glColor4f;
 
 public class UIPanel extends UIObject {
-
     public Color overrideColor;
 
     protected UIPanelRender render;
@@ -34,6 +34,7 @@ public class UIPanel extends UIObject {
         };
 
         canvas = (UICanvas) new UICanvas().setPosition(canvasPosition).setSize(canvasSize);
+        customersContainer.addCustomer(canvas.getCustomersContainer(), Event.class);
 
         setSize(new Size(100, 100));
         setRounded(0.3f);
