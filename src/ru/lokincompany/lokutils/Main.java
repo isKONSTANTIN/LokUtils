@@ -14,13 +14,15 @@ import ru.lokincompany.lokutils.render.Texture;
 import ru.lokincompany.lokutils.render.Window;
 import ru.lokincompany.lokutils.render.tools.GLFastTools;
 import ru.lokincompany.lokutils.ui.UIObject;
+import ru.lokincompany.lokutils.ui.core.windows.UIWindow;
+import ru.lokincompany.lokutils.ui.core.windows.UIWindowSystem;
 import ru.lokincompany.lokutils.ui.objects.*;
 
 import java.io.IOException;
 
 import static ru.lokincompany.lokutils.ui.positioning.AdvancedRect.*;
 
-public class Main extends Application {
+public class Main extends Application<UIWindowSystem> {
     public static void main(String[] args) {
         GLFW.init();
 
@@ -28,20 +30,19 @@ public class Main extends Application {
     }
 
     Main(){
-        super(new ApplicationPreference().setWindow(new Window().setResizable(true)));
+        super(new ApplicationPreference<>(UIWindowSystem.class).setWindow(new Window().setResizable(true)));
     }
 
     @Override
     public void initEvent() {
         UIPanel panel = new UIPanel();
-        panel.setPosition(CENTER_RIGHT).setSize(new Size(200,300));
+
+        uiController.addWindow(new UIWindow<>(panel.getCanvas()));
 
         UIButton button = new UIButton();
         button.setPosition(TOP_CENTER);
 
         panel.getCanvas().addObject(button);
-
-        canvas.addObject(panel);
     }
 
 }

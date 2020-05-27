@@ -73,18 +73,41 @@ public class GLFastTools {
         glEnd();
     }
 
-    public static void drawRoundedSquare(Rect rect, float radius) {
-        float glRadius = min(rect.getWidth(), rect.getHeight()) / 2 * radius;
-        int roundingPieces = (int) max(Math.ceil(glRadius / 2f), 2);
-
+    public static void drawRoundedSquare(Rect rect, float glRadius, int roundingPieces, boolean[] corners) {
         glBegin(GL_POLYGON);
 
-        drawRoundedCorner(rect.getX(), rect.getY() + glRadius, 3 * PI / 2, glRadius, roundingPieces);
-        drawRoundedCorner(rect.getX() + rect.getWidth() - glRadius, rect.getY(), 0.0, glRadius, roundingPieces);
-        drawRoundedCorner(rect.getX() + rect.getWidth(), rect.getY() + rect.getHeight() - glRadius, PI / 2, glRadius, roundingPieces);
-        drawRoundedCorner(rect.getX() + glRadius, rect.getY() + rect.getHeight(), PI, glRadius, roundingPieces);
+        if (corners[0]) drawRoundedCorner(rect.getX(), rect.getY() + glRadius, 3 * PI / 2, glRadius, roundingPieces);
+        else glVertex2d(rect.getX(), rect.getY());
+
+        if (corners[1]) drawRoundedCorner(rect.getX() + rect.getWidth() - glRadius, rect.getY(), 0.0, glRadius, roundingPieces);
+        else glVertex2d(rect.getX() + rect.getWidth(), rect.getY());
+
+        if (corners[2]) drawRoundedCorner(rect.getX() + rect.getWidth(), rect.getY() + rect.getHeight() - glRadius, PI / 2, glRadius, roundingPieces);
+        else glVertex2d(rect.getX() + rect.getWidth(), rect.getY() + rect.getHeight());
+
+        if (corners[3]) drawRoundedCorner(rect.getX() + glRadius, rect.getY() + rect.getHeight(), PI, glRadius, roundingPieces);
+        else glVertex2d(rect.getX(), rect.getY() + rect.getHeight());
 
         glEnd();
+    }
+
+    public static void drawRoundedSquare(Rect rect, float glRadius, int roundingPieces) {
+        drawRoundedSquare(rect, glRadius, roundingPieces, new boolean[]{true, true, true, true});
+    }
+
+    public static float getOptimalGlRadius(Rect rect, float radius){
+        return min(rect.getWidth(), rect.getHeight()) / 2 * radius;
+    }
+
+    public static int getOptimalRoundingPieces(float glRadius){
+        return (int) max(Math.ceil(glRadius / 2f), 2);
+    }
+
+    public static void drawRoundedSquare(Rect rect, float radius) {
+        float glRadius = getOptimalGlRadius(rect, radius);
+        int roundingPieces = getOptimalRoundingPieces(glRadius);
+
+        drawRoundedSquare(rect, glRadius, roundingPieces);
     }
 
     private static void drawRoundedCorner(float x, float y, double sa, float r, int roundingPieces) {

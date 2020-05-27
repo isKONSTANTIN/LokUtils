@@ -1,7 +1,6 @@
 package ru.lokincompany.lokutils.render.tools;
 
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.system.windows.POINT;
 import org.lwjgl.util.vector.Vector4f;
 import ru.lokincompany.lokutils.objects.Point;
 import ru.lokincompany.lokutils.objects.Rect;
@@ -48,7 +47,7 @@ public class ViewTools {
         //globalScissor = globalScissor.setSize(globalScissor.getSize().offset(globalScissor.getX(), scissor.getY()));
         Rect currentScissor = getCurrentScissor();
         if (currentScissor != null)
-            globalScissor = currentScissor.cutIfNotInside(globalScissor);
+            globalScissor = currentScissor.intersect(globalScissor);
 
         GL11.glScissor(
                 (int) globalScissor.getX(),

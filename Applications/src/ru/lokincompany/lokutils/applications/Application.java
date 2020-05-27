@@ -11,26 +11,31 @@ import ru.lokincompany.lokutils.render.tools.GLFastTools;
 import ru.lokincompany.lokutils.render.tools.ViewTools;
 import ru.lokincompany.lokutils.tools.ExecutorServices;
 import ru.lokincompany.lokutils.ui.UIStyle;
+import ru.lokincompany.lokutils.ui.core.UIController;
+import ru.lokincompany.lokutils.ui.core.windows.UIWindow;
+import ru.lokincompany.lokutils.ui.core.windows.UIWindowSystem;
 import ru.lokincompany.lokutils.ui.objects.UIMainCanvas;
 
 import java.io.IOException;
 
 import static org.lwjgl.opengl.GL11.*;
 
-public class Application implements Runnable {
+public class Application<T extends UIController> implements Runnable {
 
     protected Window window;
-    protected UIMainCanvas canvas;
+    protected T uiController;
+    protected ApplicationPreference<T> preference;
     protected boolean opened;
 
-    public Application(ApplicationPreference preference){
+    public Application(ApplicationPreference<T> preference){
+        this.preference = preference;
         window = preference.window;
 
         opened = true;
     }
 
     public Application(){
-        this(new ApplicationPreference());
+        this(new ApplicationPreference(UIWindowSystem.class));
     }
 
     public boolean isOpened() {
@@ -54,7 +59,7 @@ public class Application implements Runnable {
 
     }
 
-    public void initEvent() throws IOException {
+    public void initEvent(){
 
     }
 
@@ -68,7 +73,7 @@ public class Application implements Runnable {
             window.getGlContext().bind();
             UIStyle.generateDefaultStyle();
 
-            canvas = new UIMainCanvas();
+            uiController = (T)preference.uiController.getConstructors()[0].newInstance(window);
 
             initEvent();
 
@@ -78,30 +83,15 @@ public class Application implements Runnable {
             while (opened) {
                 Vector2i resolution = window.getResolution();
 
-                canvas.update(null);
-
                 updateEvent();
+                uiController.update();
 
                 window.getGlContext().bind();
 
                 window.getGlContext().getViewTools().setOrtho2DView(new Vector4f(0, resolution.getX(), resolution.getY(), 0));
-                canvas.setSize(new Size(resolution.getX(), resolution.getY()));
-
-                //canvas.getFbo().bind();
 
                 renderEvent();
-
-                //canvas.getFbo().unbind();
-
-                canvas.render();
-
-                //glBindTexture(GL_TEXTURE_2D, canvas.getFbo().getTextureBuffer());
-
-                //glColor4f(1, 1, 1, 1);
-
-                //GLFastTools.drawInvertedSquare(new Rect(0, 0, resolution.getX(), resolution.getY()));
-                //glBindTexture(GL_TEXTURE_2D, 0);
-
+                uiController.render();
                 window.update();
 
                 window.getGlContext().unbind();
