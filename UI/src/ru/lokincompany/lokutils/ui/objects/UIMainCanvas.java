@@ -15,6 +15,7 @@ import ru.lokincompany.lokutils.ui.UIRenderPart;
 import ru.lokincompany.lokutils.ui.eventsystem.events.ClickType;
 import ru.lokincompany.lokutils.ui.eventsystem.events.MouseClickedEvent;
 
+@Deprecated
 public class UIMainCanvas extends UICanvas {
 
     protected UIMainCanvasRender render;
