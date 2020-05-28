@@ -59,6 +59,26 @@ public class GLFastTools {
         glEnd();
     }
 
+    public static void drawCircle(Rect field){
+        float radius = min(field.getWidth() / 2f, field.getHeight() / 2f);
+        float centerX = field.getX() + field.getWidth() / 2f;
+        float centerY = field.getY() + field.getHeight() / 2f;
+
+        int pieces = (int)max(radius * PI, 2);
+        double twicePi = PI * 2;
+
+        glBegin(GL_TRIANGLE_FAN);
+        glVertex2f(centerX, centerY);
+
+        for (int i = 0; i <= pieces; i++)   {
+            glVertex2f(
+                    (float) (centerX + (radius * cos(i * twicePi / pieces))),
+                    (float) (centerY + (radius * sin(i * twicePi / pieces)))
+            );
+        }
+        glEnd();
+    }
+
     public static void drawRoundedHollowSquare(Rect rect, float radius) {
         float glRadius = min(rect.getWidth(), rect.getHeight()) / 2 * radius;
         int roundingPieces = (int) max(Math.ceil(glRadius / 2f), 2);
@@ -100,7 +120,7 @@ public class GLFastTools {
     }
 
     public static int getOptimalRoundingPieces(float glRadius){
-        return (int) max(Math.ceil(glRadius / 2f), 2);
+        return (int) max(Math.ceil(glRadius * PI), 2);
     }
 
     public static void drawRoundedSquare(Rect rect, float radius) {
