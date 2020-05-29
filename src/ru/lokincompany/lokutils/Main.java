@@ -18,8 +18,6 @@ import ru.lokincompany.lokutils.ui.core.windows.UIWindow;
 import ru.lokincompany.lokutils.ui.core.windows.UIWindowSystem;
 import ru.lokincompany.lokutils.ui.objects.*;
 
-import java.io.IOException;
-
 import static ru.lokincompany.lokutils.ui.positioning.AdvancedRect.*;
 
 public class Main extends Application<UIWindowSystem> {
@@ -35,14 +33,22 @@ public class Main extends Application<UIWindowSystem> {
 
     @Override
     public void initEvent() {
-        UIPanel panel = new UIPanel();
+        UIWindow<UICanvas> window = new UIWindow<>(new UICanvas());
+        uiController.addWindow(window);
 
-        uiController.addWindow(new UIWindow<>(panel.getCanvas()));
+        UIWindow<UICanvas> window2 = new UIWindow<>(new UICanvas());
+        window2.setPosition(new Point(30,40));
+        uiController.addWindow(window2);
 
         UIButton button = new UIButton();
         button.setPosition(TOP_CENTER);
 
-        panel.getCanvas().addObject(button);
+        window.getCanvas().addObject(button);
+
+        UIButton button2 = new UIButton();
+        button2.setPosition(TOP_CENTER);
+
+        window2.getCanvas().addObject(button2);
     }
 
 }

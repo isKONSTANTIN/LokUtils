@@ -6,6 +6,7 @@ import ru.lokincompany.lokutils.render.GLContext;
 import ru.lokincompany.lokutils.render.Window;
 import ru.lokincompany.lokutils.render.tools.ViewTools;
 import ru.lokincompany.lokutils.tools.Removable;
+import ru.lokincompany.lokutils.ui.UIStyle;
 import ru.lokincompany.lokutils.ui.core.UIController;
 import ru.lokincompany.lokutils.ui.eventsystem.Event;
 import ru.lokincompany.lokutils.ui.eventsystem.events.MouseClickedEvent;
@@ -21,9 +22,14 @@ public class UIWindowSystem extends UIController {
     }
 
     public Removable addWindow(UIWindow window){
-        windows.add(window);
+        window.init(this);
 
+        windows.add(window);
         return () -> windows.remove(window);
+    }
+
+    public void closeWindow(UIWindow window){
+        windows.remove(window);
     }
 
     @Override
@@ -40,11 +46,11 @@ public class UIWindowSystem extends UIController {
                 Rect contentField = new Rect(window.position.offset(0, barField.getHeight()), window.contentSize);
 
                 if (barField.inside(mouseClickedEvent.position)) {
-                    window.handleBarEvent(new MouseClickedEvent(mouseClickedEvent.position.relativeTo(barField.getPosition()), mouseClickedEvent.clickType, mouseClickedEvent.button));
+                    window.handleBarEvent(new MouseClickedEvent(mouseClickedEvent.position.relativeTo(barField.position), mouseClickedEvent.clickType, mouseClickedEvent.button));
                     targetWindow = window;
                     break;
                 } else if (contentField.inside(mouseClickedEvent.position)) {
-                    window.handleContentEvent(new MouseClickedEvent(mouseClickedEvent.position.relativeTo(contentField.getPosition()), mouseClickedEvent.clickType, mouseClickedEvent.button));
+                    window.handleContentEvent(new MouseClickedEvent(mouseClickedEvent.position.relativeTo(contentField.position), mouseClickedEvent.clickType, mouseClickedEvent.button));
                     targetWindow = window;
                     break;
                 }
@@ -52,8 +58,10 @@ public class UIWindowSystem extends UIController {
 
             if (targetWindow == null) return;
 
-            windows.remove(targetWindow);
-            windows.add(0, targetWindow);
+            if (windows.contains(targetWindow)){
+                windows.remove(targetWindow);
+                windows.add(0, targetWindow);
+            }
         }
     }
 
@@ -61,7 +69,8 @@ public class UIWindowSystem extends UIController {
     public void render() {
         ViewTools viewTools = GLContext.getCurrent().getViewTools();
 
-        for (UIWindow window : windows){
+        for (int i = windows.size() - 1; i >= 0; i--){
+            UIWindow window = windows.get(i);
             Rect barField = new Rect(window.position, window.contentSize.setHeight(window.barSize));
             Rect contentField = new Rect(window.position.offset(0, barField.getHeight()), window.contentSize);
 
