@@ -2,11 +2,14 @@ package ru.lokincompany.lokutils.objects;
 
 import java.util.Objects;
 
+import static java.lang.Math.max;
+import static java.lang.Math.min;
+
 public class Rect {
     public static final Rect ZERO = new Rect(Point.ZERO, Size.ZERO);
 
-    protected final Point position;
-    protected final Size size;
+    public final Point position;
+    public final Size size;
 
     public Rect(Point position, Size size) {
         this.position = position;
@@ -41,12 +44,19 @@ public class Rect {
         return size.height;
     }
 
-    public Point getPosition() {
+    public Point getTopLeftPoint() {
         return position;
     }
 
-    public Size getSize() {
-        return size;
+    public Point getBottomRightPoint() {
+        return new Point(position.x + size.width, position.y + size.height);
+    }
+
+    public Point getCenterPoint(){
+        return new Point(
+                getX() + getWidth() / 2f,
+                getY() + getHeight() / 2f
+        );
     }
 
     public Rect relativeTo(Point origin) {
@@ -66,31 +76,25 @@ public class Rect {
                 (point.y >= this.getY() && point.y <= this.getHeight() + this.getY());
     }
 
-    public Rect cutIfNotInside(Rect rect){
-        float myX = getX();
-        float myY = getY();
-        float myWidth = getWidth() + myX;
-        float myHeight = getHeight() + myY;
+    public boolean isIntersect(Rect rect){
+        float x = max(position.x, rect.getX());
+        float y = max(position.y, rect.getY());
+        float rx = min(position.x + size.width, rect.getX() + rect.getWidth());
+        float ry = min(position.y + size.height, rect.getY() + rect.getHeight());
 
-        float otherX = rect.getX();
-        float otherY = rect.getY();
-        float otherWidth = rect.getWidth() + otherX;
-        float otherHeight = rect.getHeight() + otherY;
-
-        Point position = new Point(
-                otherX < myX ? myX : Math.min(otherX, myWidth),
-                otherY < myY ? myY : Math.min(otherY, myHeight)
-        );
-
-        Size size = new Size(
-                otherWidth > myWidth ? myWidth : Math.max(otherWidth, myX),
-                otherHeight > myHeight ? myHeight : Math.max(otherHeight, myY)
-        );
-
-        return new Rect(position, size.relativeTo(position.x, position.y));
+        return rx > x && ry > y;
     }
 
-    public Point cutIfNotInside(Point point){
+    public Rect intersect(Rect rect){
+        float x = max(position.x, rect.getX());
+        float y = max(position.y, rect.getY());
+        float rx = min(position.x + size.width, rect.getX() + rect.getWidth());
+        float ry = min(position.y + size.height, rect.getY() + rect.getHeight());
+
+        return rx <= x || ry <= y ? Rect.ZERO : new Rect(x, y, rx - x, ry - y);
+    }
+
+    public Point intersect(Point point){
         float myX = getX();
         float myY = getY();
         float myWidth = getWidth() + myX;

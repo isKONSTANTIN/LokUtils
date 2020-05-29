@@ -7,10 +7,12 @@ import ru.lokincompany.lokutils.objects.Size;
 import ru.lokincompany.lokutils.ui.UIObject;
 import ru.lokincompany.lokutils.ui.positioning.AdvancedRect;
 
-public class Animation {
+import java.util.DoubleSummaryStatistics;
+
+public class Animation<T extends UIObject> {
     protected String name;
     protected boolean isRun;
-    protected UIObject object;
+    protected T object;
 
     public Animation(String name) {
         this.name = name;
@@ -30,7 +32,7 @@ public class Animation {
         stopped();
     }
 
-    public UIObject getObject() {
+    public T getObject() {
         return object;
     }
 
@@ -38,7 +40,7 @@ public class Animation {
         return isRun;
     }
 
-    public void init(UIObject object) {
+    public void init(T object) {
         this.object = object;
     }
 
@@ -51,11 +53,11 @@ public class Animation {
     }
 
     protected void moveObject(float x, float y) {
-        object.getArea().setPosition(object.getArea().getRect().getPosition().offset(x, y));
+        object.getArea().setPosition(object.getArea().getRect().position.offset(x, y));
     }
 
     protected void stretchObject(float x, float y) {
-        object.getArea().setSize(object.getArea().getRect().getSize().offset(x, y));
+        object.getArea().setSize(object.getArea().getRect().size.offset(x, y));
     }
 
     protected void softSetPositionObject(float x, float y, float speed) {
@@ -74,11 +76,11 @@ public class Animation {
         ));
     }
 
-    protected float softChange(float source, float end, float speed) {
+    public static float softChange(float source, float end, float speed) {
         return source + (end - source) * (speed / 10f);
     }
 
-    protected Color softColorChange(Color source, Color end, float speed) {
+    public static Color softColorChange(Color source, Color end, float speed) {
         return new Color(
                 softChange(source.red, end.red, speed),
                 softChange(source.green, end.green, speed),
@@ -87,15 +89,15 @@ public class Animation {
         );
     }
 
-    protected boolean softChangeDone(float source, float end, float measurementError) {
+    public static boolean softChangeDone(float source, float end, float measurementError) {
         return Math.abs(end - source) < measurementError;
     }
 
-    protected boolean softChangeDone(float source, float end) {
+    public static boolean softChangeDone(float source, float end) {
         return softChangeDone(source, end, 0.02f);
     }
 
-    protected boolean softColorChangeDone(Color source, Color end) {
+    public static boolean softColorChangeDone(Color source, Color end) {
         return softChangeDone(source.red, end.red) &&
                 softChangeDone(source.green, end.green) &&
                 softChangeDone(source.blue, end.blue) &&

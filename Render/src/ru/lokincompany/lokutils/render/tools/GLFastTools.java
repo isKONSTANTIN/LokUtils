@@ -1,6 +1,8 @@
 package ru.lokincompany.lokutils.render.tools;
 
 import org.lwjgl.util.vector.Vector2f;
+import ru.lokincompany.lokutils.objects.Circle;
+import ru.lokincompany.lokutils.objects.Point;
 import ru.lokincompany.lokutils.objects.Rect;
 
 import static java.lang.Math.*;
@@ -59,21 +61,17 @@ public class GLFastTools {
         glEnd();
     }
 
-    public static void drawCircle(Rect field){
-        float radius = min(field.getWidth() / 2f, field.getHeight() / 2f);
-        float centerX = field.getX() + field.getWidth() / 2f;
-        float centerY = field.getY() + field.getHeight() / 2f;
-
-        int pieces = (int)max(radius * PI, 2);
+    public static void drawCircle(Circle circle){
+        int pieces = (int)max(circle.radius * PI, 2);
         double twicePi = PI * 2;
 
         glBegin(GL_TRIANGLE_FAN);
-        glVertex2f(centerX, centerY);
+        glVertex2f(circle.position.x, circle.position.y);
 
-        for (int i = 0; i <= pieces; i++)   {
+        for (int i = 0; i <= pieces; i++) {
             glVertex2f(
-                    (float) (centerX + (radius * cos(i * twicePi / pieces))),
-                    (float) (centerY + (radius * sin(i * twicePi / pieces)))
+                    (float) (circle.position.x + (circle.radius * cos(i * twicePi / pieces))),
+                    (float) (circle.position.y + (circle.radius * sin(i * twicePi / pieces)))
             );
         }
         glEnd();

@@ -99,8 +99,8 @@ public class ViewTools {
     }
 
     public void pushLook(Rect rect){
-        pushTranslate(rect.getPosition());
-        pushScissor(Point.ZERO, rect.getSize());
+        pushTranslate(rect.position);
+        pushScissor(Point.ZERO, rect.size);
     }
 
     public void popLook(){
