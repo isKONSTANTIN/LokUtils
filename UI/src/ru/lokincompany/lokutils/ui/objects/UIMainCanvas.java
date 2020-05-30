@@ -1,15 +1,9 @@
 package ru.lokincompany.lokutils.ui.objects;
 
-import org.lwjgl.util.vector.Vector2f;
-import org.lwjgl.util.vector.Vector4f;
 import ru.lokincompany.lokutils.input.Mouse;
-import ru.lokincompany.lokutils.objects.Point;
 import ru.lokincompany.lokutils.objects.Size;
-import ru.lokincompany.lokutils.objects.Vector2i;
-import ru.lokincompany.lokutils.render.FBO;
 import ru.lokincompany.lokutils.render.GLContext;
 import ru.lokincompany.lokutils.render.RenderPart;
-import ru.lokincompany.lokutils.render.tools.ViewTools;
 import ru.lokincompany.lokutils.ui.UIObject;
 import ru.lokincompany.lokutils.ui.UIRenderPart;
 import ru.lokincompany.lokutils.ui.eventsystem.events.ClickType;
@@ -40,7 +34,7 @@ public class UIMainCanvas extends UICanvas {
             else if (!pressedStatus && lastMousePressed)
                 customersContainer.handle(new MouseClickedEvent(
                         mouse.getMousePosition(),
-                        ClickType.REALIZED, mouse.buttonID)
+                        ClickType.UNCLICKED, mouse.buttonID)
                 );
         }
 

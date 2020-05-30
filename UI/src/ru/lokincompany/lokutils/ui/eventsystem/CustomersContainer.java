@@ -9,6 +9,7 @@ import java.util.Map;
 public class CustomersContainer implements EventCustomer {
     protected HashMap<Class<? extends Event>, EventCustomer> customers = new HashMap<>();
     protected HashMap<Class<? extends Event>, EventHandler> handlers = new HashMap<>();
+    protected HashMap<Class<? extends Event>, Event> lastEvents = new HashMap<>();
 
     public <T extends Event> void setEventHandler(EventHandler<T> eventHandler, Class<T> eventClass){
         handlers.put(eventClass, eventHandler);
@@ -18,6 +19,10 @@ public class CustomersContainer implements EventCustomer {
         customers.put(eventClass, customer);
 
         return () -> customers.remove(customer);
+    }
+
+    public<T extends Event> T getLastEvent(Class<T> eventClass) {
+        return (T)lastEvents.get(eventClass);
     }
 
     @Override
@@ -34,5 +39,7 @@ public class CustomersContainer implements EventCustomer {
 
             entry.getValue().handle(handledEvent);
         }
+
+        lastEvents.put(event.getClass(), event);
     }
 }

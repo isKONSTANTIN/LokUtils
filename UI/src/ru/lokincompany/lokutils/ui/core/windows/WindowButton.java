@@ -1,20 +1,15 @@
 package ru.lokincompany.lokutils.ui.core.windows;
 
 import org.lwjgl.opengl.GL11;
-import ru.lokincompany.lokutils.input.Mouse;
 import ru.lokincompany.lokutils.objects.Circle;
 import ru.lokincompany.lokutils.objects.Color;
-import ru.lokincompany.lokutils.objects.Point;
-import ru.lokincompany.lokutils.objects.Rect;
 import ru.lokincompany.lokutils.render.tools.GLFastTools;
 import ru.lokincompany.lokutils.ui.UIObject;
-import ru.lokincompany.lokutils.ui.UIStyle;
 import ru.lokincompany.lokutils.ui.animation.Animation;
-import ru.lokincompany.lokutils.ui.animation.Animations;
 import ru.lokincompany.lokutils.ui.eventsystem.Event;
+import ru.lokincompany.lokutils.ui.eventsystem.EventTools;
 import ru.lokincompany.lokutils.ui.eventsystem.events.ClickType;
 import ru.lokincompany.lokutils.ui.eventsystem.events.MouseClickedEvent;
-import ru.lokincompany.lokutils.ui.objects.UIButton;
 
 class WindowButton extends UIObject {
     protected Circle field;
@@ -35,13 +30,13 @@ class WindowButton extends UIObject {
         this.overrideColor = defaultColor;
 
         customersContainer.addCustomer(event -> {
-            if (event.clickType == ClickType.CLICKED) {
+            if (event.clickType == ClickType.CLICKED && field.inside(event.position)) {
                 this.getAnimations().stopAll();
                 this.getAnimations().startAnimation("pressed");
             }else {
                 this.getAnimations().addAnimationToTaskList("unpressed");
 
-                if (event.clickType == ClickType.REALIZED)
+                if (EventTools.realized(event, customersContainer.getLastEvent(MouseClickedEvent.class), this.field))
                     this.action.take();
             }
 

@@ -12,6 +12,8 @@ import ru.lokincompany.lokutils.ui.UIStyle;
 import ru.lokincompany.lokutils.ui.eventsystem.CustomersContainer;
 import ru.lokincompany.lokutils.ui.eventsystem.Event;
 import ru.lokincompany.lokutils.ui.eventsystem.events.MouseClickedEvent;
+import ru.lokincompany.lokutils.ui.eventsystem.events.MouseMoveEvent;
+import ru.lokincompany.lokutils.ui.eventsystem.events.MoveType;
 import ru.lokincompany.lokutils.ui.objects.UICanvas;
 
 import java.util.ArrayList;
@@ -29,6 +31,8 @@ public class UIWindow<T extends UICanvas> {
 
     protected UIWindowSystem windowSystem;
     protected UIStyle style;
+
+    protected Point lastMoveDelta = Point.ZERO;
 
     protected boolean minimized;
 
@@ -103,6 +107,20 @@ public class UIWindow<T extends UICanvas> {
     public void handleBarEvent(Event event){
         closeButton.getCustomersContainer().handle(event);
         minimizeButton.getCustomersContainer().handle(event);
+
+        if (event instanceof MouseMoveEvent){
+            MouseMoveEvent mouseMoveEvent = (MouseMoveEvent) event;
+
+            if (mouseMoveEvent.type == MoveType.STARTED){
+                lastMoveDelta = mouseMoveEvent.deltaPositionChange;
+            }
+            if (lastMoveDelta != Point.ZERO){
+                position = position.offset(mouseMoveEvent.deltaPositionChange.relativeTo(lastMoveDelta));
+                lastMoveDelta = mouseMoveEvent.deltaPositionChange;
+            }
+        }else {
+            lastMoveDelta = Point.ZERO;
+        }
     }
 
     public void handleContentEvent(Event event){
