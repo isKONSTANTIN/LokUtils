@@ -180,8 +180,8 @@ public class Font {
                 continue;
             }
 
-            if (area.getSize() != null) {
-                Size maxSize = area.getSize();
+            if (area.size != null) {
+                Size maxSize = area.size;
                 if (maxSize.width > 0 && drawX + g.width > maxSize.width + area.getX()) {
                     if (maxSize.height > 0 && drawY + fontHeight + g.height > maxSize.height + area.getY())
                         break;

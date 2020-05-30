@@ -2,16 +2,14 @@ package ru.lokincompany.lokutils.ui.objects;
 
 import org.lwjgl.util.vector.Vector2f;
 import ru.lokincompany.lokutils.objects.Color;
-import ru.lokincompany.lokutils.objects.Point;
-import ru.lokincompany.lokutils.objects.Rect;
 import ru.lokincompany.lokutils.objects.Size;
+import ru.lokincompany.lokutils.render.Texture;
 import ru.lokincompany.lokutils.render.tools.GLFastTools;
 import ru.lokincompany.lokutils.tools.Vector2fTools;
 import ru.lokincompany.lokutils.ui.UIObject;
 import ru.lokincompany.lokutils.ui.UIRenderPart;
 import ru.lokincompany.lokutils.ui.animation.Animation;
-import ru.lokincompany.lokutils.ui.eventsystem.Event;
-import ru.lokincompany.lokutils.ui.eventsystem.EventCustomer;
+import ru.lokincompany.lokutils.ui.eventsystem.EventTools;
 import ru.lokincompany.lokutils.ui.eventsystem.events.ClickType;
 import ru.lokincompany.lokutils.ui.eventsystem.events.MouseClickedEvent;
 import ru.lokincompany.lokutils.ui.positioning.AdvancedRect;
@@ -40,21 +38,14 @@ public class UICheckBox extends UIObject {
         });
 
         customersContainer.addCustomer(event -> {
-            if (event.clickType != ClickType.REALIZED) return;
-
-            if (area.getRect().setSize(boxSize).inside(event.position))
+            if (EventTools.realized(event, customersContainer.getLastEvent(MouseClickedEvent.class), area.getRect().setSize(boxSize)))
                 switchStatus();
-
         }, MouseClickedEvent.class);
 
         boxSize = new Size(20,20);
         roundFactor = 0.6f;
 
-        text = new UIText();
-        text.setPosition(
-                () -> this.getArea().getPosition().offset(boxSize.width + boxSize.width / 4f, boxSize.height / 2f - text.getArea().getHeight() / 2f + 1)
-        );
-        text.setText("CheckBox");
+        setText(new UIText().setText("CheckBox"));
     }
 
     public UIText getText() {
@@ -63,7 +54,9 @@ public class UICheckBox extends UIObject {
 
     public UICheckBox setText(UIText text) {
         this.text = text;
-
+        text.setPosition(
+                () -> this.getArea().getPosition().offset(boxSize.width + boxSize.width / 4f, boxSize.height / 2f - text.getArea().getHeight() / 2f + 1)
+        );
         return this;
     }
 

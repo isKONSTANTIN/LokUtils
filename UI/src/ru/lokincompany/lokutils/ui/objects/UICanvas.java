@@ -15,6 +15,7 @@ import ru.lokincompany.lokutils.ui.UIStyle;
 import ru.lokincompany.lokutils.ui.eventsystem.Event;
 import ru.lokincompany.lokutils.ui.eventsystem.EventHandler;
 import ru.lokincompany.lokutils.ui.eventsystem.events.MouseClickedEvent;
+import ru.lokincompany.lokutils.ui.eventsystem.events.MouseMoveEvent;
 import ru.lokincompany.lokutils.ui.eventsystem.events.MousePointedEvent;
 import sun.security.util.math.intpoly.P256OrderField;
 
@@ -40,8 +41,6 @@ public class UICanvas extends UIObject {
             for (UIObject object : objects) {
                 Point newMouseClickPosition = event.position.relativeTo(area.getX(), area.getY());
 
-                if (!object.getArea().getRect().inside(newMouseClickPosition)) continue;
-
                 object.getCustomersContainer().handle(
                         new MouseClickedEvent(newMouseClickPosition, event.clickType, event.button)
                 );
@@ -49,6 +48,19 @@ public class UICanvas extends UIObject {
 
         }, MouseClickedEvent.class);
 
+        customersContainer.addCustomer(event -> {
+
+            for (UIObject object : objects) {
+                Point newStartPosition = event.startPosition.relativeTo(area.getX(), area.getY());
+                Point newLastPosition = event.lastPosition.relativeTo(area.getX(), area.getY());
+                Point newEndPosition = event.endPosition.relativeTo(area.getX(), area.getY());
+
+                object.getCustomersContainer().handle(
+                        new MouseMoveEvent(newStartPosition, newLastPosition, newEndPosition, event.type)
+                );
+            }
+
+        }, MouseMoveEvent.class);
     }
 
     public UICanvas(Inputs inputs) {

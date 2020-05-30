@@ -81,10 +81,10 @@ public class AdvancedRect {
             return;
         }
         if (positionAlgorithm != null)
-            rect = rect.setPosition(positionAlgorithm.calculate(rect.getPosition(), object));
+            rect = rect.setPosition(positionAlgorithm.calculate(rect.position, object));
 
         if (sizeAlgorithm != null)
-            rect = rect.setSize(sizeAlgorithm.calculate(rect.getSize(), object));
+            rect = rect.setSize(sizeAlgorithm.calculate(rect.size, object));
     }
 
     public float getX() {
@@ -104,11 +104,11 @@ public class AdvancedRect {
     }
 
     public Point getPosition(){
-        return rect.getPosition();
+        return rect.position;
     }
 
     public Size getSize(){
-        return rect.getSize();
+        return rect.size;
     }
 
     public Rect getRect(){
