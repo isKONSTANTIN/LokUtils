@@ -5,7 +5,7 @@ import java.util.Objects;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 
-public class Rect {
+public class Rect extends Field {
     public static final Rect ZERO = new Rect(Point.ZERO, Size.ZERO);
 
     public final Point position;

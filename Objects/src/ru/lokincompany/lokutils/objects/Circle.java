@@ -2,7 +2,7 @@ package ru.lokincompany.lokutils.objects;
 
 import java.util.Currency;
 
-public class Circle {
+public class Circle extends Field {
     public final Point position;
     public final float radius;
 
