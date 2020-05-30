@@ -1,22 +1,15 @@
 package ru.lokincompany.lokutils;
 
-import org.lwjgl.opengl.GL11;
 import ru.lokincompany.lokutils.applications.Application;
 
 import ru.lokincompany.lokutils.applications.ApplicationPreference;
 import ru.lokincompany.lokutils.objects.Point;
-import ru.lokincompany.lokutils.objects.Rect;
-import ru.lokincompany.lokutils.objects.Size;
-import ru.lokincompany.lokutils.objects.Vector2i;
-import ru.lokincompany.lokutils.render.GLContext;
 import ru.lokincompany.lokutils.render.GLFW;
-import ru.lokincompany.lokutils.render.Texture;
 import ru.lokincompany.lokutils.render.Window;
-import ru.lokincompany.lokutils.render.tools.GLFastTools;
-import ru.lokincompany.lokutils.ui.UIObject;
 import ru.lokincompany.lokutils.ui.core.windows.UIWindow;
 import ru.lokincompany.lokutils.ui.core.windows.UIWindowSystem;
 import ru.lokincompany.lokutils.ui.objects.*;
+import ru.lokincompany.lokutils.ui.objects.UIButton.UIButton;
 
 import static ru.lokincompany.lokutils.ui.positioning.AdvancedRect.*;
 
@@ -42,13 +35,19 @@ public class Main extends Application<UIWindowSystem> {
 
         UIButton button = new UIButton();
         button.setPosition(TOP_CENTER);
-
-        window.getCanvas().addObject(button);
-
+        button.setAction(() -> System.out.println("1"));
         UIButton button2 = new UIButton();
-        button2.setPosition(TOP_CENTER);
 
-        window2.getCanvas().addObject(button2);
+        button2.setPosition(BOTTOM_CENTER);
+        button2.setAction(() -> System.out.println("2"));
+
+        window.getCanvas().addObject(new UICheckBox().setText(new UIText().setText("Чек бокс")).setPosition(CENTER));
+        window.getCanvas().addObject(button);
+        window.getCanvas().addObject(button2);
+        UIButton button3 = new UIButton();
+        button3.setPosition(TOP_CENTER);
+
+        window2.getCanvas().addObject(button3);
     }
 
 }
