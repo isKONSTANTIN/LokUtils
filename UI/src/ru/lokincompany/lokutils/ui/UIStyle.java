@@ -18,6 +18,7 @@ public class UIStyle {
         setDefault(
                 new UIStyle()
                         .setFont("default", new Font().load())
+                        .setFont("windowTitle", new Font().load(new java.awt.Font(null, java.awt.Font.PLAIN, 10)))
 
                         .setColor("background", new Color(0.2f, 0.2f, 0.2f, 0.7f))
                         .setColor("brightBackground", new Color(0.3f, 0.3f, 0.3f, 0.7f))

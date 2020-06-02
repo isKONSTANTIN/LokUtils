@@ -6,6 +6,7 @@ import org.lwjgl.system.windows.POINT;
 import org.lwjgl.system.windows.WindowsUtil;
 import ru.lokincompany.lokutils.input.Inputs;
 import ru.lokincompany.lokutils.objects.*;
+import ru.lokincompany.lokutils.render.Font;
 import ru.lokincompany.lokutils.render.RenderPart;
 import ru.lokincompany.lokutils.render.tools.GLFastTools;
 import ru.lokincompany.lokutils.ui.UIStyle;
@@ -21,20 +22,20 @@ import java.util.ArrayList;
 public class UIWindow<T extends UICanvas> {
     protected Size contentSize;
     protected Point position = Point.ZERO;
+    protected Point lastMoveDelta = Point.ZERO;
     protected float barSize = 14;
     protected float buttonsSize;
-    protected T canvas;
-    protected VirtualCanvas virtualCanvas;
 
     protected WindowButton closeButton;
     protected WindowButton minimizeButton;
 
+    protected T canvas;
+    protected VirtualCanvas virtualCanvas;
     protected UIWindowSystem windowSystem;
     protected UIStyle style;
-
-    protected Point lastMoveDelta = Point.ZERO;
-
     protected boolean minimized;
+
+    protected String title;
 
     public UIWindow(T canvas) {
         this.canvas = canvas;
@@ -45,6 +46,10 @@ public class UIWindow<T extends UICanvas> {
         this.canvas.setSize(() -> contentSize);
 
         this.buttonsSize = barSize / 1.3f;
+    }
+
+    public boolean canClose(){
+        return false;
     }
 
     public UIWindowSystem getWindowSystem() {
@@ -65,6 +70,14 @@ public class UIWindow<T extends UICanvas> {
 
     public Rect getField() {
         return new Rect(position, contentSize.offset(0, barSize));
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public Size getContentSize() {
@@ -105,7 +118,8 @@ public class UIWindow<T extends UICanvas> {
     }
 
     public void handleBarEvent(Event event){
-        closeButton.getCustomersContainer().handle(event);
+        if (canClose())
+            closeButton.getCustomersContainer().handle(event);
         minimizeButton.getCustomersContainer().handle(event);
 
         if (event instanceof MouseMoveEvent){
@@ -136,9 +150,15 @@ public class UIWindow<T extends UICanvas> {
             barSize = (float)Math.ceil(barSize);
 
         GL11.glColor4f(background.red, background.green, background.blue, background.alpha);
-
         GLFastTools.drawRoundedSquare(new Rect(Point.ZERO, contentSize.setHeight(barSize)), glRadius, GLFastTools.getOptimalRoundingPieces(glRadius), new boolean[]{true, true, false, false});
-        closeButton.render();
+
+        if (title != null && title.length() > 0){
+            Font font = style.getFont("windowTitle");
+            Size titleSize = font.getSize(title, null);
+            font.drawText(title, new Rect(5,barSize / 2 - titleSize.height / 2,0,0), Color.WHITE);
+        }
+        if (canClose())
+            closeButton.render();
         minimizeButton.render();
     }
 

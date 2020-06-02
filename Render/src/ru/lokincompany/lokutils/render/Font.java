@@ -57,7 +57,7 @@ public class Font {
         return spaceSize;
     }
 
-    public Vector2f getSize(String text, Size maxSize) {
+    public Size getSize(String text, Size maxSize) {
         Vector2f result = new Vector2f(0, fontHeight);
 
         int drawX = 0;
@@ -101,7 +101,7 @@ public class Font {
             drawX += g.width;
         }
 
-        return result;
+        return new Size(result);
     }
 
     public void inversionDrawText(String text, Vector2f position, Vector2f maxSize, Color color) {

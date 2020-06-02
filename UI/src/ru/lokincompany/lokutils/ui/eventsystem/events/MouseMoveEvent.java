@@ -19,4 +19,12 @@ public class MouseMoveEvent extends Event {
 
         this.deltaPositionChange = endPosition.relativeTo(startPosition);
     }
+
+    public MouseMoveEvent offset(Point position){
+        return new MouseMoveEvent(this.startPosition.offset(position), this.lastPosition.offset(position), this.endPosition.offset(position), type);
+    }
+
+    public MouseMoveEvent relativeTo(Point position){
+        return new MouseMoveEvent(this.startPosition.relativeTo(position), this.lastPosition.relativeTo(position), this.endPosition.relativeTo(position), type);
+    }
 }
