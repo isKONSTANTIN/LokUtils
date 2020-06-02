@@ -42,8 +42,8 @@ public class UIText extends UIObject {
 
     @Override
     public AdvancedRect getArea() {
-        Vector2f size = getStyle().getFont(styleFontName).getSize(text, area.getSize());
-        return super.getArea().setSize(new Size(size.x, size.y));
+        Size size = getStyle().getFont(styleFontName).getSize(text, area.getSize());
+        return super.getArea().setSize(size);
     }
 
     @Override

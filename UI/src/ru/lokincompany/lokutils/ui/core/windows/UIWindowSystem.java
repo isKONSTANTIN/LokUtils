@@ -12,11 +12,13 @@ import ru.lokincompany.lokutils.ui.eventsystem.events.ClickType;
 import ru.lokincompany.lokutils.ui.eventsystem.events.MouseClickedEvent;
 import ru.lokincompany.lokutils.ui.eventsystem.events.MouseMoveEvent;
 import ru.lokincompany.lokutils.ui.eventsystem.events.MoveType;
+import ru.lokincompany.lokutils.ui.objects.UIButton.UIButton;
 
 import java.util.ArrayList;
 
 public class UIWindowSystem extends UIController {
     protected ArrayList<UIWindow> windows = new ArrayList<>();
+    protected ArrayList<WindowTask> windowTasks = new ArrayList<>();
 
     public UIWindowSystem(Window window) {
         super(window);
@@ -26,68 +28,83 @@ public class UIWindowSystem extends UIController {
         window.init(this);
 
         windows.add(window);
-        return () -> windows.remove(window);
+        return () -> closeWindow(window);
     }
 
     public void closeWindow(UIWindow window){
-        windows.remove(window);
+        windowTasks.add(() -> windows.remove(window));
+    }
+
+    public void bringToFront(UIWindow window) {
+        windowTasks.add(() -> {
+            if (!windows.contains(window)) return;
+
+            windows.remove(window);
+            windows.add(0, window);
+        });
+    }
+
+    protected boolean handleMouseClickedEvent(MouseClickedEvent event, UIWindow window) {
+        Rect barField = new Rect(window.position, window.contentSize.setHeight(window.barSize));
+        Rect contentField = new Rect(window.position.offset(0, barField.getHeight()), window.contentSize);
+
+        if (event.clickType == ClickType.UNCLICKED) {
+            window.handleBarEvent(event.relativeTo(barField.position));
+            window.handleContentEvent(event.relativeTo(contentField.position));
+            return false;
+        }
+
+        boolean insideBar = barField.inside(event.position);
+        boolean insideContent = contentField.inside(event.position);
+
+        if (!insideBar && !insideContent)
+            return false;
+
+        if (insideBar)
+            window.handleBarEvent(event.relativeTo(barField.position));
+        else
+            window.handleContentEvent(event.relativeTo(contentField.position));
+
+        bringToFront(window);
+        return true;
+    }
+
+    protected boolean handleMouseMoveEvent(MouseMoveEvent event, UIWindow window) {
+        Rect barField = new Rect(window.position, window.contentSize.setHeight(window.barSize));
+        Rect contentField = new Rect(window.position.offset(0, barField.getHeight()), window.contentSize);
+
+        boolean insideBar = barField.inside(event.lastPosition);
+        boolean insideContent = contentField.inside(event.lastPosition);
+
+        if (!insideBar && !insideContent)
+            return false;
+
+        if (insideBar)
+            window.handleBarEvent(event.relativeTo(barField.position));
+        else
+            window.handleContentEvent(event.relativeTo(contentField.position));
+
+        if (event.type == MoveType.STARTED)
+            bringToFront(window);
+
+        return true;
     }
 
     @Override
     public void update() {
+        for (WindowTask task : windowTasks)
+            task.run();
+
+        windowTasks.clear();
+
         Event event = checkEvent();
         if (event == null) return;
-        UIWindow targetWindow = null;
 
-        if (event instanceof MouseClickedEvent){
-            MouseClickedEvent mouseClickedEvent = (MouseClickedEvent) event;
-
-            for (UIWindow window : windows) {
-                Rect barField = new Rect(window.position, window.contentSize.setHeight(window.barSize));
-                Rect contentField = new Rect(window.position.offset(0, barField.getHeight()), window.contentSize);
-
-                if (mouseClickedEvent.clickType == ClickType.UNCLICKED){
-                    window.handleBarEvent(new MouseClickedEvent(mouseClickedEvent.position.relativeTo(barField.position), mouseClickedEvent.clickType, mouseClickedEvent.button));
-                    window.handleContentEvent(new MouseClickedEvent(mouseClickedEvent.position.relativeTo(contentField.position), mouseClickedEvent.clickType, mouseClickedEvent.button));
-                    continue;
-                }
-
-                if (barField.inside(mouseClickedEvent.position)) {
-                    window.handleBarEvent(new MouseClickedEvent(mouseClickedEvent.position.relativeTo(barField.position), mouseClickedEvent.clickType, mouseClickedEvent.button));
-                    targetWindow = window;
-                    break;
-                } else if (contentField.inside(mouseClickedEvent.position)) {
-                    window.handleContentEvent(new MouseClickedEvent(mouseClickedEvent.position.relativeTo(contentField.position), mouseClickedEvent.clickType, mouseClickedEvent.button));
-                    targetWindow = window;
-                    break;
-                }
-            }
-        }else if (event instanceof MouseMoveEvent) {
-            MouseMoveEvent mouseMoveEvent = (MouseMoveEvent) event;
-
-            for (UIWindow window : windows) {
-                Rect barField = new Rect(window.position, window.contentSize.setHeight(window.barSize));
-                Rect contentField = new Rect(window.position.offset(0, barField.getHeight()), window.contentSize);
-
-                if (barField.inside(mouseMoveEvent.lastPosition)){
-                    window.handleBarEvent(new MouseMoveEvent(mouseMoveEvent.startPosition.relativeTo(barField.position), mouseMoveEvent.lastPosition.relativeTo(barField.position), mouseMoveEvent.endPosition.relativeTo(barField.position), mouseMoveEvent.type));
-                    if (mouseMoveEvent.type == MoveType.STARTED)
-                        targetWindow = window;
-                    break;
-                }else if (contentField.inside(mouseMoveEvent.lastPosition)) {
-                    window.handleContentEvent(new MouseMoveEvent(mouseMoveEvent.startPosition.relativeTo(contentField.position), mouseMoveEvent.lastPosition.relativeTo(contentField.position), mouseMoveEvent.endPosition.relativeTo(contentField.position), mouseMoveEvent.type));
-                    if (mouseMoveEvent.type == MoveType.STARTED)
-                        targetWindow = window;
-                    break;
-                }
-            }
-        }
-
-        if (targetWindow == null) return;
-
-        if (windows.contains(targetWindow)){
-            windows.remove(targetWindow);
-            windows.add(0, targetWindow);
+        for (UIWindow window : windows) {
+            if (event instanceof MouseClickedEvent &&
+                    handleMouseClickedEvent((MouseClickedEvent) event, window)) break;
+            if (event instanceof MouseMoveEvent &&
+                    handleMouseMoveEvent((MouseMoveEvent) event, window)) break;
         }
     }
 

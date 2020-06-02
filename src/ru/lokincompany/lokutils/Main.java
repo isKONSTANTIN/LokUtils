@@ -27,6 +27,7 @@ public class Main extends Application<UIWindowSystem> {
     @Override
     public void initEvent() {
         UIWindow<UICanvas> window = new UIWindow<>(new UICanvas());
+        window.setTitle("Привет, мир!");
         uiController.addWindow(window);
 
         UIWindow<UICanvas> window2 = new UIWindow<>(new UICanvas());
