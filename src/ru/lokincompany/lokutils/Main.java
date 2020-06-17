@@ -30,25 +30,11 @@ public class Main extends Application<UIWindowSystem> {
         window.setTitle("Привет, мир!");
         uiController.addWindow(window);
 
-        UIWindow<UICanvas> window2 = new UIWindow<>(new UICanvas());
-        window2.setPosition(new Point(30,40));
-        uiController.addWindow(window2);
-
         UIButton button = new UIButton();
-        button.setPosition(TOP_CENTER);
         button.setAction(() -> System.out.println("1"));
-        UIButton button2 = new UIButton();
 
-        button2.setPosition(BOTTOM_CENTER);
-        button2.setAction(() -> System.out.println("2"));
-
-        window.getCanvas().addObject(new UICheckBox().setText(new UIText().setText("Чек бокс")).setPosition(CENTER));
+        window.getCanvas().addObject(new UICheckBox().setText(new UIText().setText("Чек бокс")), CENTER);
         window.getCanvas().addObject(button);
-        window.getCanvas().addObject(button2);
-        UIButton button3 = new UIButton();
-        button3.setPosition(TOP_CENTER);
-
-        window2.getCanvas().addObject(button3);
     }
 
 }

@@ -2,6 +2,7 @@ package ru.lokincompany.lokutils.ui.core.windows;
 
 import ru.lokincompany.lokutils.objects.Point;
 import ru.lokincompany.lokutils.objects.Rect;
+import ru.lokincompany.lokutils.objects.Size;
 import ru.lokincompany.lokutils.render.GLContext;
 import ru.lokincompany.lokutils.render.Window;
 import ru.lokincompany.lokutils.render.tools.ViewTools;
@@ -13,6 +14,7 @@ import ru.lokincompany.lokutils.ui.eventsystem.events.MouseClickedEvent;
 import ru.lokincompany.lokutils.ui.eventsystem.events.MouseMoveEvent;
 import ru.lokincompany.lokutils.ui.eventsystem.events.MoveType;
 import ru.lokincompany.lokutils.ui.objects.UIButton.UIButton;
+import sun.nio.cs.ext.JIS_X_0208_MS932;
 
 import java.util.ArrayList;
 
@@ -75,6 +77,21 @@ public class UIWindowSystem extends UIController {
 
         boolean insideBar = barField.inside(event.lastPosition);
         boolean insideContent = contentField.inside(event.lastPosition);
+
+        if (contentField.getBottomRightPoint().distance(event.lastPosition) < 3){
+            if (event.type == MoveType.STARTED)
+                bringToFront(window);
+
+            Point deltaPos = event.endPosition.relativeTo(event.lastPosition);
+
+            window.contentSize = window.contentSize.offset(deltaPos.x, deltaPos.y);
+            /*
+                    = new Size(
+                    event.startPosition.x - window.position.x + deltaPos.x,
+                    event.startPosition.y - window.position.y + deltaPos.y
+            );*/
+            return true;
+        }
 
         if (!insideBar && !insideContent)
             return false;

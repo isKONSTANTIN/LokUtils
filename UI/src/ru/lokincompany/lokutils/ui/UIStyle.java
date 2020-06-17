@@ -31,6 +31,8 @@ public class UIStyle {
                         .setColor("windowCloseButtonBackground", new Color(0.7f, 0.3f, 0.3f, 1f))
                         .setColor("windowMinimizeButtonPressed", new Color(0.9f, 0.7f, 0.5f, 1f))
                         .setColor("windowMinimizeButtonBackground", new Color(0.7f, 0.5f, 0.3f, 1f))
+                        .setColor("windowContentBackground", new Color(0.3f, 0.3f, 0.3f, 0.9f))
+                        .setColor("windowBarBackground", new Color(0.4f, 0.4f, 0.4f, 0.9f))
 
                         .setColor("text", new Color(0.9f, 0.9f, 0.9f, 1))
                         .setColor("highlightedText", new Color(1, 1, 0.9f, 1))

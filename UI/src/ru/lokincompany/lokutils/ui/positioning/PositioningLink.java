@@ -7,7 +7,7 @@ public interface PositioningLink<T> extends PositioningAlgorithm<T> {
     T calculate();
 
     @Override
-    default T calculate(T oldValue, UIObject object){
+    default T calculate(UIObject object){
         return calculate();
     }
 }

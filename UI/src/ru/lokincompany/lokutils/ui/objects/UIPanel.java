@@ -1,12 +1,13 @@
 package ru.lokincompany.lokutils.ui.objects;
 
-import org.lwjgl.util.vector.Vector2f;
 import ru.lokincompany.lokutils.objects.Color;
 import ru.lokincompany.lokutils.objects.Point;
+import ru.lokincompany.lokutils.objects.Rect;
 import ru.lokincompany.lokutils.objects.Size;
+import ru.lokincompany.lokutils.render.GLContext;
 import ru.lokincompany.lokutils.render.tools.GLFastTools;
+import ru.lokincompany.lokutils.tools.property.Property;
 import ru.lokincompany.lokutils.ui.UIObject;
-import ru.lokincompany.lokutils.ui.UIRenderPart;
 import ru.lokincompany.lokutils.ui.eventsystem.Event;
 import ru.lokincompany.lokutils.ui.positioning.PositioningLink;
 
@@ -16,32 +17,32 @@ import static org.lwjgl.opengl.GL11.glColor4f;
 public class UIPanel extends UIObject {
     public Color overrideColor;
 
-    protected UIPanelRender render;
     protected UICanvas canvas;
     protected float rounded;
+    protected Property<Point> canvasPosition;
+    protected Property<Size> canvasSize;
 
     public UIPanel() {
-        render = new UIPanelRender(this);
-
-        PositioningLink<Point> canvasPosition = () -> {
+        canvasPosition = new Property<>(() -> {
             float pixelsRound = this.getPixelsIndentation();
-            return this.getArea().getPosition().offset(pixelsRound, pixelsRound);
-        };
+            return new Point(pixelsRound, pixelsRound);
+        });
 
-        PositioningLink<Size> canvasSize = () -> {
+        canvasSize = new Property<>(() -> {
             float pixelsRound = this.getPixelsIndentation();
-            return this.getArea().getSize().relativeTo(pixelsRound * 2, pixelsRound * 2);
-        };
+            return size().get().relativeTo(pixelsRound * 2, pixelsRound * 2);
+        });
 
-        canvas = (UICanvas) new UICanvas().setPosition(canvasPosition).setSize(canvasSize);
+        canvas = new UICanvas();
+        canvas.size().set(canvasSize);
         customersContainer.addCustomer(canvas.getCustomersContainer(), Event.class);
 
-        setSize(new Size(100, 100));
+        size().set(new Size(100, 100));
         setRounded(0.3f);
     }
 
     public float getPixelsIndentation() {
-        Size size = getArea().getSize();
+        Size size = size().get();
         return min(size.width, size.height) * rounded / 5f;
     }
 
@@ -62,21 +63,17 @@ public class UIPanel extends UIObject {
     public void update(UIObject parent) {
         super.update(parent);
 
-        parent.getCanvasParent().addRenderPart(render);
         canvas.update(parent);
-    }
-}
-
-class UIPanelRender extends UIRenderPart<UIPanel> {
-
-    public UIPanelRender(UIPanel panel) {
-        super(panel);
     }
 
     @Override
     public void render() {
-        Color color = object.overrideColor != null ? object.overrideColor : object.getStyle().getColor("background");
+        Color color = overrideColor != null ? overrideColor : getStyle().getColor("background");
         glColor4f(color.red, color.green, color.blue, color.alpha);
-        GLFastTools.drawRoundedSquare(object.getArea().getRect(), object.getRounded());
+        GLFastTools.drawRoundedSquare(new Rect(Point.ZERO, size.get()), getRounded());
+
+        GLContext.getCurrent().getViewTools().pushLook(new Rect(canvasPosition.get(), canvasSize.get()));
+        canvas.render();
+        GLContext.getCurrent().getViewTools().popLook();
     }
 }
