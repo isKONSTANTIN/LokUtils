@@ -2,32 +2,32 @@ package ru.lokincompany.lokutils.ui.objects;
 
 import org.lwjgl.util.vector.Vector2f;
 import ru.lokincompany.lokutils.objects.Color;
+import ru.lokincompany.lokutils.objects.Point;
+import ru.lokincompany.lokutils.objects.Rect;
 import ru.lokincompany.lokutils.objects.Size;
-import ru.lokincompany.lokutils.render.Texture;
+import ru.lokincompany.lokutils.render.GLContext;
 import ru.lokincompany.lokutils.render.tools.GLFastTools;
 import ru.lokincompany.lokutils.tools.Vector2fTools;
+import ru.lokincompany.lokutils.tools.property.Property;
 import ru.lokincompany.lokutils.ui.UIObject;
-import ru.lokincompany.lokutils.ui.UIRenderPart;
 import ru.lokincompany.lokutils.ui.animation.Animation;
 import ru.lokincompany.lokutils.ui.eventsystem.EventTools;
-import ru.lokincompany.lokutils.ui.eventsystem.events.ClickType;
 import ru.lokincompany.lokutils.ui.eventsystem.events.MouseClickedEvent;
 import ru.lokincompany.lokutils.ui.positioning.AdvancedRect;
 
 import static org.lwjgl.opengl.GL11.glColor4f;
 
 public class UICheckBox extends UIObject {
-    protected UICheckBoxRender render;
     protected Color fillColor;
     protected Size boxSize;
     protected UIText text;
+
+    protected Property<Point> textPosition = new Property<>();
 
     protected float roundFactor;
     protected boolean status;
 
     public UICheckBox(){
-        render = new UICheckBoxRender(this);
-
         animations.addAnimation(new Animation("changeStatus") {
             @Override
             public void update() {
@@ -38,7 +38,7 @@ public class UICheckBox extends UIObject {
         });
 
         customersContainer.addCustomer(event -> {
-            if (EventTools.realized(event, customersContainer.getLastEvent(MouseClickedEvent.class), area.getRect().setSize(boxSize)))
+            if (EventTools.realized(event, customersContainer.getLastEvent(MouseClickedEvent.class), new Rect(Point.ZERO, boxSize)))
                 switchStatus();
         }, MouseClickedEvent.class);
 
@@ -46,6 +46,14 @@ public class UICheckBox extends UIObject {
         roundFactor = 0.6f;
 
         setText(new UIText().setText("CheckBox"));
+
+        size.set(() ->
+                new Size(Vector2fTools.max(new Vector2f(boxSize.width, boxSize.height), new Vector2f(text.size().get().width, text.size().get().height)).translate(boxSize.width + boxSize.width / 4f,0))
+        );
+
+        textPosition.set(() ->
+                new Point(boxSize.width + boxSize.width / 4f, boxSize.height / 2f - text.size().get().height / 2f + 1)
+        );
     }
 
     public UIText getText() {
@@ -54,9 +62,7 @@ public class UICheckBox extends UIObject {
 
     public UICheckBox setText(UIText text) {
         this.text = text;
-        text.setPosition(
-                () -> this.getArea().getPosition().offset(boxSize.width + boxSize.width / 4f, boxSize.height / 2f - text.getArea().getHeight() / 2f + 1)
-        );
+
         return this;
     }
 
@@ -98,12 +104,6 @@ public class UICheckBox extends UIObject {
     }
 
     @Override
-    public AdvancedRect getArea() {
-        Size textSize = text.getArea().getSize();
-        return super.getArea().setSize(new Size(Vector2fTools.max(new Vector2f(boxSize.width, boxSize.height), new Vector2f(textSize.width, textSize.height)).translate(boxSize.width + boxSize.width / 4f,0)));
-    }
-
-    @Override
     public void init(UIObject parent) {
         super.init(parent);
 
@@ -115,24 +115,21 @@ public class UICheckBox extends UIObject {
     public void update(UIObject parent) {
         super.update(parent);
 
-        parent.getCanvasParent().addRenderPart(render);
         text.update(parent);
-    }
-}
-
-class UICheckBoxRender extends UIRenderPart<UICheckBox> {
-    public UICheckBoxRender(UICheckBox object) {
-        super(object);
     }
 
     @Override
     public void render() {
-        Color colorStroke = object.getStyle().getColor("checkboxStroke");
+        Color colorStroke = getStyle().getColor("checkboxStroke");
 
-        glColor4f(object.fillColor.red, object.fillColor.green, object.fillColor.blue, object.fillColor.alpha);
-        GLFastTools.drawRoundedSquare(object.getArea().getRect().setSize(object.boxSize), object.roundFactor);
+        glColor4f(fillColor.red, fillColor.green, fillColor.blue, fillColor.alpha);
+        GLFastTools.drawRoundedSquare(new Rect(Point.ZERO, boxSize), roundFactor);
 
         glColor4f(colorStroke.red, colorStroke.green, colorStroke.blue, colorStroke.alpha);
-        GLFastTools.drawRoundedHollowSquare(object.getArea().getRect().setSize(object.boxSize), object.roundFactor);
+        GLFastTools.drawRoundedHollowSquare(new Rect(Point.ZERO, boxSize), roundFactor);
+
+        GLContext.getCurrent().getViewTools().pushLook(new Rect(textPosition.get(), text.size().get()));
+        text.render();
+        GLContext.getCurrent().getViewTools().popLook();
     }
 }

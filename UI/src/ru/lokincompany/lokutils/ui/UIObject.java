@@ -1,18 +1,14 @@
 package ru.lokincompany.lokutils.ui;
 
 import ru.lokincompany.lokutils.input.Inputs;
-import ru.lokincompany.lokutils.objects.Point;
-import ru.lokincompany.lokutils.objects.Rect;
 import ru.lokincompany.lokutils.objects.Size;
+import ru.lokincompany.lokutils.tools.property.Property;
 import ru.lokincompany.lokutils.ui.animation.Animations;
 import ru.lokincompany.lokutils.ui.eventsystem.CustomersContainer;
 import ru.lokincompany.lokutils.ui.objects.UICanvas;
-import ru.lokincompany.lokutils.ui.positioning.AdvancedRect;
-import ru.lokincompany.lokutils.ui.positioning.PositioningAlgorithm;
-import ru.lokincompany.lokutils.ui.positioning.PositioningLink;
 
 public class UIObject {
-    protected AdvancedRect area = new AdvancedRect();
+    protected Property<Size> size = new Property<>(Size.ZERO);
 
     protected UIStyle style;
     protected String name = "UIObject";
@@ -53,50 +49,8 @@ public class UIObject {
         return this;
     }
 
-    public AdvancedRect getArea() {
-        return area;
-    }
-
-    public UIObject bindArea(AdvancedRect area) {
-        this.area.bind(area);
-
-        return this;
-    }
-
-    public UIObject setPosition(PositioningLink<Point> positionAlgorithm){
-        this.area.setPosition(positionAlgorithm);
-
-        return this;
-    }
-
-    public UIObject setSize(PositioningLink<Size> sizeAlgorithm){
-        this.area.setSize(sizeAlgorithm);
-
-        return this;
-    }
-
-    public UIObject setPosition(PositioningAlgorithm<Point> positionAlgorithm){
-        this.area.setPosition(positionAlgorithm);
-
-        return this;
-    }
-
-    public UIObject setSize(PositioningAlgorithm<Size> sizeAlgorithm){
-        this.area.setSize(sizeAlgorithm);
-
-        return this;
-    }
-
-    public UIObject setPosition(Point position){
-        this.area.setPosition(position);
-
-        return this;
-    }
-
-    public UIObject setSize(Size size){
-        this.area.setSize(size);
-
-        return this;
+    public Property<Size> size(){
+        return size;
     }
 
     public Inputs getInputs() {
@@ -113,8 +67,10 @@ public class UIObject {
 
     public void update(UIObject parent) {
         lastParent = parent;
-
-        area.update(this);
         animations.update();
+    }
+
+    public void render(){
+
     }
 }

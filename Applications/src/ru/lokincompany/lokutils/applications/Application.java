@@ -14,7 +14,6 @@ import ru.lokincompany.lokutils.ui.UIStyle;
 import ru.lokincompany.lokutils.ui.core.UIController;
 import ru.lokincompany.lokutils.ui.core.windows.UIWindow;
 import ru.lokincompany.lokutils.ui.core.windows.UIWindowSystem;
-import ru.lokincompany.lokutils.ui.objects.UIMainCanvas;
 
 import java.io.IOException;
 

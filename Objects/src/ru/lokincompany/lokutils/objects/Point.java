@@ -37,6 +37,14 @@ public class Point {
         return new Point(this.x + x, this.y + y);
     }
 
+    public float distance(Point point){
+        return distance(point.x, point.y);
+    }
+
+    public float distance(float x, float y){
+        return (float)Math.sqrt(Math.pow(x - this.x, 2) + Math.pow(y - this.y, 2));
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

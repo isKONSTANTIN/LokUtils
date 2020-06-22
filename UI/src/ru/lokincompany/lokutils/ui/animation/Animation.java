@@ -44,36 +44,12 @@ public class Animation<T extends UIObject> {
         this.object = object;
     }
 
-    protected void setPosition(float x, float y) {
-        object.getArea().setPosition(new Point(x, y));
-    }
-
     protected void setSize(float width, float height) {
-        object.getArea().setSize(new Size(width, height));
-    }
-
-    protected void moveObject(float x, float y) {
-        object.getArea().setPosition(object.getArea().getRect().position.offset(x, y));
+        object.size().set(new Size(width, height));
     }
 
     protected void stretchObject(float x, float y) {
-        object.getArea().setSize(object.getArea().getRect().size.offset(x, y));
-    }
-
-    protected void softSetPositionObject(float x, float y, float speed) {
-        AdvancedRect rect = object.getArea();
-        rect.setPosition(new Point(
-                softChange(rect.getPosition().x, x, speed),
-                softChange(rect.getPosition().y, y, speed)
-        ));
-    }
-
-    protected void softSetSizeObject(float width, float height, float speed) {
-        AdvancedRect rect = object.getArea();
-        rect.setSize(new Size(
-                softChange(rect.getSize().width, width, speed),
-                softChange(rect.getSize().height, height, speed)
-        ));
+        object.size().set(object.size().get().offset(x, y));
     }
 
     public static float softChange(float source, float end, float speed) {

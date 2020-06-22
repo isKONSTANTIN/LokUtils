@@ -1,45 +1,37 @@
 package ru.lokincompany.lokutils.ui.objects;
 
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.util.vector.Vector2f;
 import ru.lokincompany.lokutils.input.Inputs;
 import ru.lokincompany.lokutils.objects.Point;
+import ru.lokincompany.lokutils.objects.Rect;
 import ru.lokincompany.lokutils.objects.Size;
 import ru.lokincompany.lokutils.render.GLContext;
-import ru.lokincompany.lokutils.render.RenderPart;
-import ru.lokincompany.lokutils.render.tools.GLFastTools;
 import ru.lokincompany.lokutils.render.tools.ViewTools;
+import ru.lokincompany.lokutils.tools.property.Property;
 import ru.lokincompany.lokutils.ui.UIObject;
-import ru.lokincompany.lokutils.ui.UIRenderPart;
 import ru.lokincompany.lokutils.ui.UIStyle;
-import ru.lokincompany.lokutils.ui.eventsystem.Event;
-import ru.lokincompany.lokutils.ui.eventsystem.EventHandler;
 import ru.lokincompany.lokutils.ui.eventsystem.events.MouseClickedEvent;
 import ru.lokincompany.lokutils.ui.eventsystem.events.MouseMoveEvent;
-import ru.lokincompany.lokutils.ui.eventsystem.events.MousePointedEvent;
-import sun.security.util.math.intpoly.P256OrderField;
+import ru.lokincompany.lokutils.ui.positioning.PositioningAlgorithm;
+import ru.lokincompany.lokutils.ui.positioning.PositioningLink;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Vector;
 
 public class UICanvas extends UIObject {
-
-    protected final Object updateSync = new Object();
     protected Vector<UIObject> objects = new Vector<>();
-    protected Vector<RenderPart> renderParts = new Vector<>();
-    protected UICanvasRender render;
+    protected HashMap<UIObject, Property<Point>> objectsPositions = new HashMap<>();
     protected Inputs inputs;
 
     public UICanvas(Inputs inputs, UIStyle style) {
         this.inputs = inputs;
         this.style = style;
-        render = new UICanvasRender(this);
-        setSize(new Size(256, 256));
+        size.set(new Size(256, 256));
 
         customersContainer.addCustomer(event -> {
 
             for (UIObject object : objects) {
-                Point newMouseClickPosition = event.position.relativeTo(area.getX(), area.getY());
+                Point objectPosition = objectsPositions.get(object).get();
+                Point newMouseClickPosition = event.position.relativeTo(objectPosition);
 
                 object.getCustomersContainer().handle(
                         new MouseClickedEvent(newMouseClickPosition, event.clickType, event.button)
@@ -51,9 +43,11 @@ public class UICanvas extends UIObject {
         customersContainer.addCustomer(event -> {
 
             for (UIObject object : objects) {
-                Point newStartPosition = event.startPosition.relativeTo(area.getX(), area.getY());
-                Point newLastPosition = event.lastPosition.relativeTo(area.getX(), area.getY());
-                Point newEndPosition = event.endPosition.relativeTo(area.getX(), area.getY());
+                Point objectPosition = objectsPositions.get(object).get();
+
+                Point newStartPosition = event.startPosition.relativeTo(objectPosition);
+                Point newLastPosition = event.lastPosition.relativeTo(objectPosition);
+                Point newEndPosition = event.endPosition.relativeTo(objectPosition);
 
                 object.getCustomersContainer().handle(
                         new MouseMoveEvent(newStartPosition, newLastPosition, newEndPosition, event.type)
@@ -108,10 +102,27 @@ public class UICanvas extends UIObject {
         return null;
     }
 
+    protected Property<Point> getNewObjectPosition(UIObject object){
+        return new Property<>(Point.ZERO);
+    }
+
     public UICanvas addObject(UIObject object) {
+        return addObject(object, null);
+    }
+
+    public UICanvas addObject(UIObject object, PositioningAlgorithm<Point> algorithm) {
         object.init(this);
         objects.add(object);
+        objectsPositions.put(object, new Property<>(Point.ZERO));
+
+        if (algorithm != null)
+            objectsPositions.get(object).set(() -> algorithm.calculate(object));
+
         return this;
+    }
+
+    public Property<Point> getObjectPosition(UIObject object){
+        return objectsPositions.get(object);
     }
 
     public boolean removeObject(String name) {
@@ -119,7 +130,9 @@ public class UICanvas extends UIObject {
             UIObject object = objects.get(i);
 
             if (object.getName().equals(name)) {
+                objectsPositions.remove(object);
                 objects.remove(i);
+
                 return true;
             }
 
@@ -127,15 +140,9 @@ public class UICanvas extends UIObject {
         return false;
     }
 
-    public void addRenderPart(RenderPart renderPart) {
-        renderParts.add(renderPart);
-    }
-
     @Override
     public void update(UIObject parent) {
         super.update(parent != null ? parent : this);
-
-        renderParts.clear();
 
         for (UIObject object : objects) {
             try {
@@ -144,25 +151,20 @@ public class UICanvas extends UIObject {
                 e.printStackTrace();
             }
         }
-
-        if (parent != null)
-            parent.getCanvasParent().addRenderPart(render);
-    }
-}
-
-class UICanvasRender extends UIRenderPart<UICanvas> {
-
-    public UICanvasRender(UICanvas object) {
-        super(object);
     }
 
     @Override
     public void render() {
-        GLContext.getCurrent().getViewTools().pushLook(object.getArea().getRect());
+        ViewTools viewTools = GLContext.getCurrent().getViewTools();
 
-        for (RenderPart renderPart : object.renderParts)
-            renderPart.render();
+        for (UIObject object : objects){
+            Point objectPosition = objectsPositions.get(object).get();
+            Size objectSize = object.size().get();
 
-        GLContext.getCurrent().getViewTools().popLook();
+            viewTools.pushLook(new Rect(objectPosition.x, objectPosition.y, objectSize.width, objectSize.height));
+            object.render();
+            viewTools.popLook();
+        }
     }
+
 }
