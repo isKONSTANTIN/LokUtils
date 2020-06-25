@@ -2,7 +2,6 @@ package ru.konstanteam.lokutils.ui.layout;
 
 import ru.konstanteam.lokutils.objects.Point;
 import ru.konstanteam.lokutils.objects.Size;
-import ru.konstanteam.lokutils.tools.property.PropertyChangeListener;
 import ru.konstanteam.lokutils.ui.UIObject;
 
 import java.util.HashMap;
@@ -11,16 +10,16 @@ public class BaseLayout extends ObjectFreeLayout {
     protected HashMap<UIObject, Point> positions = new HashMap<>();
     protected float gap;
 
-    public BaseLayout(float gap){
+    public BaseLayout(float gap) {
         this.gap = gap;
     }
 
-    public BaseLayout(){
+    public BaseLayout() {
         this(5);
     }
 
     @Override
-    protected Point getObjectPosition(UIObject object) {
+    protected Point getObjectPos(UIObject object) {
         return positions.get(object);
     }
 
@@ -32,10 +31,10 @@ public class BaseLayout extends ObjectFreeLayout {
 
         Size mySize = size.get();
 
-        for (UIObject object : objects){
+        for (UIObject object : objects) {
             Size objectSize = object.size().get().offset(gap, gap);
 
-            if (filledX + objectSize.width > mySize.width){
+            if (filledX + objectSize.width > mySize.width) {
                 filledY += maxHeightLine;
                 filledX = 0;
                 maxHeightLine = 0;
@@ -50,14 +49,23 @@ public class BaseLayout extends ObjectFreeLayout {
         this.positionsIsValid = true;
     }
 
-    public boolean removeObject(UIObject object){
+    public float getGap() {
+        return gap;
+    }
+
+    public void setGap(float gap) {
+        this.gap = gap;
+        setInvalidPositionsStatus();
+    }
+
+    public boolean removeObject(UIObject object) {
         boolean result = super.removeObject(object);
         if (result)
             positions.remove(object);
         return result;
     }
 
-    public void addObject(UIObject object){
+    public void addObject(UIObject object) {
         super.addObject(object);
         setInvalidPositionsStatus();
     }

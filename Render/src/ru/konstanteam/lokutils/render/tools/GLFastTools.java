@@ -1,6 +1,5 @@
 package ru.konstanteam.lokutils.render.tools;
 
-import org.lwjgl.util.vector.Vector2f;
 import ru.konstanteam.lokutils.objects.Circle;
 import ru.konstanteam.lokutils.objects.Point;
 import ru.konstanteam.lokutils.objects.Rect;
@@ -61,17 +60,19 @@ public class GLFastTools {
         glEnd();
     }
 
-    public static void drawCircle(Circle circle){
-        int pieces = (int)max(circle.radius * PI, 2);
+    public static void drawCircle(Circle circle) {
+        int pieces = (int) max(circle.radius * PI, 2);
         double twicePi = PI * 2;
 
+        Point position = new Point(circle.position.x + circle.radius, circle.position.y + circle.radius);
+
         glBegin(GL_TRIANGLE_FAN);
-        glVertex2f(circle.position.x, circle.position.y);
+        glVertex2f(position.x, position.y);
 
         for (int i = 0; i <= pieces; i++) {
             glVertex2f(
-                    (float) (circle.position.x + (circle.radius * cos(i * twicePi / pieces))),
-                    (float) (circle.position.y + (circle.radius * sin(i * twicePi / pieces)))
+                    (float) (position.x + (circle.radius * cos(i * twicePi / pieces))),
+                    (float) (position.y + (circle.radius * sin(i * twicePi / pieces)))
             );
         }
         glEnd();
@@ -97,13 +98,16 @@ public class GLFastTools {
         if (corners[0]) drawRoundedCorner(rect.getX(), rect.getY() + glRadius, 3 * PI / 2, glRadius, roundingPieces);
         else glVertex2d(rect.getX(), rect.getY());
 
-        if (corners[1]) drawRoundedCorner(rect.getX() + rect.getWidth() - glRadius, rect.getY(), 0.0, glRadius, roundingPieces);
+        if (corners[1])
+            drawRoundedCorner(rect.getX() + rect.getWidth() - glRadius, rect.getY(), 0.0, glRadius, roundingPieces);
         else glVertex2d(rect.getX() + rect.getWidth(), rect.getY());
 
-        if (corners[2]) drawRoundedCorner(rect.getX() + rect.getWidth(), rect.getY() + rect.getHeight() - glRadius, PI / 2, glRadius, roundingPieces);
+        if (corners[2])
+            drawRoundedCorner(rect.getX() + rect.getWidth(), rect.getY() + rect.getHeight() - glRadius, PI / 2, glRadius, roundingPieces);
         else glVertex2d(rect.getX() + rect.getWidth(), rect.getY() + rect.getHeight());
 
-        if (corners[3]) drawRoundedCorner(rect.getX() + glRadius, rect.getY() + rect.getHeight(), PI, glRadius, roundingPieces);
+        if (corners[3])
+            drawRoundedCorner(rect.getX() + glRadius, rect.getY() + rect.getHeight(), PI, glRadius, roundingPieces);
         else glVertex2d(rect.getX(), rect.getY() + rect.getHeight());
 
         glEnd();
@@ -113,11 +117,11 @@ public class GLFastTools {
         drawRoundedSquare(rect, glRadius, roundingPieces, new boolean[]{true, true, true, true});
     }
 
-    public static float getOptimalGlRadius(Rect rect, float radius){
+    public static float getOptimalGlRadius(Rect rect, float radius) {
         return min(rect.getWidth(), rect.getHeight()) / 2 * radius;
     }
 
-    public static int getOptimalRoundingPieces(float glRadius){
+    public static int getOptimalRoundingPieces(float glRadius) {
         return (int) max(Math.ceil(glRadius * PI), 2);
     }
 

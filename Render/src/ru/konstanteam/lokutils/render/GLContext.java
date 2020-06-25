@@ -8,10 +8,10 @@ import java.util.concurrent.locks.ReentrantLock;
 import static org.lwjgl.glfw.GLFW.glfwMakeContextCurrent;
 
 public class GLContext {
+    private final static ReentrantLock lock = new ReentrantLock();
     private static volatile GLContext bindedContext;
     private final Window window;
     private final long threadID;
-    private final static ReentrantLock lock = new ReentrantLock();
     private ViewTools viewTools;
 
     public GLContext(Window window) {

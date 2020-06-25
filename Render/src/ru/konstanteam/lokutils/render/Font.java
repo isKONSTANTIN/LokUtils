@@ -15,30 +15,26 @@ import java.awt.image.BufferedImage;
 import java.nio.ByteBuffer;
 import java.util.HashMap;
 
-import static org.lwjgl.glfw.GLFW.glfwGetCurrentContext;
 import static org.lwjgl.opengl.GL11.*;
 
 class Glyph {
-
     public final int width;
     public final int height;
     public final int x;
     public final int y;
-    public final float advance;
 
-    public Glyph(int width, int height, int x, int y, float advance) {
+    public Glyph(int width, int height, int x, int y) {
         this.width = width;
         this.height = height;
         this.x = x;
         this.y = y;
-        this.advance = advance;
     }
 }
 
 public class Font {
     private HashMap<Character, Glyph> glyphs;
     private Texture texture;
-    private int fontHeight;
+    private float fontHeight;
     private float spaceSize;
 
     public HashMap<Character, Glyph> getGlyphs() {
@@ -49,7 +45,7 @@ public class Font {
         return texture;
     }
 
-    public int getFontHeight() {
+    public float getFontHeight() {
         return fontHeight;
     }
 
@@ -60,8 +56,8 @@ public class Font {
     public Size getSize(String text, Size maxSize) {
         Vector2f result = new Vector2f(0, fontHeight);
 
-        int drawX = 0;
-        int drawY = 0;
+        float drawX = 0;
+        float drawY = 0;
 
         for (int i = 0; i < text.length(); i++) {
             char ch = text.charAt(i);
@@ -90,8 +86,8 @@ public class Font {
                 }
             }
 
-            int width = drawX + g.width;
-            int height = drawY + g.height;
+            float width = drawX + g.width;
+            float height = drawY + g.height;
 
             result.x = Math.max(width, result.x);
             result.y = Math.max(height, result.y);
@@ -104,62 +100,9 @@ public class Font {
         return new Size(result);
     }
 
-    public void inversionDrawText(String text, Vector2f position, Vector2f maxSize, Color color) {
-        float drawX = position.x + maxSize.x;
-        float drawY = position.y;
-
-        texture.bind();
-        glBegin(GL_QUADS);
-
-        for (int i = text.length() - 1; i >= 0; i--) {
-            char ch = text.charAt(i);
-
-            if (ch == '\r') continue;
-
-            Glyph g = glyphs.get(ch);
-
-            if (g == null) {
-                drawX -= spaceSize;
-                continue;
-            }
-
-            drawX -= g.width;
-
-            if (drawX < position.x)
-                break;
-
-            float width = drawX + g.width;
-            float height = drawY + g.height;
-
-            float glTexX = g.x / (float) texture.getSize().getX();
-            float glTexY = g.y / (float) texture.getSize().getY();
-            float glTexWidth = (g.x + g.width) / (float) texture.getSize().getX();
-            float glTexHeight = (g.y + g.height) / (float) texture.getSize().getY();
-
-            glColor4d(color.red, color.green, color.blue, color.alpha);
-
-            glTexCoord2f(glTexX, glTexHeight);
-            glVertex3f(drawX, drawY, 0);
-
-            glTexCoord2f(glTexWidth, glTexHeight);
-            glVertex3f(width, drawY, 0);
-
-            glTexCoord2f(glTexWidth, glTexY);
-            glVertex3f(width, height, 0);
-
-            glTexCoord2f(glTexX, glTexY);
-            glVertex3f(drawX, height, 0);
-
-            spaceSize += g.width;
-            spaceSize /= 2f;
-        }
-        glEnd();
-        GL11.glBindTexture(GL_TEXTURE_2D, 0);
-    }
-
     public void drawText(String text, Rect area, Color color) {
-        int drawX = (int)area.getX();
-        int drawY = (int)area.getY();
+        float drawX = area.getX();
+        float drawY = area.getY();
 
         texture.bind();
         glBegin(GL_QUADS);
@@ -168,7 +111,7 @@ public class Font {
             char ch = text.charAt(i);
             if (ch == '\n') {
                 drawY += fontHeight;
-                drawX = (int)area.getX();
+                drawX = area.getX();
                 continue;
             }
             if (ch == '\r') continue;
@@ -185,7 +128,7 @@ public class Font {
                 if (maxSize.width > 0 && drawX + g.width > maxSize.width + area.getX()) {
                     if (maxSize.height > 0 && drawY + fontHeight + g.height > maxSize.height + area.getY())
                         break;
-                    drawX = (int)area.getX();
+                    drawX = area.getX();
                     drawY += fontHeight;
                 }
             }
@@ -201,16 +144,16 @@ public class Font {
             glColor4d(color.red, color.green, color.blue, color.alpha);
 
             glTexCoord2f(glTexX, glTexHeight);
-            glVertex3f(drawX, drawY, 0);
+            glVertex2f(drawX, drawY);
 
             glTexCoord2f(glTexWidth, glTexHeight);
-            glVertex3f(width, drawY, 0);
+            glVertex2f(width, drawY);
 
             glTexCoord2f(glTexWidth, glTexY);
-            glVertex3f(width, height, 0);
+            glVertex2f(width, height);
 
             glTexCoord2f(glTexX, glTexY);
-            glVertex3f(drawX, height, 0);
+            glVertex2f(drawX, height);
 
             spaceSize += g.width;
             spaceSize /= 2f;
@@ -238,8 +181,6 @@ public class Font {
     }
 
     private void loadBasic(java.awt.Font font, String symbols) {
-        long context = glfwGetCurrentContext();
-
         HashMap<Character, Glyph> glyphs = new HashMap<>();
         HashMap<Character, BufferedImage> bufferedImages = new HashMap<>();
 
@@ -286,7 +227,7 @@ public class Font {
             BufferedImage charImage = bufferedImages.get(c);
             int charHeight = charImage.getHeight();
 
-            Glyph glyph = new Glyph(charImage.getWidth(), charHeight, x, image.getHeight() - charHeight, 0f);
+            Glyph glyph = new Glyph(charImage.getWidth(), charHeight, x, image.getHeight() - charHeight);
             g.drawImage(charImage, x, 0, null);
             x += glyph.width;
             glyphs.put(c, glyph);

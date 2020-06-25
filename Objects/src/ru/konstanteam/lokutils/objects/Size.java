@@ -5,7 +5,7 @@ import org.lwjgl.util.vector.Vector2f;
 import java.util.Objects;
 
 public class Size {
-    public static Size ZERO = new Size(0,0);
+    public static Size ZERO = new Size(0, 0);
 
     public final float width;
     public final float height;
@@ -25,11 +25,11 @@ public class Size {
         this.height = height;
     }
 
-    public Size setWidth(float width){
+    public Size setWidth(float width) {
         return new Size(width, height);
     }
 
-    public Size setHeight(float height){
+    public Size setHeight(float height) {
         return new Size(width, height);
     }
 

@@ -1,21 +1,12 @@
 package ru.konstanteam.lokutils.applications;
 
-import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector4f;
-import ru.konstanteam.lokutils.objects.Rect;
-import ru.konstanteam.lokutils.objects.Size;
 import ru.konstanteam.lokutils.objects.Vector2i;
-import ru.konstanteam.lokutils.render.GLContext;
 import ru.konstanteam.lokutils.render.Window;
-import ru.konstanteam.lokutils.render.tools.GLFastTools;
-import ru.konstanteam.lokutils.render.tools.ViewTools;
 import ru.konstanteam.lokutils.tools.ExecutorServices;
 import ru.konstanteam.lokutils.ui.UIStyle;
 import ru.konstanteam.lokutils.ui.core.UIController;
-import ru.konstanteam.lokutils.ui.core.windows.UIWindow;
 import ru.konstanteam.lokutils.ui.core.windows.UIWindowSystem;
-
-import java.io.IOException;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -26,14 +17,14 @@ public class Application<T extends UIController> implements Runnable {
     protected ApplicationPreference<T> preference;
     protected boolean opened;
 
-    public Application(ApplicationPreference<T> preference){
+    public Application(ApplicationPreference<T> preference) {
         this.preference = preference;
         window = preference.window;
 
         opened = true;
     }
 
-    public Application(){
+    public Application() {
         this(new ApplicationPreference(UIWindowSystem.class));
     }
 
@@ -45,20 +36,20 @@ public class Application<T extends UIController> implements Runnable {
         this.opened = false;
     }
 
-    public void open(){
+    public void open() {
         ExecutorServices.getCachedService().submit(this);
     }
 
-    public void renderEvent(){
+    public void renderEvent() {
         glClearColor(0.6f, 0.6f, 0.6f, 1);
         glClear(GL_COLOR_BUFFER_BIT);
     }
 
-    public void updateEvent(){
+    public void updateEvent() {
 
     }
 
-    public void initEvent(){
+    public void initEvent() {
 
     }
 
@@ -72,7 +63,7 @@ public class Application<T extends UIController> implements Runnable {
             window.getGlContext().bind();
             UIStyle.generateDefaultStyle();
 
-            uiController = (T)preference.uiController.getConstructors()[0].newInstance(window);
+            uiController = (T) preference.uiController.getConstructors()[0].newInstance(window);
 
             initEvent();
 

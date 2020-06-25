@@ -3,7 +3,7 @@ package ru.konstanteam.lokutils.objects;
 import java.util.Objects;
 
 public class Point {
-    public static Point ZERO = new Point(0,0);
+    public static Point ZERO = new Point(0, 0);
 
     public final float x;
     public final float y;
@@ -13,11 +13,11 @@ public class Point {
         this.y = y;
     }
 
-    public Point setX(float x){
+    public Point setX(float x) {
         return new Point(x, y);
     }
 
-    public Point setY(float y){
+    public Point setY(float y) {
         return new Point(x, y);
     }
 
@@ -37,12 +37,12 @@ public class Point {
         return new Point(this.x + x, this.y + y);
     }
 
-    public float distance(Point point){
+    public float distance(Point point) {
         return distance(point.x, point.y);
     }
 
-    public float distance(float x, float y){
-        return (float)Math.sqrt(Math.pow(x - this.x, 2) + Math.pow(y - this.y, 2));
+    public float distance(float x, float y) {
+        return (float) Math.sqrt(Math.pow(x - this.x, 2) + Math.pow(y - this.y, 2));
     }
 
     @Override

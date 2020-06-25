@@ -14,11 +14,11 @@ public class MouseClickedEvent extends Event {
         this.clickType = clickType;
     }
 
-    public MouseClickedEvent offset(Point position){
+    public MouseClickedEvent offset(Point position) {
         return new MouseClickedEvent(this.position.offset(position), clickType, button);
     }
 
-    public MouseClickedEvent relativeTo(Point position){
+    public MouseClickedEvent relativeTo(Point position) {
         return new MouseClickedEvent(this.position.relativeTo(position), clickType, button);
     }
 

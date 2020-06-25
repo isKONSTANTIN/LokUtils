@@ -13,6 +13,34 @@ public class Animation<T extends UIObject> {
         this.name = name;
     }
 
+    public static float softChange(float source, float end, float speed) {
+        return source + (end - source) * (speed / 10f);
+    }
+
+    public static Color softColorChange(Color source, Color end, float speed) {
+        return new Color(
+                softChange(source.red, end.red, speed),
+                softChange(source.green, end.green, speed),
+                softChange(source.blue, end.blue, speed),
+                softChange(source.alpha, end.alpha, speed)
+        );
+    }
+
+    public static boolean softChangeDone(float source, float end, float measurementError) {
+        return Math.abs(end - source) < measurementError;
+    }
+
+    public static boolean softChangeDone(float source, float end) {
+        return softChangeDone(source, end, 0.02f);
+    }
+
+    public static boolean softColorChangeDone(Color source, Color end) {
+        return softChangeDone(source.red, end.red) &&
+                softChangeDone(source.green, end.green) &&
+                softChangeDone(source.blue, end.blue) &&
+                softChangeDone(source.alpha, end.alpha);
+    }
+
     public String getName() {
         return name;
     }
@@ -45,34 +73,6 @@ public class Animation<T extends UIObject> {
 
     protected void stretchObject(float x, float y) {
         object.size().set(object.size().get().offset(x, y));
-    }
-
-    public static float softChange(float source, float end, float speed) {
-        return source + (end - source) * (speed / 10f);
-    }
-
-    public static Color softColorChange(Color source, Color end, float speed) {
-        return new Color(
-                softChange(source.red, end.red, speed),
-                softChange(source.green, end.green, speed),
-                softChange(source.blue, end.blue, speed),
-                softChange(source.alpha, end.alpha, speed)
-        );
-    }
-
-    public static boolean softChangeDone(float source, float end, float measurementError) {
-        return Math.abs(end - source) < measurementError;
-    }
-
-    public static boolean softChangeDone(float source, float end) {
-        return softChangeDone(source, end, 0.02f);
-    }
-
-    public static boolean softColorChangeDone(Color source, Color end) {
-        return softChangeDone(source.red, end.red) &&
-                softChangeDone(source.green, end.green) &&
-                softChangeDone(source.blue, end.blue) &&
-                softChangeDone(source.alpha, end.alpha);
     }
 
     public void update() {

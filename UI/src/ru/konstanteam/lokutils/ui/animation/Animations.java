@@ -40,20 +40,20 @@ public class Animations {
         return this;
     }
 
-    public boolean animationIsRun(String name){
+    public boolean animationIsRun(String name) {
         if (!animationHashMap.containsKey(name)) return false;
 
         return animationHashMap.get(name).isRun;
     }
 
-    public boolean somethingIsRun(){
+    public boolean somethingIsRun() {
         for (Animation animation : animationHashMap.values())
             if (animation.isRun) return true;
 
         return false;
     }
 
-    public Animations addAnimationToTaskList(String name){
+    public Animations addAnimationToTaskList(String name) {
         animationsTasks.add(name);
 
         return this;

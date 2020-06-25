@@ -7,8 +7,6 @@ import ru.konstanteam.lokutils.objects.Size;
 import ru.konstanteam.lokutils.render.GLContext;
 import ru.konstanteam.lokutils.render.tools.ViewTools;
 import ru.konstanteam.lokutils.tools.Removable;
-import ru.konstanteam.lokutils.tools.property.Property;
-import ru.konstanteam.lokutils.tools.property.PropertyChangeListener;
 import ru.konstanteam.lokutils.ui.UIObject;
 import ru.konstanteam.lokutils.ui.UIStyle;
 import ru.konstanteam.lokutils.ui.eventsystem.events.MouseClickedEvent;
@@ -16,7 +14,6 @@ import ru.konstanteam.lokutils.ui.eventsystem.events.MouseMoveEvent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Vector;
 
 public abstract class UIAbstractLayout extends UIObject {
     protected ArrayList<UIObject> objects = new ArrayList<>();
@@ -32,7 +29,7 @@ public abstract class UIAbstractLayout extends UIObject {
 
         customersContainer.addCustomer(event -> {
             for (UIObject object : objects) {
-                Point objectPosition = getObjectPosition(object);
+                Point objectPosition = getObjectPos(object);
                 Point newMouseClickPosition = event.position.relativeTo(objectPosition);
 
                 object.getCustomersContainer().handle(
@@ -43,7 +40,7 @@ public abstract class UIAbstractLayout extends UIObject {
 
         customersContainer.addCustomer(event -> {
             for (UIObject object : objects) {
-                Point objectPosition = getObjectPosition(object);
+                Point objectPosition = getObjectPos(object);
 
                 Point newStartPosition = event.startPosition.relativeTo(objectPosition);
                 Point newLastPosition = event.lastPosition.relativeTo(objectPosition);
@@ -74,7 +71,7 @@ public abstract class UIAbstractLayout extends UIObject {
         return this;
     }
 
-    protected abstract Point getObjectPosition(UIObject object);
+    protected abstract Point getObjectPos(UIObject object);
 
     protected void addObject(UIObject object) {
         object.init(this);
@@ -89,7 +86,7 @@ public abstract class UIAbstractLayout extends UIObject {
     protected boolean removeObject(UIObject object) {
         boolean result = objects.remove(object);
 
-        if (result){
+        if (result) {
             listeners.get(object).delete();
             listeners.remove(object);
 
@@ -101,7 +98,7 @@ public abstract class UIAbstractLayout extends UIObject {
 
     protected abstract void calculateAll();
 
-    protected void setInvalidPositionsStatus(){
+    protected void setInvalidPositionsStatus() {
         positionsIsValid = false;
     }
 
@@ -126,10 +123,10 @@ public abstract class UIAbstractLayout extends UIObject {
         ViewTools viewTools = GLContext.getCurrent().getViewTools();
         Size mySize = size().get();
 
-        viewTools.pushLook(new Rect(0,0, mySize.width, mySize.height));
+        viewTools.pushLook(new Rect(0, 0, mySize.width, mySize.height));
 
-        for (UIObject object : objects){
-            Point objectPosition = getObjectPosition(object);
+        for (UIObject object : objects) {
+            Point objectPosition = getObjectPos(object);
             Size objectSize = object.size().get();
 
             viewTools.pushLook(new Rect(objectPosition.x, objectPosition.y, objectSize.width, objectSize.height));

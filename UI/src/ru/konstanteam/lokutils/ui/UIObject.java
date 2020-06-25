@@ -49,7 +49,7 @@ public class UIObject {
         return this;
     }
 
-    public Property<Size> size(){
+    public Property<Size> size() {
         return size;
     }
 
@@ -57,11 +57,11 @@ public class UIObject {
         return lastParent.getInputs();
     }
 
-    public CustomersContainer getCustomersContainer(){
+    public CustomersContainer getCustomersContainer() {
         return customersContainer;
     }
 
-    public void init(UIObject parent){
+    public void init(UIObject parent) {
         lastParent = parent;
     }
 
@@ -70,7 +70,7 @@ public class UIObject {
         animations.update();
     }
 
-    public void render(){
+    public void render() {
 
     }
 }

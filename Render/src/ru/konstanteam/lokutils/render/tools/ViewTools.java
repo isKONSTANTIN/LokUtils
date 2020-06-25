@@ -13,13 +13,14 @@ import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.util.glu.GLU.gluOrtho2D;
 
 public class ViewTools {
+    private static final int SMOOTHING_DEVIATION = 1;
 
     private Vector4f orthoView = new Vector4f();
     private ArrayList<Rect> stackScissor = new ArrayList<>();
     private ArrayList<TranslateState> stackTranslate = new ArrayList<>();
     private Window window;
 
-    public ViewTools(Window window){
+    public ViewTools(Window window) {
         this.window = window;
     }
 
@@ -30,14 +31,14 @@ public class ViewTools {
         return stackScissor.get(id);
     }
 
-    public TranslateState getCurrentTranslate(){
+    public TranslateState getCurrentTranslate() {
         int id = stackTranslate.size() - 1;
         if (id < 0) return null;
 
         return stackTranslate.get(id);
     }
 
-    public void pushScissor(Rect scissor){
+    public void pushScissor(Rect scissor) {
         if (stackScissor.size() == 0) GL11.glEnable(GL11.GL_SCISSOR_TEST);
 
         TranslateState translate = getCurrentTranslate();
@@ -50,15 +51,16 @@ public class ViewTools {
             globalScissor = currentScissor.intersect(globalScissor);
 
         GL11.glScissor(
-                (int) globalScissor.getX(),
-                (int) globalScissor.getY(),
-                (int) globalScissor.getWidth(),
-                (int) globalScissor.getHeight());
+                (int) Math.ceil(globalScissor.getX()) - SMOOTHING_DEVIATION,
+                (int) Math.ceil(globalScissor.getY()) - SMOOTHING_DEVIATION,
+                (int) Math.ceil(globalScissor.getWidth()) + SMOOTHING_DEVIATION * 2,
+                (int) Math.ceil(globalScissor.getHeight()) + SMOOTHING_DEVIATION * 2
+        );
 
         stackScissor.add(globalScissor);
     }
 
-    public void pushScissor(Point position, Size size){
+    public void pushScissor(Point position, Size size) {
         pushScissor(new Rect(position, size));
     }
 
@@ -75,13 +77,14 @@ public class ViewTools {
 
         Rect scissor = getCurrentScissor();
         GL11.glScissor(
-                (int) scissor.getX(),
-                (int) scissor.getY(),
-                (int) scissor.getWidth(),
-                (int) scissor.getHeight());
+                (int) Math.ceil(scissor.getX()) - SMOOTHING_DEVIATION,
+                (int) Math.ceil(scissor.getY()) - SMOOTHING_DEVIATION,
+                (int) Math.ceil(scissor.getWidth()) + SMOOTHING_DEVIATION * 2,
+                (int) Math.ceil(scissor.getHeight()) + SMOOTHING_DEVIATION * 2
+        );
     }
 
-    public void pushTranslate(Point translate){
+    public void pushTranslate(Point translate) {
         TranslateState currentTranslate = getCurrentTranslate();
 
         GL11.glTranslatef(translate.x, translate.y, 0);
@@ -98,12 +101,12 @@ public class ViewTools {
         GL11.glTranslatef(-currentTranslate.local.x, -currentTranslate.local.y, 0);
     }
 
-    public void pushLook(Rect rect){
+    public void pushLook(Rect rect) {
         pushTranslate(rect.position);
         pushScissor(Point.ZERO, rect.size);
     }
 
-    public void popLook(){
+    public void popLook() {
         popScissor();
         popTranslate();
     }

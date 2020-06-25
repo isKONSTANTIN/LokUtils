@@ -10,7 +10,7 @@ public class FreeLayout extends ObjectFreeLayout {
     protected HashMap<UIObject, Property<Point>> positions = new HashMap<>();
 
     @Override
-    protected Point getObjectPosition(UIObject object) {
+    protected Point getObjectPos(UIObject object) {
         return positions.get(object).get();
     }
 
@@ -23,20 +23,20 @@ public class FreeLayout extends ObjectFreeLayout {
 
     }
 
-    public boolean removeObject(UIObject object){
+    public boolean removeObject(UIObject object) {
         boolean result = super.removeObject(object);
         if (result)
             positions.remove(object);
         return result;
     }
 
-    public void addObject(UIObject object, Property<Point> position){
+    public void addObject(UIObject object, Property<Point> position) {
         super.addObject(object);
 
         positions.put(object, position);
     }
 
-    public void addObject(UIObject object, StickyPosition stickyPosition){
+    public void addObject(UIObject object, StickyPosition stickyPosition) {
         Property<Point> property = new Property<>();
         property.set(() -> stickyPosition.getPosition(object.size().get(), size().get()));
 

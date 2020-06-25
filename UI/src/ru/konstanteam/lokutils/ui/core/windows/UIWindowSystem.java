@@ -13,27 +13,27 @@ import ru.konstanteam.lokutils.ui.eventsystem.events.ClickType;
 import ru.konstanteam.lokutils.ui.eventsystem.events.MouseClickedEvent;
 import ru.konstanteam.lokutils.ui.eventsystem.events.MouseMoveEvent;
 import ru.konstanteam.lokutils.ui.eventsystem.events.MoveType;
-import ru.konstanteam.lokutils.ui.objects.UIButton.UIButton;
-import sun.nio.cs.ext.JIS_X_0208_MS932;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class UIWindowSystem extends UIController {
     protected ArrayList<UIWindow> windows = new ArrayList<>();
     protected ArrayList<WindowTask> windowTasks = new ArrayList<>();
+    protected HashMap<UIWindow, Boolean> resizeStatus = new HashMap<>();
 
     public UIWindowSystem(Window window) {
         super(window);
     }
 
-    public Removable addWindow(UIWindow window){
+    public Removable addWindow(UIWindow window) {
         window.init(this);
 
         windows.add(window);
         return () -> closeWindow(window);
     }
 
-    public void closeWindow(UIWindow window){
+    public void closeWindow(UIWindow window) {
         windowTasks.add(() -> windows.remove(window));
     }
 
@@ -47,7 +47,7 @@ public class UIWindowSystem extends UIController {
     }
 
     protected boolean handleMouseClickedEvent(MouseClickedEvent event, UIWindow window) {
-        Rect barField = new Rect(window.position, window.contentSize.setHeight(window.barSize));
+        Rect barField = window.getBar().getRect().offset(window.position);
         Rect contentField = new Rect(window.position.offset(0, barField.getHeight()), window.contentSize);
 
         if (event.clickType == ClickType.UNCLICKED) {
@@ -72,26 +72,28 @@ public class UIWindowSystem extends UIController {
     }
 
     protected boolean handleMouseMoveEvent(MouseMoveEvent event, UIWindow window) {
-        Rect barField = new Rect(window.position, window.contentSize.setHeight(window.barSize));
+        Rect barField = window.getBar().getRect().offset(window.position);
         Rect contentField = new Rect(window.position.offset(0, barField.getHeight()), window.contentSize);
 
         boolean insideBar = barField.inside(event.lastPosition);
         boolean insideContent = contentField.inside(event.lastPosition);
 
-        if (contentField.getBottomRightPoint().distance(event.lastPosition) < 3){
+        if (contentField.getBottomRightPoint().distance(event.startPosition) < 3 && event.type == MoveType.STARTED || event.type == MoveType.CONTINUED && resizeStatus.getOrDefault(window, false)) {
             if (event.type == MoveType.STARTED)
                 bringToFront(window);
 
             Point deltaPos = event.endPosition.relativeTo(event.lastPosition);
+            Size newSize = window.contentSize.offset(deltaPos.x, deltaPos.y);
 
-            window.contentSize = window.contentSize.offset(deltaPos.x, deltaPos.y);
-            /*
-                    = new Size(
-                    event.startPosition.x - window.position.x + deltaPos.x,
-                    event.startPosition.y - window.position.y + deltaPos.y
-            );*/
+            window.contentSize = new Size(
+                    Math.max(newSize.width, window.minContentSize.width),
+                    Math.max(newSize.height, window.minContentSize.height)
+            );
+            resizeStatus.put(window, true);
             return true;
         }
+
+        resizeStatus.put(window, false);
 
         if (!insideBar && !insideContent)
             return false;
@@ -129,9 +131,9 @@ public class UIWindowSystem extends UIController {
     public void render() {
         ViewTools viewTools = GLContext.getCurrent().getViewTools();
 
-        for (int i = windows.size() - 1; i >= 0; i--){
+        for (int i = windows.size() - 1; i >= 0; i--) {
             UIWindow window = windows.get(i);
-            Rect barField = new Rect(window.position, window.contentSize.setHeight(window.barSize));
+            Rect barField = window.getBar().getRect().offset(window.position);
             Rect contentField = new Rect(window.position.offset(0, barField.getHeight()), window.contentSize);
 
             viewTools.pushLook(barField);

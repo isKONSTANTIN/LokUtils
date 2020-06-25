@@ -5,7 +5,7 @@ import ru.konstanteam.lokutils.ui.eventsystem.events.ClickType;
 import ru.konstanteam.lokutils.ui.eventsystem.events.MouseClickedEvent;
 
 public class EventTools {
-    public static boolean realized(MouseClickedEvent event, MouseClickedEvent lastEvent, Field field){
+    public static boolean realized(MouseClickedEvent event, MouseClickedEvent lastEvent, Field field) {
         if (lastEvent == null) return false;
 
         boolean eventClickInside = field.inside(event.position);

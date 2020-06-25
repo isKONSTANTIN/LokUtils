@@ -1,43 +1,46 @@
 package ru.konstanteam.lokutils.ui.core.windows;
 
 import org.lwjgl.opengl.GL11;
-import ru.konstanteam.lokutils.objects.*;
-import ru.konstanteam.lokutils.render.Font;
+import ru.konstanteam.lokutils.objects.Color;
+import ru.konstanteam.lokutils.objects.Point;
+import ru.konstanteam.lokutils.objects.Rect;
+import ru.konstanteam.lokutils.objects.Size;
 import ru.konstanteam.lokutils.render.GLContext;
 import ru.konstanteam.lokutils.render.tools.GLFastTools;
 import ru.konstanteam.lokutils.ui.UIStyle;
+import ru.konstanteam.lokutils.ui.core.windows.bar.UIAbstractWindowBar;
+import ru.konstanteam.lokutils.ui.core.windows.bar.UIBaseWindowBar;
 import ru.konstanteam.lokutils.ui.eventsystem.Event;
 import ru.konstanteam.lokutils.ui.eventsystem.events.MouseMoveEvent;
 import ru.konstanteam.lokutils.ui.eventsystem.events.MoveType;
 import ru.konstanteam.lokutils.ui.layout.UIAbstractLayout;
 
-public class UIWindow<T extends UIAbstractLayout> {
-    protected Size contentSize;
+public class UIWindow<T extends UIAbstractLayout, R extends UIAbstractWindowBar> {
+    protected Size contentSize = new Size(150, 150);
+    protected Size minContentSize = new Size(50, 50);
+
     protected Point position = Point.ZERO;
     protected Point lastMoveDelta = Point.ZERO;
-    protected float barSize = 14;
-    protected float buttonsSize;
 
-    protected WindowButton closeButton;
-    protected WindowButton minimizeButton;
-
+    protected R bar;
     protected T rootLayout;
+
     protected UIWindowSystem windowSystem;
     protected UIStyle style;
     protected boolean minimized;
 
-    protected String title;
-
-    public UIWindow(T rootLayout) {
+    public UIWindow(T rootLayout, R bar) {
         this.rootLayout = rootLayout;
+        this.bar = bar;
 
-        this.contentSize = new Size(150, 150);
         this.rootLayout.size().set(() -> contentSize);
-
-        this.buttonsSize = barSize / 1.3f;
     }
 
-    public boolean canClose(){
+    public UIWindow(T rootLayout) {
+        this(rootLayout, (R) new UIBaseWindowBar());
+    }
+
+    public boolean canClose() {
         return true;
     }
 
@@ -57,16 +60,12 @@ public class UIWindow<T extends UIAbstractLayout> {
         return rootLayout;
     }
 
+    public R getBar() {
+        return bar;
+    }
+
     public Rect getField() {
-        return new Rect(position, contentSize.offset(0, barSize));
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
+        return new Rect(position, contentSize).merge(bar.getRect().offset(position));
     }
 
     public Size getContentSize() {
@@ -91,75 +90,57 @@ public class UIWindow<T extends UIAbstractLayout> {
         if (this.style == null)
             this.style = windowSystem.getStyle();
 
-        this.closeButton = new WindowButton(
-                new Circle(new Point(contentSize.width - buttonsSize, barSize / 2f), buttonsSize / 2f), this,
-                style.getColor("windowCloseButtonPressed"),
-                style.getColor("windowCloseButtonBackground"),
-                () -> windowSystem.closeWindow(this)
-        );
-
-        this.minimizeButton = new WindowButton(
-                new Circle(new Point(contentSize.width - buttonsSize * 2.2f, barSize / 2f), buttonsSize / 2f), this,
-                style.getColor("windowMinimizeButtonPressed"),
-                style.getColor("windowMinimizeButtonBackground"),
-                () -> minimized = !minimized
-        );
+        bar.init(this);
     }
 
-    public void handleBarEvent(Event event){
-        if (canClose())
-            closeButton.getCustomersContainer().handle(event);
-        minimizeButton.getCustomersContainer().handle(event);
-
-        if (event instanceof MouseMoveEvent){
+    public void handleBarEvent(Event event) {
+        if (event instanceof MouseMoveEvent) {
             MouseMoveEvent mouseMoveEvent = (MouseMoveEvent) event;
 
-            if (mouseMoveEvent.type == MoveType.STARTED){
+            if (mouseMoveEvent.type == MoveType.STARTED) {
                 lastMoveDelta = mouseMoveEvent.deltaPositionChange;
             }
-            if (lastMoveDelta != Point.ZERO){
+            if (lastMoveDelta != Point.ZERO) {
                 position = position.offset(mouseMoveEvent.deltaPositionChange.relativeTo(lastMoveDelta));
                 lastMoveDelta = mouseMoveEvent.deltaPositionChange;
             }
-        }else {
+        } else {
             lastMoveDelta = Point.ZERO;
+            bar.getCustomersContainer().handle(event);
         }
     }
 
-    public void handleContentEvent(Event event){
-        rootLayout.getCustomersContainer().handle(event);
+    public boolean isMinimized() {
+        return minimized;
     }
 
-    public void renderBar(){
-        Color background = rootLayout.getStyle().getColor("windowBarBackground");
-        float glRadius = GLFastTools.getOptimalGlRadius(new Rect(Point.ZERO, contentSize),0.1f);
-        barSize = Math.max(barSize, glRadius);
-
-        if (barSize == glRadius)
-            barSize = (float)Math.ceil(barSize);
-
-        GL11.glColor4f(background.red, background.green, background.blue, background.alpha);
-        GLFastTools.drawRoundedSquare(new Rect(Point.ZERO, contentSize.setHeight(barSize)), glRadius, GLFastTools.getOptimalRoundingPieces(glRadius), new boolean[]{true, true, false, false});
-
-        if (title != null && title.length() > 0){
-            Font font = style.getFont("windowTitle");
-            Size titleSize = font.getSize(title, null);
-            font.drawText(title, new Rect(5,barSize / 2 - titleSize.height / 2,0,0), Color.WHITE);
-        }
-        if (canClose())
-            closeButton.render();
-        minimizeButton.render();
+    public void setMinimized(boolean minimized) {
+        this.minimized = minimized;
     }
 
-    public void renderContent(){
+    public Size getMinContentSize() {
+        return minContentSize;
+    }
+
+    public void handleContentEvent(Event event) {
+        if (!minimized)
+            rootLayout.getCustomersContainer().handle(event);
+    }
+
+    public void renderBar() {
+        bar.update();
+
+        bar.render();
+    }
+
+    public void renderContent() {
         if (minimized) return;
 
         Rect contentField = new Rect(Point.ZERO, contentSize);
         Color background = rootLayout.getStyle().getColor("windowContentBackground");
-        float glRadius = GLFastTools.getOptimalGlRadius(contentField,0.1f);
 
         GL11.glColor4f(background.red, background.green, background.blue, background.alpha);
-        GLFastTools.drawRoundedSquare(contentField, glRadius, GLFastTools.getOptimalRoundingPieces(glRadius), new boolean[]{false, false, true, true});
+        GLFastTools.drawSquare(contentField);
 
         rootLayout.update(null);
 

@@ -5,7 +5,6 @@ import org.lwjgl.glfw.GLFWMouseButtonCallback;
 import org.lwjgl.glfw.GLFWScrollCallback;
 import org.lwjgl.util.vector.Vector2f;
 import ru.konstanteam.lokutils.objects.Point;
-import ru.konstanteam.lokutils.objects.Vector2i;
 import ru.konstanteam.lokutils.render.GLContext;
 
 import java.nio.DoubleBuffer;
@@ -22,9 +21,9 @@ public class Mouse {
     protected Vector2f lastMouseScroll = new Vector2f();
 
     protected boolean mousePressed;
-    private boolean mousePressedGLFW;
     protected boolean lastMousePressed;
     protected GLContext GLcontext;
+    private boolean mousePressedGLFW;
 
     public Mouse() {
         GLcontext = GLContext.getCurrent();

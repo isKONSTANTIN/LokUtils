@@ -2,7 +2,6 @@ package ru.konstanteam.lokutils.ui.eventsystem;
 
 import ru.konstanteam.lokutils.tools.Removable;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,18 +10,18 @@ public class CustomersContainer implements EventCustomer {
     protected HashMap<Class<? extends Event>, EventHandler> handlers = new HashMap<>();
     protected HashMap<Class<? extends Event>, Event> lastEvents = new HashMap<>();
 
-    public <T extends Event> void setEventHandler(EventHandler<T> eventHandler, Class<T> eventClass){
+    public <T extends Event> void setEventHandler(EventHandler<T> eventHandler, Class<T> eventClass) {
         handlers.put(eventClass, eventHandler);
     }
 
-    public <T extends Event> Removable addCustomer(EventCustomer<T> customer, Class<T> eventClass){
+    public <T extends Event> Removable addCustomer(EventCustomer<T> customer, Class<T> eventClass) {
         customers.put(eventClass, customer);
 
         return () -> customers.remove(customer);
     }
 
-    public<T extends Event> T getLastEvent(Class<T> eventClass) {
-        return (T)lastEvents.get(eventClass);
+    public <T extends Event> T getLastEvent(Class<T> eventClass) {
+        return (T) lastEvents.get(eventClass);
     }
 
     @Override

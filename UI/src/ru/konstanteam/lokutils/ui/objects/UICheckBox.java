@@ -28,7 +28,7 @@ public class UICheckBox extends UIObject {
     protected float borderWidth = 1;
     protected boolean status;
 
-    public UICheckBox(){
+    public UICheckBox() {
         animations.addAnimation(new Animation("changeStatus") {
             @Override
             public void update() {
@@ -43,13 +43,13 @@ public class UICheckBox extends UIObject {
                 switchStatus();
         }, MouseClickedEvent.class);
 
-        boxSize = new Size(20,20);
+        boxSize = new Size(20, 20);
         roundFactor = 0.6f;
 
         setText(new UIText().setText("CheckBox"));
 
         size.set(() ->
-                new Size(Vector2fTools.max(new Vector2f(boxSize.width + borderWidth * 2, boxSize.height + borderWidth * 2), new Vector2f(text.size().get().width, text.size().get().height)).translate(boxSize.width + boxSize.width / 4f,0))
+                new Size(Vector2fTools.max(new Vector2f(boxSize.width + borderWidth * 2, boxSize.height + borderWidth * 2), new Vector2f(text.size().get().width, text.size().get().height)).translate(boxSize.width + boxSize.width / 4f, 0))
         );
 
         textPosition.set(() ->
@@ -67,6 +67,12 @@ public class UICheckBox extends UIObject {
         return this;
     }
 
+    public UICheckBox setText(String text) {
+        this.text.setText(text);
+
+        return this;
+    }
+
     public float getRoundFactor() {
         return roundFactor;
     }
@@ -77,7 +83,7 @@ public class UICheckBox extends UIObject {
         return this;
     }
 
-    public UICheckBox switchStatus(){
+    public UICheckBox switchStatus() {
         setStatus(!status);
 
         return this;
@@ -134,12 +140,12 @@ public class UICheckBox extends UIObject {
         glColor4f(fillColor.red, fillColor.green, fillColor.blue, fillColor.alpha);
         GLFastTools.drawRoundedSquare(new Rect(Point.ZERO, boxSize), roundFactor);
 
-        if (borderWidth > 0){
+        if (borderWidth > 0) {
             Color colorStroke = getStyle().getColor("checkboxStroke");
 
             glColor4f(colorStroke.red, colorStroke.green, colorStroke.blue, colorStroke.alpha);
             GL11.glLineWidth(borderWidth);
-            GLFastTools.drawRoundedHollowSquare(new Rect(new Point(borderWidth / 2, borderWidth / 2), boxSize.relativeTo(borderWidth , borderWidth)), roundFactor);
+            GLFastTools.drawRoundedHollowSquare(new Rect(new Point(borderWidth / 2, borderWidth / 2), boxSize.relativeTo(borderWidth, borderWidth)), roundFactor);
         }
 
         GLContext.getCurrent().getViewTools().pushLook(new Rect(textPosition.get(), text.size().get()));

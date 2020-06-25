@@ -16,15 +16,15 @@ public class Rect extends Field {
         this.size = size;
     }
 
-    public Rect(float x, float y, float width, float height){
+    public Rect(float x, float y, float width, float height) {
         this(new Point(x, y), new Size(width, height));
     }
 
-    public Rect setPosition(Point position){
+    public Rect setPosition(Point position) {
         return new Rect(position, size);
     }
 
-    public Rect setSize(Size size){
+    public Rect setSize(Size size) {
         return new Rect(position, size);
     }
 
@@ -52,7 +52,7 @@ public class Rect extends Field {
         return new Point(position.x + size.width, position.y + size.height);
     }
 
-    public Point getCenterPoint(){
+    public Point getCenterPoint() {
         return new Point(
                 getX() + getWidth() / 2f,
                 getY() + getHeight() / 2f
@@ -67,16 +67,16 @@ public class Rect extends Field {
         return new Rect(this.position.x + position.x, this.position.y + position.y, size.width, size.height);
     }
 
-    public boolean inside(Rect rect){
+    public boolean inside(Rect rect) {
         return inside(rect.position) && inside(rect.position.offset(rect.size.width, rect.size.height));
     }
 
     public boolean inside(Point point) {
-        return  (point.x >= this.getX() && point.x <= this.getWidth() + this.getX()) &&
+        return (point.x >= this.getX() && point.x <= this.getWidth() + this.getX()) &&
                 (point.y >= this.getY() && point.y <= this.getHeight() + this.getY());
     }
 
-    public boolean isIntersect(Rect rect){
+    public boolean isIntersect(Rect rect) {
         float x = max(position.x, rect.getX());
         float y = max(position.y, rect.getY());
         float rx = min(position.x + size.width, rect.getX() + rect.getWidth());
@@ -85,7 +85,7 @@ public class Rect extends Field {
         return rx > x && ry > y;
     }
 
-    public Rect intersect(Rect rect){
+    public Rect intersect(Rect rect) {
         float x = max(position.x, rect.getX());
         float y = max(position.y, rect.getY());
         float rx = min(position.x + size.width, rect.getX() + rect.getWidth());
@@ -94,7 +94,7 @@ public class Rect extends Field {
         return rx <= x || ry <= y ? Rect.ZERO : new Rect(x, y, rx - x, ry - y);
     }
 
-    public Point intersect(Point point){
+    public Point intersect(Point point) {
         float myX = getX();
         float myY = getY();
         float myWidth = getWidth() + myX;
@@ -103,6 +103,15 @@ public class Rect extends Field {
         return new Point(
                 point.x < myX ? myX : Math.min(point.x, myWidth),
                 point.y < myY ? myY : Math.min(point.y, myHeight)
+        );
+    }
+
+    public Rect merge(Rect rect) {
+        return new Rect(
+                Math.min(getX(), rect.getX()),
+                Math.min(getY(), rect.getY()),
+                Math.max(getWidth(), rect.getWidth()),
+                Math.max(getHeight(), rect.getHeight())
         );
     }
 

@@ -9,7 +9,6 @@ import ru.konstanteam.lokutils.ui.animation.Animation;
 import ru.konstanteam.lokutils.ui.eventsystem.EventTools;
 import ru.konstanteam.lokutils.ui.eventsystem.events.ClickType;
 import ru.konstanteam.lokutils.ui.eventsystem.events.MouseClickedEvent;
-import ru.konstanteam.lokutils.ui.layout.BaseLayout;
 import ru.konstanteam.lokutils.ui.layout.FreeLayout;
 import ru.konstanteam.lokutils.ui.objects.UIPanel;
 import ru.konstanteam.lokutils.ui.objects.UIText;
@@ -30,7 +29,7 @@ public class UIButton extends UIPanel<FreeLayout> {
             if (event.clickType == ClickType.CLICKED && new Rect(Point.ZERO, size().get()).inside(event.position)) {
                 getAnimations().stopAll();
                 getAnimations().startAnimation("pressed");
-            } else{
+            } else {
                 getAnimations().addAnimationToTaskList("unpressed");
 
                 if (EventTools.realized(event, customersContainer.getLastEvent(MouseClickedEvent.class), new Rect(Point.ZERO, size().get())) && action != null)
@@ -70,7 +69,7 @@ public class UIButton extends UIPanel<FreeLayout> {
         size().set(new Size(100, 30));
     }
 
-    public UIButton setAction(ButtonAction action){
+    public UIButton setAction(ButtonAction action) {
         this.action = action;
 
         return this;

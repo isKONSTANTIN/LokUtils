@@ -287,7 +287,7 @@ public class Window {
         return this;
     }
 
-    public void destroy(){
+    public void destroy() {
         if (!isCreated) return;
 
         glfwDestroyWindow(window);

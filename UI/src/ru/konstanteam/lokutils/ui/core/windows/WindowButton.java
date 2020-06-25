@@ -3,15 +3,15 @@ package ru.konstanteam.lokutils.ui.core.windows;
 import org.lwjgl.opengl.GL11;
 import ru.konstanteam.lokutils.objects.Circle;
 import ru.konstanteam.lokutils.objects.Color;
+import ru.konstanteam.lokutils.objects.Size;
 import ru.konstanteam.lokutils.render.tools.GLFastTools;
 import ru.konstanteam.lokutils.ui.UIObject;
 import ru.konstanteam.lokutils.ui.animation.Animation;
-import ru.konstanteam.lokutils.ui.eventsystem.Event;
 import ru.konstanteam.lokutils.ui.eventsystem.EventTools;
 import ru.konstanteam.lokutils.ui.eventsystem.events.ClickType;
 import ru.konstanteam.lokutils.ui.eventsystem.events.MouseClickedEvent;
 
-class WindowButton extends UIObject {
+public class WindowButton extends UIObject {
     protected Circle field;
     protected WindowButtonAction action;
     protected UIWindow window;
@@ -20,7 +20,7 @@ class WindowButton extends UIObject {
     protected Color pressedColor;
     protected Color defaultColor;
 
-    WindowButton(Circle field, UIWindow window, Color pressedColor, Color defaultColor, WindowButtonAction action) {
+    public WindowButton(Circle field, UIWindow window, Color pressedColor, Color defaultColor, WindowButtonAction action) {
         this.field = field;
         this.action = action;
         this.window = window;
@@ -29,11 +29,13 @@ class WindowButton extends UIObject {
         this.defaultColor = defaultColor;
         this.overrideColor = defaultColor;
 
+        size().set(() -> new Size(field.radius * 2, field.radius * 2));
+
         customersContainer.addCustomer(event -> {
             if (event.clickType == ClickType.CLICKED && field.inside(event.position)) {
                 this.getAnimations().stopAll();
                 this.getAnimations().startAnimation("pressed");
-            }else {
+            } else {
                 this.getAnimations().addAnimationToTaskList("unpressed");
 
                 if (EventTools.realized(event, customersContainer.getLastEvent(MouseClickedEvent.class), this.field))
@@ -65,11 +67,7 @@ class WindowButton extends UIObject {
         });
     }
 
-    public Circle getField(){
-        return field;
-    }
-
-    public void render(){
+    public void render() {
         animations.update();
 
         GL11.glColor4f(overrideColor.red, overrideColor.green, overrideColor.blue, overrideColor.alpha);

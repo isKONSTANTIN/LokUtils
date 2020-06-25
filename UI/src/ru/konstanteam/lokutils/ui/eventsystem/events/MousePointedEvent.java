@@ -3,6 +3,11 @@ package ru.konstanteam.lokutils.ui.eventsystem.events;
 import ru.konstanteam.lokutils.objects.Point;
 import ru.konstanteam.lokutils.ui.eventsystem.Event;
 
+enum PointType {
+    POINTED,
+    UNPOINTED
+}
+
 public class MousePointedEvent extends Event {
     public final Point position;
     public final PointType pointType;
@@ -11,9 +16,4 @@ public class MousePointedEvent extends Event {
         this.position = position;
         this.pointType = pointType;
     }
-}
-
-enum PointType {
-    POINTED,
-    UNPOINTED
 }

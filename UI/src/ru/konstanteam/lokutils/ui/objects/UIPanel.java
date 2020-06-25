@@ -9,7 +9,6 @@ import ru.konstanteam.lokutils.render.tools.GLFastTools;
 import ru.konstanteam.lokutils.tools.property.Property;
 import ru.konstanteam.lokutils.ui.UIObject;
 import ru.konstanteam.lokutils.ui.eventsystem.Event;
-import ru.konstanteam.lokutils.ui.layout.BaseLayout;
 import ru.konstanteam.lokutils.ui.layout.UIAbstractLayout;
 
 import static java.lang.Math.min;

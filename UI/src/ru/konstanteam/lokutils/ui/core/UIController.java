@@ -26,12 +26,12 @@ public abstract class UIController {
         this(window, UIStyle.getDefault());
     }
 
-    public void setStyle(UIStyle style) {
-        this.style = style;
-    }
-
     public UIStyle getStyle() {
         return style;
+    }
+
+    public void setStyle(UIStyle style) {
+        this.style = style;
     }
 
     protected Event checkEvent() {
@@ -60,5 +60,6 @@ public abstract class UIController {
     }
 
     public abstract void update();
+
     public abstract void render();
 }

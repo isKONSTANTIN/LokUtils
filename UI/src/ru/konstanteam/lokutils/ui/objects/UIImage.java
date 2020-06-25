@@ -1,6 +1,5 @@
 package ru.konstanteam.lokutils.ui.objects;
 
-import com.sun.org.apache.regexp.internal.RE;
 import ru.konstanteam.lokutils.objects.Point;
 import ru.konstanteam.lokutils.objects.Rect;
 import ru.konstanteam.lokutils.objects.Size;

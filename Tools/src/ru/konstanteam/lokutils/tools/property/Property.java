@@ -1,6 +1,5 @@
 package ru.konstanteam.lokutils.tools.property;
 
-import com.sun.org.apache.xerces.internal.impl.dv.DVFactoryException;
 import ru.konstanteam.lokutils.tools.Removable;
 
 import java.util.Vector;
@@ -10,29 +9,29 @@ public class Property<T> implements SoftValue<T> {
     protected SoftValue<T> parent;
     protected Vector<PropertyChangeListener<T>> changeListeners = new Vector<>();
 
-    public Property(){
+    public Property() {
 
     }
 
-    public Property(SoftValue<T> startParent){
+    public Property(SoftValue<T> startParent) {
         this.parent = startParent;
     }
 
-    public Property(T startValue){
+    public Property(T startValue) {
         this.value = startValue;
     }
 
-    public Removable addListener(PropertyChangeListener<T> changeListener){
+    public Removable addListener(PropertyChangeListener<T> changeListener) {
         changeListeners.add(changeListener);
 
         return () -> changeListeners.remove(changeListener);
     }
 
-    public void set(SoftValue<T> parent){
+    public void set(SoftValue<T> parent) {
         this.parent = parent;
     }
 
-    public void set(T value){
+    public void set(T value) {
         T oldValue = this.value;
         this.value = value;
 
@@ -40,7 +39,7 @@ public class Property<T> implements SoftValue<T> {
             changeListener.changed(oldValue, this.value);
     }
 
-    public void checkParentChanges(){
+    public void checkParentChanges() {
         T parentValue = parent.get();
 
         if (!parentValue.equals(value))
@@ -48,10 +47,14 @@ public class Property<T> implements SoftValue<T> {
     }
 
     @Override
-    public T get(){
+    public T get() {
         if (parent != null)
             checkParentChanges();
 
+        return value;
+    }
+
+    public T lazyGet() {
         return value;
     }
 }
