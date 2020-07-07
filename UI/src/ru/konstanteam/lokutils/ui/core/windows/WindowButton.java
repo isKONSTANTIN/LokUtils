@@ -7,6 +7,7 @@ import ru.konstanteam.lokutils.objects.Size;
 import ru.konstanteam.lokutils.render.tools.GLFastTools;
 import ru.konstanteam.lokutils.ui.UIObject;
 import ru.konstanteam.lokutils.ui.animation.Animation;
+import ru.konstanteam.lokutils.ui.core.windows.window.BaseWindow;
 import ru.konstanteam.lokutils.ui.eventsystem.EventTools;
 import ru.konstanteam.lokutils.ui.eventsystem.events.ClickType;
 import ru.konstanteam.lokutils.ui.eventsystem.events.MouseClickedEvent;
@@ -14,13 +15,13 @@ import ru.konstanteam.lokutils.ui.eventsystem.events.MouseClickedEvent;
 public class WindowButton extends UIObject {
     protected Circle field;
     protected WindowButtonAction action;
-    protected UIWindow window;
+    protected BaseWindow window;
 
     protected Color overrideColor;
     protected Color pressedColor;
     protected Color defaultColor;
 
-    public WindowButton(Circle field, UIWindow window, Color pressedColor, Color defaultColor, WindowButtonAction action) {
+    public WindowButton(Circle field, BaseWindow window, Color pressedColor, Color defaultColor, WindowButtonAction action) {
         this.field = field;
         this.action = action;
         this.window = window;

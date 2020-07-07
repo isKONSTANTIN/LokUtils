@@ -27,6 +27,7 @@ public class Mouse {
 
     public Mouse() {
         GLcontext = GLContext.getCurrent();
+
         if (GLcontext == null) throw new RuntimeException("VBO cannot be created without OpenGL context!");
 
         glfwSetMouseButtonCallback(GLcontext.getWindow().getGLFWWindow(), new GLFWMouseButtonCallback() {

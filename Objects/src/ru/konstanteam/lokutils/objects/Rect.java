@@ -16,6 +16,10 @@ public class Rect extends Field {
         this.size = size;
     }
 
+    public Rect(Size size) {
+        this(Point.ZERO, size);
+    }
+
     public Rect(float x, float y, float width, float height) {
         this(new Point(x, y), new Size(width, height));
     }

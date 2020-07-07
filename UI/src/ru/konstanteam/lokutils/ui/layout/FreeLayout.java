@@ -36,9 +36,9 @@ public class FreeLayout extends ObjectFreeLayout {
         positions.put(object, position);
     }
 
-    public void addObject(UIObject object, StickyPosition stickyPosition) {
+    public void addObject(UIObject object, Alignment alignment) {
         Property<Point> property = new Property<>();
-        property.set(() -> stickyPosition.getPosition(object.size().get(), size().get()));
+        property.set(() -> alignment.getPosition(object.size().get(), size().get()));
 
         this.addObject(object, property);
     }

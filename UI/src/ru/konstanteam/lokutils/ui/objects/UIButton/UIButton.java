@@ -13,7 +13,7 @@ import ru.konstanteam.lokutils.ui.layout.FreeLayout;
 import ru.konstanteam.lokutils.ui.objects.UIPanel;
 import ru.konstanteam.lokutils.ui.objects.UIText;
 
-import static ru.konstanteam.lokutils.ui.layout.StickyPosition.CENTER;
+import static ru.konstanteam.lokutils.ui.layout.Alignment.CENTER;
 
 public class UIButton extends UIPanel<FreeLayout> {
 

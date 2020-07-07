@@ -9,8 +9,7 @@ import ru.konstanteam.lokutils.render.tools.ViewTools;
 import ru.konstanteam.lokutils.tools.Removable;
 import ru.konstanteam.lokutils.ui.UIObject;
 import ru.konstanteam.lokutils.ui.UIStyle;
-import ru.konstanteam.lokutils.ui.eventsystem.events.MouseClickedEvent;
-import ru.konstanteam.lokutils.ui.eventsystem.events.MouseMoveEvent;
+import ru.konstanteam.lokutils.ui.eventsystem.Event;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,29 +27,10 @@ public abstract class UIAbstractLayout extends UIObject {
         this.size.addListener((oldValue, newValue) -> setInvalidPositionsStatus());
 
         customersContainer.addCustomer(event -> {
-            for (UIObject object : objects) {
-                Point objectPosition = getObjectPos(object);
-                Point newMouseClickPosition = event.position.relativeTo(objectPosition);
+            for (UIObject object : objects)
+                object.getCustomersContainer().handle(event.relativeTo(getObjectPos(object)));
 
-                object.getCustomersContainer().handle(
-                        new MouseClickedEvent(newMouseClickPosition, event.clickType, event.button)
-                );
-            }
-        }, MouseClickedEvent.class);
-
-        customersContainer.addCustomer(event -> {
-            for (UIObject object : objects) {
-                Point objectPosition = getObjectPos(object);
-
-                Point newStartPosition = event.startPosition.relativeTo(objectPosition);
-                Point newLastPosition = event.lastPosition.relativeTo(objectPosition);
-                Point newEndPosition = event.endPosition.relativeTo(objectPosition);
-
-                object.getCustomersContainer().handle(
-                        new MouseMoveEvent(newStartPosition, newLastPosition, newEndPosition, event.type)
-                );
-            }
-        }, MouseMoveEvent.class);
+        }, Event.class);
     }
 
     public UIAbstractLayout(Inputs inputs) {

@@ -2,12 +2,12 @@ package ru.konstanteam.lokutils.ui.core.windows;
 
 import ru.konstanteam.lokutils.objects.Point;
 import ru.konstanteam.lokutils.objects.Rect;
-import ru.konstanteam.lokutils.objects.Size;
 import ru.konstanteam.lokutils.render.GLContext;
 import ru.konstanteam.lokutils.render.Window;
 import ru.konstanteam.lokutils.render.tools.ViewTools;
 import ru.konstanteam.lokutils.tools.Removable;
 import ru.konstanteam.lokutils.ui.core.UIController;
+import ru.konstanteam.lokutils.ui.core.windows.window.AbstractWindow;
 import ru.konstanteam.lokutils.ui.eventsystem.Event;
 import ru.konstanteam.lokutils.ui.eventsystem.events.ClickType;
 import ru.konstanteam.lokutils.ui.eventsystem.events.MouseClickedEvent;
@@ -18,26 +18,42 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class UIWindowSystem extends UIController {
-    protected ArrayList<UIWindow> windows = new ArrayList<>();
+    protected ArrayList<AbstractWindow> windows = new ArrayList<>();
     protected ArrayList<WindowTask> windowTasks = new ArrayList<>();
-    protected HashMap<UIWindow, Boolean> resizeStatus = new HashMap<>();
+    protected HashMap<AbstractWindow, Point> windowsPositions = new HashMap<>();
 
     public UIWindowSystem(Window window) {
         super(window);
     }
 
-    public Removable addWindow(UIWindow window) {
+    public Removable addWindow(AbstractWindow window) {
         window.init(this);
 
         windows.add(window);
+        windowsPositions.put(window,
+                new Point(
+                        this.window.getResolution().getX() / 2f - window.getContentSize().width / 2f,
+                        this.window.getResolution().getY() / 2f - window.getContentSize().height / 2f
+                )
+        );
         return () -> closeWindow(window);
     }
 
-    public void closeWindow(UIWindow window) {
+    public void closeWindow(AbstractWindow window) {
         windowTasks.add(() -> windows.remove(window));
     }
 
-    public void bringToFront(UIWindow window) {
+    public Point getWindowsPosition(AbstractWindow window) {
+        return windowsPositions.get(window);
+    }
+
+    public void setWindowsPosition(Point position, AbstractWindow window) {
+        windowTasks.add(() -> {
+            windowsPositions.put(window, position);
+        });
+    }
+
+    public void bringToFront(AbstractWindow window) {
         windowTasks.add(() -> {
             if (!windows.contains(window)) return;
 
@@ -46,64 +62,30 @@ public class UIWindowSystem extends UIController {
         });
     }
 
-    protected boolean handleMouseClickedEvent(MouseClickedEvent event, UIWindow window) {
-        Rect barField = window.getBar().getRect().offset(window.position);
-        Rect contentField = new Rect(window.position.offset(0, barField.getHeight()), window.contentSize);
+    protected boolean handleMouseClickedEvent(MouseClickedEvent event, AbstractWindow window) {
+        Point windowPosition = windowsPositions.getOrDefault(window, Point.ZERO);
+        Rect field = new Rect(windowPosition, window.getContentSize()).merge(window.getBar().getRect().offset(windowPosition));
 
-        if (event.clickType == ClickType.UNCLICKED) {
-            window.handleBarEvent(event.relativeTo(barField.position));
-            window.handleContentEvent(event.relativeTo(contentField.position));
+        boolean inside = field.inside(event.position);
+
+        window.handleEvent(event.relativeTo(windowPosition));
+
+        if (!inside || event.clickType == ClickType.UNCLICKED)
             return false;
-        }
-
-        boolean insideBar = barField.inside(event.position);
-        boolean insideContent = contentField.inside(event.position);
-
-        if (!insideBar && !insideContent)
-            return false;
-
-        if (insideBar)
-            window.handleBarEvent(event.relativeTo(barField.position));
-        else
-            window.handleContentEvent(event.relativeTo(contentField.position));
 
         bringToFront(window);
         return true;
     }
 
-    protected boolean handleMouseMoveEvent(MouseMoveEvent event, UIWindow window) {
-        Rect barField = window.getBar().getRect().offset(window.position);
-        Rect contentField = new Rect(window.position.offset(0, barField.getHeight()), window.contentSize);
+    protected boolean handleMouseMoveEvent(MouseMoveEvent event, AbstractWindow window) {
+        Point windowPosition = windowsPositions.getOrDefault(window, Point.ZERO);
+        Rect field = new Rect(windowPosition, window.getContentSize()).merge(window.getBar().getRect().offset(windowPosition));
 
-        boolean insideBar = barField.inside(event.lastPosition);
-        boolean insideContent = contentField.inside(event.lastPosition);
+        boolean inside = field.inside(event.lastPosition);
 
-        if (contentField.getBottomRightPoint().distance(event.startPosition) < 3 && event.type == MoveType.STARTED || event.type == MoveType.CONTINUED && resizeStatus.getOrDefault(window, false)) {
-            if (event.type == MoveType.STARTED)
-                bringToFront(window);
+        window.handleEvent(event.relativeTo(windowPosition));
 
-            Point deltaPos = event.endPosition.relativeTo(event.lastPosition);
-            Size newSize = window.contentSize.offset(deltaPos.x, deltaPos.y);
-
-            window.contentSize = new Size(
-                    Math.max(newSize.width, window.minContentSize.width),
-                    Math.max(newSize.height, window.minContentSize.height)
-            );
-            resizeStatus.put(window, true);
-            return true;
-        }
-
-        resizeStatus.put(window, false);
-
-        if (!insideBar && !insideContent)
-            return false;
-
-        if (insideBar)
-            window.handleBarEvent(event.relativeTo(barField.position));
-        else
-            window.handleContentEvent(event.relativeTo(contentField.position));
-
-        if (event.type == MoveType.STARTED)
+        if (event.type == MoveType.STARTED && inside)
             bringToFront(window);
 
         return true;
@@ -119,7 +101,7 @@ public class UIWindowSystem extends UIController {
         Event event = checkEvent();
         if (event == null) return;
 
-        for (UIWindow window : windows) {
+        for (AbstractWindow window : windows) {
             if (event instanceof MouseClickedEvent &&
                     handleMouseClickedEvent((MouseClickedEvent) event, window)) break;
             if (event instanceof MouseMoveEvent &&
@@ -132,17 +114,12 @@ public class UIWindowSystem extends UIController {
         ViewTools viewTools = GLContext.getCurrent().getViewTools();
 
         for (int i = windows.size() - 1; i >= 0; i--) {
-            UIWindow window = windows.get(i);
-            Rect barField = window.getBar().getRect().offset(window.position);
-            Rect contentField = new Rect(window.position.offset(0, barField.getHeight()), window.contentSize);
+            AbstractWindow window = windows.get(i);
+            Point windowPosition = windowsPositions.getOrDefault(window, Point.ZERO);
 
-            viewTools.pushLook(barField);
-            window.renderBar();
-            viewTools.popLook();
-
-            viewTools.pushLook(contentField);
-            window.renderContent();
-            viewTools.popLook();
+            viewTools.pushTranslate(windowPosition);
+            window.render();
+            viewTools.popTranslate();
         }
     }
 }

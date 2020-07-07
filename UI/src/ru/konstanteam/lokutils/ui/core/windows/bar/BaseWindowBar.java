@@ -4,21 +4,21 @@ import org.lwjgl.opengl.GL11;
 import ru.konstanteam.lokutils.objects.*;
 import ru.konstanteam.lokutils.render.tools.GLFastTools;
 import ru.konstanteam.lokutils.ui.UIObject;
-import ru.konstanteam.lokutils.ui.core.windows.UIWindow;
 import ru.konstanteam.lokutils.ui.core.windows.WindowButton;
+import ru.konstanteam.lokutils.ui.core.windows.window.BaseWindow;
 import ru.konstanteam.lokutils.ui.eventsystem.CustomersContainer;
+import ru.konstanteam.lokutils.ui.layout.Alignment;
 import ru.konstanteam.lokutils.ui.layout.BaseLayout;
 import ru.konstanteam.lokutils.ui.layout.FreeLayout;
-import ru.konstanteam.lokutils.ui.layout.StickyPosition;
 import ru.konstanteam.lokutils.ui.objects.UIText;
 
 import java.util.ArrayList;
 
-public class UIBaseWindowBar extends UIAbstractWindowBar {
+public class BaseWindowBar extends AbstractWindowBar {
     protected FreeLayout baseLayout;
     protected BaseLayout buttonsLayout;
     protected UIText text;
-    protected UIWindow window;
+    protected BaseWindow window;
 
     public void render() {
         Color color = window.getStyle().getColor("windowBarBackground");
@@ -33,11 +33,11 @@ public class UIBaseWindowBar extends UIAbstractWindowBar {
     public Rect getRect() {
         Size size = baseLayout.size().get();
 
-        return new Rect(Point.ZERO, size);
+        return new Rect(new Point(0, -size.height), size);
     }
 
     @Override
-    public void init(UIWindow window) {
+    public void init(BaseWindow window) {
         this.window = window;
         baseLayout = new FreeLayout();
         baseLayout.size().set(() -> window.getContentSize().setHeight(14));
@@ -82,8 +82,8 @@ public class UIBaseWindowBar extends UIAbstractWindowBar {
 
         text = new UIText().setStyleFontName("windowTitle");
 
-        baseLayout.addObject(text, StickyPosition.CENTER_LEFT);
-        baseLayout.addObject(buttonsLayout, StickyPosition.CENTER_RIGHT);
+        baseLayout.addObject(text, Alignment.CENTER_LEFT);
+        baseLayout.addObject(buttonsLayout, Alignment.CENTER_RIGHT);
     }
 
     @Override

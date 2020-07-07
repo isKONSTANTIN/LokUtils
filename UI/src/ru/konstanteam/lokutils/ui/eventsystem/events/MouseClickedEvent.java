@@ -5,8 +5,8 @@ import ru.konstanteam.lokutils.ui.eventsystem.Event;
 
 public class MouseClickedEvent extends Event {
     public final Point position;
-    public final int button;
     public final ClickType clickType;
+    public final int button;
 
     public MouseClickedEvent(Point position, ClickType clickType, int button) {
         this.position = position;
@@ -14,11 +14,8 @@ public class MouseClickedEvent extends Event {
         this.clickType = clickType;
     }
 
-    public MouseClickedEvent offset(Point position) {
-        return new MouseClickedEvent(this.position.offset(position), clickType, button);
-    }
-
-    public MouseClickedEvent relativeTo(Point position) {
+    @Override
+    public Event relativeTo(Point position) {
         return new MouseClickedEvent(this.position.relativeTo(position), clickType, button);
     }
 
