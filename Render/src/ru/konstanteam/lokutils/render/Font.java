@@ -210,7 +210,7 @@ public class Font {
             }
 
             bufferedImages.put(c, ch);
-            imageWidth += ch.getWidth();
+            imageWidth += ch.getWidth() + 1;
             imageHeight = Math.max(imageHeight, ch.getHeight());
         }
 
@@ -229,7 +229,7 @@ public class Font {
 
             Glyph glyph = new Glyph(charImage.getWidth(), charHeight, x, image.getHeight() - charHeight);
             g.drawImage(charImage, x, 0, null);
-            x += glyph.width;
+            x += glyph.width + 1;
             glyphs.put(c, glyph);
         }
 
