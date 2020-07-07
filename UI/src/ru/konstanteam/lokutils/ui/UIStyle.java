@@ -3,6 +3,7 @@ package ru.konstanteam.lokutils.ui;
 import ru.konstanteam.lokutils.objects.Color;
 import ru.konstanteam.lokutils.render.Font;
 import ru.konstanteam.lokutils.render.GLContext;
+import ru.konstanteam.lokutils.ui.layout.ObjectFreeLayout;
 
 import java.util.HashMap;
 
@@ -10,6 +11,7 @@ public class UIStyle {
     private static HashMap<GLContext, UIStyle> defaultStyles = new HashMap<>();
     protected HashMap<String, Color> colors = new HashMap<>();
     protected HashMap<String, Font> fonts = new HashMap<>();
+    protected HashMap<String, Object> someParams = new HashMap<>();
 
     public static void generateDefaultStyle() {
         if (GLContext.getCurrent() == null)
@@ -40,6 +42,9 @@ public class UIStyle {
                         .setColor("checkboxStroke", new Color(0.9f, 0.9f, 0.9f, 1))
                         .setColor("checkboxFillActive", new Color(0.8f, 0.8f, 0.8f, 1))
                         .setColor("checkboxFillInactive", new Color(0.5f, 0.5f, 0.5f, 1))
+
+                        .setColor("separateColor", new Color(0.6f, 0.6f, 0.6f, 0.9f))
+                        .setObject("separateLineWidth", 1f)
         );
     }
 
@@ -54,6 +59,16 @@ public class UIStyle {
 
     public static void setDefault(UIStyle style) {
         defaultStyles.put(GLContext.getCurrent(), style);
+    }
+
+    public Object getObject(String name){
+        return someParams.get(name);
+    }
+
+    public UIStyle setObject(String name, Object object){
+        someParams.put(name, object);
+
+        return this;
     }
 
     public Color getColor(String name) {

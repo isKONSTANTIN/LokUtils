@@ -11,6 +11,7 @@ import ru.konstanteam.lokutils.ui.layout.Alignment;
 import ru.konstanteam.lokutils.ui.layout.FreeLayout;
 import ru.konstanteam.lokutils.ui.objects.UIButton.UIButton;
 import ru.konstanteam.lokutils.ui.objects.UICheckBox;
+import ru.konstanteam.lokutils.ui.objects.UISeparate;
 import ru.konstanteam.lokutils.ui.objects.UIText;
 
 public class Main extends Application<UIWindowSystem> {
@@ -34,8 +35,12 @@ public class Main extends Application<UIWindowSystem> {
         UIButton button = new UIButton();
         button.setAction(() -> System.out.println("1"));
 
-        window.getLayout().addObject(new UICheckBox().setText(new UIText().setText("Чек бокс")), Alignment.CENTER);
-        window.getLayout().addObject(button, Alignment.BOTTOM_RIGHT);
+        //window.getLayout().addObject(new UICheckBox().setText(new UIText().setText("Чек бокс")), Alignment.CENTER);
+        window.getLayout().addObject(button, Alignment.BOTTOM_CENTER);
+
+        UISeparate separate = new UISeparate();
+        separate.size().set(window.getLayout().size());
+        window.getLayout().addObject(separate, Alignment.CENTER);
     }
 
 }
