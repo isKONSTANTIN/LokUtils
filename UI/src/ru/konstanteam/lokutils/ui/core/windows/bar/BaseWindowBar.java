@@ -5,6 +5,7 @@ import ru.konstanteam.lokutils.objects.*;
 import ru.konstanteam.lokutils.render.tools.GLFastTools;
 import ru.konstanteam.lokutils.ui.UIObject;
 import ru.konstanteam.lokutils.ui.core.windows.WindowButton;
+import ru.konstanteam.lokutils.ui.core.windows.window.AbstractWindow;
 import ru.konstanteam.lokutils.ui.core.windows.window.BaseWindow;
 import ru.konstanteam.lokutils.ui.eventsystem.CustomersContainer;
 import ru.konstanteam.lokutils.ui.layout.Alignment;
@@ -14,11 +15,14 @@ import ru.konstanteam.lokutils.ui.objects.UIText;
 
 import java.util.ArrayList;
 
-public class BaseWindowBar extends AbstractWindowBar {
+public class BaseWindowBar<T extends BaseWindow> extends AbstractWindowBar<T> {
     protected FreeLayout baseLayout;
     protected BaseLayout buttonsLayout;
     protected UIText text;
-    protected BaseWindow window;
+    protected AbstractWindow window;
+
+    protected WindowButton minimizeButton;
+    protected WindowButton closeButton;
 
     public void render() {
         Color color = window.getStyle().getColor("windowBarBackground");
@@ -37,7 +41,7 @@ public class BaseWindowBar extends AbstractWindowBar {
     }
 
     @Override
-    public void init(BaseWindow window) {
+    public void init(T window) {
         this.window = window;
         baseLayout = new FreeLayout();
         baseLayout.size().set(() -> window.getContentSize().setHeight(14));
@@ -58,27 +62,24 @@ public class BaseWindowBar extends AbstractWindowBar {
             return new Size(width, maxHeight);
         });
 
-        buttonsLayout.addObject(
-                new WindowButton(new Circle(Point.ZERO, 5),
-                        window,
-                        window.getStyle().getColor("windowMinimizeButtonPressed"),
-                        window.getStyle().getColor("windowMinimizeButtonBackground"),
-                        () -> {
-                            window.setMinimized(!window.isMinimized());
-                        }
-                )
+        minimizeButton = new WindowButton(new Circle(Point.ZERO, 5), window,
+                window.getStyle().getColor("windowMinimizeButtonPressed"),
+                window.getStyle().getColor("windowMinimizeButtonBackground"),
+                () -> window.setMinimized(!window.isMinimized())
         );
+        minimizeButton.setName("minimizeButton");
 
-        buttonsLayout.addObject(
-                new WindowButton(new Circle(Point.ZERO, 5),
-                        window,
-                        window.getStyle().getColor("windowCloseButtonPressed"),
-                        window.getStyle().getColor("windowCloseButtonBackground"),
-                        () -> {
-                            window.getWindowSystem().closeWindow(window);
-                        }
-                )
+        closeButton = new WindowButton(new Circle(Point.ZERO, 5),
+                window,
+                window.getStyle().getColor("windowCloseButtonPressed"),
+                window.getStyle().getColor("windowCloseButtonBackground"),
+                () -> {
+                    window.getWindowSystem().closeWindow(window);
+                }
         );
+        closeButton.setName("closeButton");
+
+        buttonsLayout.addObject(minimizeButton);
 
         text = new UIText().setStyleFontName("windowTitle");
 
@@ -88,6 +89,13 @@ public class BaseWindowBar extends AbstractWindowBar {
 
     @Override
     public void update() {
+        boolean closeButtonInLayout = buttonsLayout.getObject("closeButton") != null;
+
+        if (window.closable() && !closeButtonInLayout)
+            buttonsLayout.addObject(closeButton);
+        else if (!window.closable() && closeButtonInLayout)
+            buttonsLayout.removeObject(closeButton);
+
         baseLayout.update(null);
     }
 
