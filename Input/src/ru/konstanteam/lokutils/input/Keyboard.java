@@ -13,6 +13,7 @@ public class Keyboard {
     protected GLFWKeyCallback callbackKey;
     protected GLFWCharCallback callbackChar;
     protected ArrayList<KeyInfo> keysPressed = new ArrayList<>();
+    protected ArrayList<KeyInfo> charPressed = new ArrayList<>();
     protected GLContext GLcontext;
 
     public Keyboard() {
@@ -26,8 +27,12 @@ public class Keyboard {
         glfwSetCharCallback(GLcontext.getWindow().getGLFWWindow(), callbackChar);
     }
 
-    public boolean next() {
+    public boolean nextKey() {
         return keysPressed.size() > 0;
+    }
+
+    public boolean nextChar() {
+        return charPressed.size() > 0;
     }
 
     public KeyInfo getPressedKey() {
@@ -39,12 +44,27 @@ public class Keyboard {
         return null;
     }
 
+    public KeyInfo getPressedChar() {
+        if (charPressed.size() > 0) {
+            KeyInfo key = charPressed.get(0);
+            charPressed.remove(0);
+            return key;
+        }
+        return null;
+    }
+
     private void keyCallback(long window, int key, int scancode, int action, int mods) {
         keysPressed.add(new KeyInfo((char) 0, key, action, mods));
+
+        if (keysPressed.size() > 128)
+            keysPressed.remove(0);
     }
 
     private void charCallback(long window, int key) {
-        keysPressed.add(new KeyInfo((char) key, 0, 0, 0));
+        charPressed.add(new KeyInfo((char) key, 0, 0, 0));
+
+        if (charPressed.size() > 128)
+            charPressed.remove(0);
     }
 
     public void close() {
