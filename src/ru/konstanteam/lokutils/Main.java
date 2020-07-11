@@ -10,11 +10,13 @@ import ru.konstanteam.lokutils.ui.core.windows.UIWindowSystem;
 import ru.konstanteam.lokutils.ui.core.windows.bar.BaseWindowBar;
 import ru.konstanteam.lokutils.ui.core.windows.window.BaseWindow;
 import ru.konstanteam.lokutils.ui.layout.Alignment;
+import ru.konstanteam.lokutils.ui.layout.BaseLayout;
 import ru.konstanteam.lokutils.ui.layout.FreeLayout;
 import ru.konstanteam.lokutils.ui.objects.UIButton.UIButton;
 import ru.konstanteam.lokutils.ui.objects.UICheckBox;
 import ru.konstanteam.lokutils.ui.objects.UISeparate;
 import ru.konstanteam.lokutils.ui.objects.UIText;
+import ru.konstanteam.lokutils.ui.objects.UITextField;
 
 public class Main extends Application<UIMainCanvasSystem> {
     Main() {
@@ -34,16 +36,10 @@ public class Main extends Application<UIMainCanvasSystem> {
         FreeLayout layout = new FreeLayout();
 
         uiController.setLayout(layout);
+        UITextField textField = new UITextField().setText(new UIText().setStyleFontName("TEST"));
+        textField.size().set(() -> layout.size().get().setHeight(40).relativeTo(50, 0));
 
-        UIButton button = new UIButton();
-        button.setAction(() -> System.out.println("1"));
-
-        layout.addObject(new UICheckBox().setText(new UIText().setText("Чек бокс")), Alignment.CENTER);
-        layout.addObject(button, Alignment.BOTTOM_CENTER);
-
-        UISeparate separate = new UISeparate();
-        separate.size().set(layout.size());
-        layout.addObject(separate, Alignment.CENTER);
+        layout.addObject(textField, Alignment.CENTER);
     }
 
 }
