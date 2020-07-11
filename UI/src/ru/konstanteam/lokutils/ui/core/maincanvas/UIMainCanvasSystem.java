@@ -1,9 +1,6 @@
 package ru.konstanteam.lokutils.ui.core.maincanvas;
 
-import ru.konstanteam.lokutils.objects.Point;
-import ru.konstanteam.lokutils.objects.Rect;
 import ru.konstanteam.lokutils.objects.Size;
-import ru.konstanteam.lokutils.render.GLContext;
 import ru.konstanteam.lokutils.render.Window;
 import ru.konstanteam.lokutils.ui.core.UIController;
 import ru.konstanteam.lokutils.ui.eventsystem.Event;
@@ -16,14 +13,14 @@ public class UIMainCanvasSystem extends UIController {
         super(window);
     }
 
-    public <T extends UIAbstractLayout> void setLayout(T layout){
+    public UIAbstractLayout getLayout() {
+        return layout;
+    }
+
+    public <T extends UIAbstractLayout> void setLayout(T layout) {
         this.layout = layout;
 
         layout.size().set(() -> new Size(window.getResolution()));
-    }
-
-    public UIAbstractLayout getLayout() {
-        return layout;
     }
 
     @Override

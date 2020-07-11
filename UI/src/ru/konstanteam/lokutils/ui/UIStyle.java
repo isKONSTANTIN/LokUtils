@@ -3,7 +3,6 @@ package ru.konstanteam.lokutils.ui;
 import ru.konstanteam.lokutils.objects.Color;
 import ru.konstanteam.lokutils.render.Font;
 import ru.konstanteam.lokutils.render.GLContext;
-import ru.konstanteam.lokutils.ui.layout.ObjectFreeLayout;
 
 import java.util.HashMap;
 
@@ -64,11 +63,11 @@ public class UIStyle {
         defaultStyles.put(GLContext.getCurrent(), style);
     }
 
-    public Object getObject(String name){
+    public Object getObject(String name) {
         return someParams.get(name);
     }
 
-    public UIStyle setObject(String name, Object object){
+    public UIStyle setObject(String name, Object object) {
         someParams.put(name, object);
 
         return this;

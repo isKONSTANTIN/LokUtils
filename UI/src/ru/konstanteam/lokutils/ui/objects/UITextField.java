@@ -22,8 +22,8 @@ public class UITextField extends UIObject {
     protected float pointerPos;
     protected float translate;
 
-    public UITextField(){
-        size.set(new Size(100,20));
+    public UITextField() {
+        size.set(new Size(100, 20));
 
         setText(new UIText());
 
@@ -58,7 +58,7 @@ public class UITextField extends UIObject {
         }, KeyTypedEvent.class);
     }
 
-    public UITextField setText(UIText text){
+    public UITextField setText(UIText text) {
         if (this.text != null)
             text.setText(this.text.getText());
 
@@ -67,7 +67,7 @@ public class UITextField extends UIObject {
         return this;
     }
 
-    public void setPointerPos(int position){
+    public void setPointerPos(int position) {
         String text = this.text.getText();
         Font font = this.text.getFont();
 
@@ -75,15 +75,15 @@ public class UITextField extends UIObject {
         pointerPos = font.getSize(text.substring(0, pointer), null).width;
     }
 
-    public void movePointer(int position){
+    public void movePointer(int position) {
         setPointerPos(pointer + position);
     }
 
-    public int getPointerPosition(){
+    public int getPointerPosition() {
         return pointer;
     }
 
-    public UITextField setText(String text){
+    public UITextField setText(String text) {
         this.text.setText(text);
 
         return this;
@@ -98,7 +98,7 @@ public class UITextField extends UIObject {
         Size textSize = text.size().get();
 
         glColor4f(color.red, color.green, color.blue, color.alpha);
-        GLFastTools.drawRoundedSquare(new Rect(size), (float)getStyle().getObject("textFieldRounded"));
+        GLFastTools.drawRoundedSquare(new Rect(size), (float) getStyle().getObject("textFieldRounded"));
 
         if (translate + size.width < pointerPos)
             translate = pointerPos - size.width;

@@ -26,7 +26,7 @@ public class UIObject {
         return lastParent.getOwner();
     }
 
-    public UIObject getFocusableObject(){
+    public UIObject getFocusableObject() {
         return this;
     }
 

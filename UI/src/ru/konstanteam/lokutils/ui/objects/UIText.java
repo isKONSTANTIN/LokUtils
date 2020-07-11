@@ -37,11 +37,11 @@ public class UIText extends UIObject {
         return this;
     }
 
-    public Color getColor(){
+    public Color getColor() {
         return overrideColor != null ? overrideColor : getStyle().getColor("text");
     }
 
-    public Font getFont(){
+    public Font getFont() {
         return lastFont;
     }
 

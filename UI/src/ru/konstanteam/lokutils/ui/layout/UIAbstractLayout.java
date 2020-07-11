@@ -32,11 +32,11 @@ public abstract class UIAbstractLayout extends UIObject {
             if (event instanceof MouseClickedEvent)
                 focusedObject = null;
 
-            for (UIObject object : objects){
+            for (UIObject object : objects) {
                 Event localizedEvent = event.relativeTo(getObjectPos(object));
 
-                if (event instanceof MouseClickedEvent){
-                    MouseClickedEvent mouseClickedEvent = (MouseClickedEvent)localizedEvent;
+                if (event instanceof MouseClickedEvent) {
+                    MouseClickedEvent mouseClickedEvent = (MouseClickedEvent) localizedEvent;
                     Size objectSize = object.size().get();
 
                     if (mouseClickedEvent.position.x >= 0 && mouseClickedEvent.position.y >= 0 && mouseClickedEvent.position.x <= objectSize.width && mouseClickedEvent.position.y <= objectSize.height)
@@ -58,11 +58,11 @@ public abstract class UIAbstractLayout extends UIObject {
         this(GLContext.getCurrent().getWindow().getInputs());
     }
 
-    public UIObject getFocusedObject(){
+    public UIObject getFocusedObject() {
         return focusedObject;
     }
 
-    public boolean isFocused(UIObject object){
+    public boolean isFocused(UIObject object) {
         return focusedObject != null && focusedObject.equals(object);
     }
 

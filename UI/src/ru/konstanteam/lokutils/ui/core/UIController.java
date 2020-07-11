@@ -49,9 +49,9 @@ public abstract class UIController {
                 event = new MouseMoveEvent(((MouseClickedEvent) lastEvent).position, lastMousePosition, mousePosition, MoveType.STARTED);
             else if (lastEvent instanceof MouseMoveEvent)
                 event = new MouseMoveEvent(((MouseMoveEvent) lastEvent).startPosition, lastMousePosition, mousePosition, MoveType.CONTINUED);
-        }else if (window.getInputs().keyboard.nextKey()){
+        } else if (window.getInputs().keyboard.nextKey()) {
             event = new KeyTypedEvent(window.getInputs().keyboard.getPressedKey());
-        }else if (window.getInputs().keyboard.nextChar()){
+        } else if (window.getInputs().keyboard.nextChar()) {
             event = new CharTypedEvent(window.getInputs().keyboard.getPressedChar());
         }
 

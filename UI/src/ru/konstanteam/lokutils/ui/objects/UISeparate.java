@@ -1,6 +1,5 @@
 package ru.konstanteam.lokutils.ui.objects;
 
-import org.lwjgl.opengl.GL11;
 import ru.konstanteam.lokutils.objects.Color;
 import ru.konstanteam.lokutils.objects.Size;
 import ru.konstanteam.lokutils.ui.UIObject;
@@ -14,7 +13,7 @@ public class UISeparate extends UIObject {
     protected boolean autoMode = true;
     protected float lineSizePercent = 0.85f;
 
-    public UISeparate(){
+    public UISeparate() {
         size.set(new Size(100, 10));
     }
 
@@ -49,7 +48,7 @@ public class UISeparate extends UIObject {
 
         boolean horizontal = autoMode ? size.width > size.height : this.horizontal;
         float lineSize = (horizontal ? size.width : size.height) * lineSizePercent;
-        float lineWidth = (Float)style.getObject("separateLineWidth");
+        float lineWidth = (Float) style.getObject("separateLineWidth");
 
         Color lineColor = style.getColor("separateColor");
         glDisable(GL_MULTISAMPLE);
@@ -58,10 +57,10 @@ public class UISeparate extends UIObject {
         glColor4f(lineColor.red, lineColor.green, lineColor.blue, lineColor.alpha);
         glBegin(GL_LINES);
 
-        if (horizontal){
+        if (horizontal) {
             glVertex2d(size.width / 2f - lineSize / 2f, size.height / 2f - lineWidth / 2f);
             glVertex2d(size.width / 2f - lineSize / 2f + lineSize, size.height / 2f - lineWidth / 2f);
-        }else {
+        } else {
             glVertex2d(size.width / 2f - lineWidth / 2f, size.height / 2f - lineSize / 2f);
             glVertex2d(size.width / 2f - lineWidth / 2f, size.height / 2f - lineSize / 2f + lineSize);
         }
