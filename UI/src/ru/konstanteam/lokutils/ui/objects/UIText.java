@@ -11,6 +11,7 @@ public class UIText extends UIObject {
 
     protected String styleFontName;
     protected String text = "";
+    protected Font lastFont;
 
     public UIText() {
         size.set(() -> getStyle().getFont(styleFontName).getSize(text, null));
@@ -36,6 +37,14 @@ public class UIText extends UIObject {
         return this;
     }
 
+    public Color getColor(){
+        return overrideColor != null ? overrideColor : getStyle().getColor("text");
+    }
+
+    public Font getFont(){
+        return lastFont;
+    }
+
     @Override
     public void update(UIObject parent) {
         super.update(parent);
@@ -43,9 +52,9 @@ public class UIText extends UIObject {
 
     @Override
     public void render() {
-        Font font = getStyle().getFont(getStyleFontName());
-        Color color = overrideColor != null ? overrideColor : getStyle().getColor("text");
+        lastFont = getStyle().getFont(getStyleFontName());
+        Color color = getColor();
 
-        font.drawText(getText(), new Rect(Point.ZERO, size.get()), color);
+        lastFont.drawText(getText(), new Rect(Point.ZERO, size.get()), color);
     }
 }
