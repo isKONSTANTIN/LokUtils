@@ -38,7 +38,7 @@ public class ViewTools {
         return stackTranslate.get(id);
     }
 
-    public void pushScissor(Rect scissor) {
+    public void pushScissor(Rect scissor, int smoothingDeviation) {
         if (stackScissor.size() == 0) GL11.glEnable(GL11.GL_SCISSOR_TEST);
 
         TranslateState translate = getCurrentTranslate();
@@ -51,13 +51,17 @@ public class ViewTools {
             globalScissor = currentScissor.intersect(globalScissor);
 
         GL11.glScissor(
-                (int) Math.ceil(globalScissor.getX()) - SMOOTHING_DEVIATION,
-                (int) Math.ceil(globalScissor.getY()) - SMOOTHING_DEVIATION,
-                (int) Math.ceil(globalScissor.getWidth()) + SMOOTHING_DEVIATION * 2,
-                (int) Math.ceil(globalScissor.getHeight()) + SMOOTHING_DEVIATION * 2
+                (int) Math.ceil(globalScissor.getX()) - smoothingDeviation,
+                (int) Math.ceil(globalScissor.getY()) - smoothingDeviation,
+                (int) Math.ceil(globalScissor.getWidth()) + smoothingDeviation * 2,
+                (int) Math.ceil(globalScissor.getHeight()) + smoothingDeviation * 2
         );
 
         stackScissor.add(globalScissor);
+    }
+
+    public void pushScissor(Rect scissor) {
+        pushScissor(scissor, SMOOTHING_DEVIATION);
     }
 
     public void pushScissor(Point position, Size size) {
