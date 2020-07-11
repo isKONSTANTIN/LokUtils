@@ -26,6 +26,10 @@ public class UIObject {
         return lastParent.getOwner();
     }
 
+    public UIObject getFocusableObject(){
+        return this;
+    }
+
     public Animations getAnimations() {
         return animations;
     }

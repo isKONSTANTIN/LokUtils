@@ -10,6 +10,7 @@ import ru.konstanteam.lokutils.tools.Removable;
 import ru.konstanteam.lokutils.ui.UIObject;
 import ru.konstanteam.lokutils.ui.UIStyle;
 import ru.konstanteam.lokutils.ui.eventsystem.Event;
+import ru.konstanteam.lokutils.ui.eventsystem.events.MouseClickedEvent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,6 +20,7 @@ public abstract class UIAbstractLayout extends UIObject {
     protected HashMap<UIObject, Removable> listeners = new HashMap<>();
     protected Inputs inputs;
     protected boolean positionsIsValid;
+    protected UIObject focusedObject;
 
     public UIAbstractLayout(Inputs inputs, UIStyle style) {
         this.inputs = inputs;
@@ -27,8 +29,23 @@ public abstract class UIAbstractLayout extends UIObject {
         this.size.addListener((oldValue, newValue) -> setInvalidPositionsStatus());
 
         customersContainer.addCustomer(event -> {
-            for (UIObject object : objects)
-                object.getCustomersContainer().handle(event.relativeTo(getObjectPos(object)));
+            if (event instanceof MouseClickedEvent)
+                focusedObject = null;
+
+            for (UIObject object : objects){
+                Event localizedEvent = event.relativeTo(getObjectPos(object));
+
+                if (event instanceof MouseClickedEvent){
+                    MouseClickedEvent mouseClickedEvent = (MouseClickedEvent)localizedEvent;
+                    Size objectSize = object.size().get();
+
+                    if (mouseClickedEvent.position.x >= 0 && mouseClickedEvent.position.y >= 0 && mouseClickedEvent.position.x <= objectSize.width && mouseClickedEvent.position.y <= objectSize.height)
+                        focusedObject = object.getFocusableObject();
+                }
+
+                object.getCustomersContainer().handle(localizedEvent);
+            }
+
 
         }, Event.class);
     }
@@ -39,6 +56,14 @@ public abstract class UIAbstractLayout extends UIObject {
 
     public UIAbstractLayout() {
         this(GLContext.getCurrent().getWindow().getInputs());
+    }
+
+    public UIObject getFocusedObject(){
+        return focusedObject;
+    }
+
+    public boolean isFocused(UIObject object){
+        return focusedObject != null && focusedObject.equals(object);
     }
 
     @Override
