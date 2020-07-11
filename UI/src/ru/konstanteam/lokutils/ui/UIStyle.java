@@ -45,6 +45,9 @@ public class UIStyle {
 
                         .setColor("separateColor", new Color(0.6f, 0.6f, 0.6f, 0.9f))
                         .setObject("separateLineWidth", 1f)
+
+                        .setColor("textFieldBackground", new Color(0.2f, 0.2f, 0.2f, 0.7f))
+                        .setObject("textFieldRounded", 0.3f)
         );
     }
 

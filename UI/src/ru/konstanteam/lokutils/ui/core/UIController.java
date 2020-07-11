@@ -5,10 +5,7 @@ import ru.konstanteam.lokutils.objects.Point;
 import ru.konstanteam.lokutils.render.Window;
 import ru.konstanteam.lokutils.ui.UIStyle;
 import ru.konstanteam.lokutils.ui.eventsystem.Event;
-import ru.konstanteam.lokutils.ui.eventsystem.events.ClickType;
-import ru.konstanteam.lokutils.ui.eventsystem.events.MouseClickedEvent;
-import ru.konstanteam.lokutils.ui.eventsystem.events.MouseMoveEvent;
-import ru.konstanteam.lokutils.ui.eventsystem.events.MoveType;
+import ru.konstanteam.lokutils.ui.eventsystem.events.*;
 
 public abstract class UIController {
     protected Window window;
@@ -52,6 +49,10 @@ public abstract class UIController {
                 event = new MouseMoveEvent(((MouseClickedEvent) lastEvent).position, lastMousePosition, mousePosition, MoveType.STARTED);
             else if (lastEvent instanceof MouseMoveEvent)
                 event = new MouseMoveEvent(((MouseMoveEvent) lastEvent).startPosition, lastMousePosition, mousePosition, MoveType.CONTINUED);
+        }else if (window.getInputs().keyboard.nextKey()){
+            event = new KeyTypedEvent(window.getInputs().keyboard.getPressedKey());
+        }else if (window.getInputs().keyboard.nextChar()){
+            event = new CharTypedEvent(window.getInputs().keyboard.getPressedChar());
         }
 
         lastEvent = event;
