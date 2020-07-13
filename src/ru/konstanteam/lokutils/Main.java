@@ -29,6 +29,8 @@ public class Main extends Application<UIWindowSystem> {
 
     @Override
     public void initEvent() {
+        window.setWindowCloseCallback(Window::destroy);
+
         BaseWindow window = new BaseWindow();
         uiController.addWindow(window);
         window.initContent(uiController);

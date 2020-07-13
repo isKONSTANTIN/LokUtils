@@ -301,6 +301,10 @@ public class Window {
         return this;
     }
 
+    public void setWindowCloseCallback(WindowCloseCallback closeCallback){
+        glfwSetWindowCloseCallback(window, (window) -> closeCallback.windowCloseAccept(this));
+    }
+
     protected void updateResolutionLimits() {
         if (isCreated)
             glfwSetWindowSizeLimits(window, resolutionLimits.getX(), resolutionLimits.getY(), resolutionLimits.getZ(), resolutionLimits.getW());
