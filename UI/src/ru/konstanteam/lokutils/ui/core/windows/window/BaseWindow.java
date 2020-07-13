@@ -15,21 +15,9 @@ import ru.konstanteam.lokutils.ui.layout.Alignment;
 import ru.konstanteam.lokutils.ui.layout.FreeLayout;
 import ru.konstanteam.lokutils.ui.objects.UIBlackout;
 
-public class BaseWindow<T extends FreeLayout, R extends AbstractWindowBar> extends AbstractWindow<T, R> {
+public class BaseWindow extends AbstractWindow<FreeLayout, BaseWindowBar<BaseWindow>> {
     protected Point lastMoveDelta = Point.ZERO;
     protected boolean resizeStatus;
-
-    public BaseWindow(T rootLayout, R bar) {
-        super(rootLayout, bar);
-
-        UIBlackout blackout = new UIBlackout();
-        blackout.size().set(layout.size());
-        rootLayout.addObject(blackout, Alignment.TOP_LEFT);
-    }
-
-    public BaseWindow(T rootLayout) {
-        this(rootLayout, (R) new BaseWindowBar());
-    }
 
     public void setMinimized(boolean minimized) {
         this.minimized = minimized;
@@ -44,10 +32,25 @@ public class BaseWindow<T extends FreeLayout, R extends AbstractWindowBar> exten
     }
 
     @Override
-    public void init(UIWindowSystem windowSystem) {
-        super.init(windowSystem);
+    protected FreeLayout initLayout() {
+        return new FreeLayout();
+    }
 
-        bar.init(this);
+    @Override
+    protected BaseWindowBar<BaseWindow> initBar() {
+        BaseWindowBar<BaseWindow> baseWindowBar = new BaseWindowBar<>();
+        baseWindowBar.init(this);
+
+        return baseWindowBar;
+    }
+
+    @Override
+    public void initContent(UIWindowSystem windowSystem) {
+        super.initContent(windowSystem);
+
+        UIBlackout blackout = new UIBlackout();
+        blackout.size().set(layout.size());
+        layout.addObject(blackout, Alignment.TOP_LEFT);
     }
 
     public void handleMouseMoveEvent(MouseMoveEvent event) {
@@ -61,7 +64,7 @@ public class BaseWindow<T extends FreeLayout, R extends AbstractWindowBar> exten
 
         float distance = new Point(size.width, size.height).distance(event.startPosition);
 
-        if (distance <= 3 && event.type == MoveType.STARTED || event.type == MoveType.CONTINUED && resizeStatus) {
+        if (resizable() && (distance <= 3 && event.type == MoveType.STARTED || event.type == MoveType.CONTINUED && resizeStatus)) {
             if (event.type == MoveType.STARTED)
                 windowSystem.bringToFront(this);
 
@@ -69,8 +72,8 @@ public class BaseWindow<T extends FreeLayout, R extends AbstractWindowBar> exten
 
             Size newSize = size.offset(deltaPos.x, deltaPos.y);
             newSize = new Size(
-                    Math.max(newSize.width, minSize.width),
-                    Math.max(newSize.height, minSize.height)
+                    Math.max(newSize.width, getMinSize().width),
+                    Math.max(newSize.height, getMinSize().height)
             );
 
             setSize(newSize);

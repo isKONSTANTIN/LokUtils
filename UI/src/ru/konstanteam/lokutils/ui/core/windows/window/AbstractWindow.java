@@ -18,13 +18,7 @@ public abstract class AbstractWindow<T extends UIAbstractLayout, R extends Abstr
     protected UIStyle style;
 
     protected boolean minimized;
-
-    public AbstractWindow(T rootLayout, R bar) {
-        this.layout = rootLayout;
-        this.bar = bar;
-
-        this.layout.size().set(() -> size);
-    }
+    protected boolean contendInited;
 
     public boolean closable() {
         return false;
@@ -62,11 +56,29 @@ public abstract class AbstractWindow<T extends UIAbstractLayout, R extends Abstr
         return minSize;
     }
 
+    protected abstract T initLayout();
+    protected abstract R initBar();
+
+    public void initContent(UIWindowSystem windowSystem){
+        contendInited = true;
+
+        if (style == null)
+            style = windowSystem.getStyle();
+
+        if (layout == null)
+            layout = initLayout();
+
+        if (bar == null)
+            bar = initBar();
+
+        this.layout.size().set(() -> size);
+    }
+
     public void init(UIWindowSystem windowSystem) {
         this.windowSystem = windowSystem;
 
-        if (this.style == null)
-            this.style = windowSystem.getStyle();
+        if (!contendInited)
+            initContent(windowSystem);
     }
 
     public abstract void handleEvent(Event event);

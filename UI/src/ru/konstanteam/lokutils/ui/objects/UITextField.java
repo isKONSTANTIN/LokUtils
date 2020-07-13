@@ -64,6 +64,14 @@ public class UITextField extends UIObject {
 
         this.text = text;
 
+        movePointer(0);
+        return this;
+    }
+
+    public UITextField setText(String text) {
+        this.text.setText(text);
+
+        movePointer(0);
         return this;
     }
 
@@ -72,7 +80,8 @@ public class UITextField extends UIObject {
         Font font = this.text.getFont();
 
         pointer = Math.max(Math.min(position, text.length()), 0);
-        pointerPos = font.getSize(text.substring(0, pointer), null).width;
+        if (font != null)
+            pointerPos = font.getSize(text.substring(0, pointer), null).width;
     }
 
     public void movePointer(int position) {
@@ -83,10 +92,10 @@ public class UITextField extends UIObject {
         return pointer;
     }
 
-    public UITextField setText(String text) {
-        this.text.setText(text);
 
-        return this;
+
+    public String getText(){
+        return text.getText();
     }
 
     @Override

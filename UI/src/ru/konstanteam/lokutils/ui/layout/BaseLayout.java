@@ -24,6 +24,11 @@ public class BaseLayout extends ObjectFreeLayout {
     }
 
     @Override
+    protected Point getLazyObjectPos(UIObject object) {
+        return getObjectPos(object);
+    }
+
+    @Override
     protected void calculateAll() {
         float filledX = 0;
         float filledY = 0;
@@ -63,6 +68,11 @@ public class BaseLayout extends ObjectFreeLayout {
         if (result)
             positions.remove(object);
         return result;
+    }
+
+    public void removeAll(){
+        super.removeAll();
+        positions.clear();
     }
 
     public void addObject(UIObject object) {

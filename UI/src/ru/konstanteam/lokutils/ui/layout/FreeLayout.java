@@ -4,6 +4,7 @@ import ru.konstanteam.lokutils.objects.Point;
 import ru.konstanteam.lokutils.tools.property.Property;
 import ru.konstanteam.lokutils.ui.UIObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class FreeLayout extends ObjectFreeLayout {
@@ -12,6 +13,11 @@ public class FreeLayout extends ObjectFreeLayout {
     @Override
     protected Point getObjectPos(UIObject object) {
         return positions.get(object).get();
+    }
+
+    @Override
+    protected Point getLazyObjectPos(UIObject object) {
+        return positions.get(object).lazyGet();
     }
 
     public Property<Point> getObjectPropertyPosition(UIObject object) {
@@ -28,6 +34,11 @@ public class FreeLayout extends ObjectFreeLayout {
         if (result)
             positions.remove(object);
         return result;
+    }
+
+    public void removeAll(){
+        super.removeAll();
+        positions.clear();
     }
 
     public void addObject(UIObject object, Property<Point> position) {

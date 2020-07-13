@@ -52,6 +52,8 @@ public class UIStyle {
 
     public static UIStyle getDefault() {
         GLContext context = GLContext.getCurrent();
+        if (context == null)
+            return null;
 
         if (!defaultStyles.containsKey(context))
             generateDefaultStyle();

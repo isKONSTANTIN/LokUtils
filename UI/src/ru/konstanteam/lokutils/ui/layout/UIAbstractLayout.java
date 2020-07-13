@@ -18,12 +18,10 @@ import java.util.HashMap;
 public abstract class UIAbstractLayout extends UIObject {
     protected ArrayList<UIObject> objects = new ArrayList<>();
     protected HashMap<UIObject, Removable> listeners = new HashMap<>();
-    protected Inputs inputs;
     protected boolean positionsIsValid;
     protected UIObject focusedObject;
 
-    public UIAbstractLayout(Inputs inputs, UIStyle style) {
-        this.inputs = inputs;
+    public UIAbstractLayout(UIStyle style) {
         this.style = style;
         this.size.set(new Size(256, 256));
         this.size.addListener((oldValue, newValue) -> setInvalidPositionsStatus());
@@ -33,7 +31,10 @@ public abstract class UIAbstractLayout extends UIObject {
                 focusedObject = null;
 
             for (UIObject object : objects) {
-                Event localizedEvent = event.relativeTo(getObjectPos(object));
+                Point position = getObjectPos(object);
+                position = position != null ? position : Point.ZERO;
+
+                Event localizedEvent = event.relativeTo(position);
 
                 if (event instanceof MouseClickedEvent) {
                     MouseClickedEvent mouseClickedEvent = (MouseClickedEvent) localizedEvent;
@@ -45,17 +46,11 @@ public abstract class UIAbstractLayout extends UIObject {
 
                 object.getCustomersContainer().handle(localizedEvent);
             }
-
-
         }, Event.class);
     }
 
-    public UIAbstractLayout(Inputs inputs) {
-        this(inputs, UIStyle.getDefault());
-    }
-
     public UIAbstractLayout() {
-        this(GLContext.getCurrent().getWindow().getInputs());
+        this(UIStyle.getDefault());
     }
 
     public UIObject getFocusedObject() {
@@ -67,16 +62,13 @@ public abstract class UIAbstractLayout extends UIObject {
     }
 
     @Override
-    public Inputs getInputs() {
-        return inputs;
-    }
-
-    @Override
     public UIAbstractLayout getOwner() {
         return this;
     }
 
     protected abstract Point getObjectPos(UIObject object);
+
+    protected abstract Point getLazyObjectPos(UIObject object);
 
     protected void addObject(UIObject object) {
         object.init(this);
@@ -99,6 +91,17 @@ public abstract class UIAbstractLayout extends UIObject {
         }
 
         return result;
+    }
+
+    protected void removeAll(){
+        for (UIObject object : objects){
+            listeners.get(object).delete();
+            listeners.remove(object);
+        }
+
+        objects.clear();
+
+        setInvalidPositionsStatus();
     }
 
     protected abstract void calculateAll();

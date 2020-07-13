@@ -40,4 +40,8 @@ public abstract class ObjectFreeLayout extends UIAbstractLayout {
     public Point getObjectPosition(UIObject object) {
         return getObjectPos(object);
     }
+
+    public Point getLazyObjectPosition(UIObject object) {
+        return getLazyObjectPos(object);
+    }
 }

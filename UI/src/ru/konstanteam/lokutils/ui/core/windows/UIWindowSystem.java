@@ -20,6 +20,7 @@ import java.util.HashMap;
 public class UIWindowSystem extends UIController {
     protected ArrayList<AbstractWindow> windows = new ArrayList<>();
     protected ArrayList<WindowTask> windowTasks = new ArrayList<>();
+    protected ArrayList<WindowTask> windowCreationTasks = new ArrayList<>();
     protected HashMap<AbstractWindow, Point> windowsPositions = new HashMap<>();
 
     public UIWindowSystem(Window window) {
@@ -27,15 +28,18 @@ public class UIWindowSystem extends UIController {
     }
 
     public Removable addWindow(AbstractWindow window) {
-        window.init(this);
+        windowCreationTasks.add(() -> {
+            window.init(this);
 
-        windows.add(window);
-        windowsPositions.put(window,
-                new Point(
-                        this.window.getResolution().getX() / 2f - window.getContentSize().width / 2f,
-                        this.window.getResolution().getY() / 2f - window.getContentSize().height / 2f
-                )
-        );
+            windows.add(window);
+            windowsPositions.put(window,
+                    new Point(
+                            this.window.getResolution().getX() / 2f - window.getContentSize().width / 2f,
+                            this.window.getResolution().getY() / 2f - window.getContentSize().height / 2f
+                    )
+            );
+        });
+
         return () -> closeWindow(window);
     }
 
@@ -101,16 +105,27 @@ public class UIWindowSystem extends UIController {
         Event event = checkEvent();
         if (event == null) return;
 
+        boolean stopCycle = false;
         for (AbstractWindow window : windows) {
-            if (event instanceof MouseClickedEvent &&
-                    handleMouseClickedEvent((MouseClickedEvent) event, window)) break;
-            if (event instanceof MouseMoveEvent &&
-                    handleMouseMoveEvent((MouseMoveEvent) event, window)) break;
+            if (event instanceof MouseClickedEvent)
+                    stopCycle = handleMouseClickedEvent((MouseClickedEvent) event, window);
+            else if (event instanceof MouseMoveEvent)
+                    stopCycle = handleMouseMoveEvent((MouseMoveEvent) event, window);
+            else
+                window.handleEvent(event);
+
+            if (stopCycle)
+                break;
         }
     }
 
     @Override
     public void render() {
+        for (WindowTask task : windowCreationTasks)
+            task.run();
+
+        windowCreationTasks.clear();
+
         ViewTools viewTools = GLContext.getCurrent().getViewTools();
 
         for (int i = windows.size() - 1; i >= 0; i--) {

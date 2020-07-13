@@ -57,10 +57,6 @@ public class UIObject {
         return size;
     }
 
-    public Inputs getInputs() {
-        return lastParent.getInputs();
-    }
-
     public CustomersContainer getCustomersContainer() {
         return customersContainer;
     }

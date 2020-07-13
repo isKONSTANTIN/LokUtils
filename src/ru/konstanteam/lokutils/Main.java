@@ -5,15 +5,19 @@ import ru.konstanteam.lokutils.applications.ApplicationPreference;
 import ru.konstanteam.lokutils.render.GLFW;
 import ru.konstanteam.lokutils.render.Window;
 import ru.konstanteam.lokutils.ui.core.maincanvas.UIMainCanvasSystem;
+import ru.konstanteam.lokutils.ui.core.windows.UIWindowSystem;
+import ru.konstanteam.lokutils.ui.core.windows.bar.BaseWindowBar;
+import ru.konstanteam.lokutils.ui.core.windows.window.BaseWindow;
 import ru.konstanteam.lokutils.ui.layout.Alignment;
 import ru.konstanteam.lokutils.ui.layout.FreeLayout;
+import ru.konstanteam.lokutils.ui.objects.UILineSpace;
 import ru.konstanteam.lokutils.ui.objects.UIText;
 import ru.konstanteam.lokutils.ui.objects.UITextField;
 
-public class Main extends Application<UIMainCanvasSystem> {
+public class Main extends Application<UIWindowSystem> {
     Main() {
         super(
-                new ApplicationPreference<>(UIMainCanvasSystem.class).setWindow(new Window().setResizable(true))
+                new ApplicationPreference<>(UIWindowSystem.class).setWindow(new Window().setResizable(true))
         );
     }
 
@@ -25,13 +29,10 @@ public class Main extends Application<UIMainCanvasSystem> {
 
     @Override
     public void initEvent() {
-        FreeLayout layout = new FreeLayout();
-
-        uiController.setLayout(layout);
-        UITextField textField = new UITextField().setText(new UIText().setStyleFontName("TEST"));
-        textField.size().set(() -> layout.size().get().setHeight(40).relativeTo(50, 0));
-
-        layout.addObject(textField, Alignment.CENTER);
+        BaseWindow window = new BaseWindow();
+        uiController.addWindow(window);
+        window.initContent(uiController);
+        window.getLayout().addObject(new UILineSpace(), Alignment.CENTER);
     }
 
 }
