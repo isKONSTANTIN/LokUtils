@@ -1,6 +1,7 @@
 package ru.konstanteam.lokutils.ui;
 
 import ru.konstanteam.lokutils.objects.Color;
+import ru.konstanteam.lokutils.objects.ColorRGB;
 import ru.konstanteam.lokutils.render.Font;
 import ru.konstanteam.lokutils.render.GLContext;
 
@@ -19,21 +20,21 @@ public class UIStyle {
         setDefault(
                 new UIStyle()
                         .setFont("default", new Font().load())
-                        .setFont("windowTitle", new Font().load(new java.awt.Font(null, java.awt.Font.PLAIN, 10)))
+                        .setFont("windowTitle", new Font().load(new java.awt.Font("Aria", java.awt.Font.PLAIN, 10)))
 
-                        .setColor("background", new Color(0.2f, 0.2f, 0.2f, 0.7f))
-                        .setColor("brightBackground", new Color(0.3f, 0.3f, 0.3f, 0.7f))
+                        .setColor("background", new Color(0.15f, 0.15f, 0.15f, 0.8f))
+                        .setColor("brightBackground", new Color(0.2f, 0.2f, 0.2f, 0.8f))
 
-                        .setColor("buttonPressed", new Color(0.5f, 0.5f, 0.5f, 1f))
-                        .setColor("buttonPointed", new Color(0.45f, 0.45f, 0.45f, 1f))
-                        .setColor("buttonBackground", new Color(0.38f, 0.38f, 0.38f, 1f))
+                        .setColor("buttonPressed", new Color(0.38f, 0.38f, 0.38f, 0.8f))
+                        .setColor("buttonPointed", new Color(0.33f, 0.33f, 0.33f, 0.8f))
+                        .setColor("buttonBackground", new Color(0.2f, 0.2f, 0.2f, 0.8f))
 
-                        .setColor("windowCloseButtonPressed", new Color(0.9f, 0.5f, 0.5f, 1f))
-                        .setColor("windowCloseButtonBackground", new Color(0.7f, 0.3f, 0.3f, 1f))
-                        .setColor("windowMinimizeButtonPressed", new Color(0.9f, 0.7f, 0.5f, 1f))
-                        .setColor("windowMinimizeButtonBackground", new Color(0.7f, 0.5f, 0.3f, 1f))
+                        .setColor("windowCloseButtonPressed", new ColorRGB(255, 170, 170, 255))
+                        .setColor("windowCloseButtonBackground", new ColorRGB(255, 100, 100, 255))
+                        .setColor("windowMinimizeButtonPressed", new ColorRGB(255, 255, 170, 255))
+                        .setColor("windowMinimizeButtonBackground", new ColorRGB(255, 230, 100, 255))
                         .setColor("windowContentBackground", new Color(0.3f, 0.3f, 0.3f, 0.9f))
-                        .setColor("windowBarBackground", new Color(0.4f, 0.4f, 0.4f, 0.9f))
+                        .setColor("windowBarBackground", new Color(0.25f, 0.25f, 0.25f, 0.8f))
 
                         .setColor("text", new Color(0.9f, 0.9f, 0.9f, 1))
                         .setColor("highlightedText", new Color(1, 1, 0.9f, 1))
@@ -45,7 +46,7 @@ public class UIStyle {
                         .setColor("separateColor", new Color(0.6f, 0.6f, 0.6f, 0.9f))
                         .setObject("separateLineWidth", 1f)
 
-                        .setColor("textFieldBackground", new Color(0.2f, 0.2f, 0.2f, 0.7f))
+                        .setColor("textFieldBackground", new Color(0.2f, 0.2f, 0.2f, 0.8f))
                         .setObject("textFieldRounded", 0.3f)
         );
     }
