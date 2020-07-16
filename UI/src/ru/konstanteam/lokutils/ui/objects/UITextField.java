@@ -8,9 +8,15 @@ import ru.konstanteam.lokutils.objects.Size;
 import ru.konstanteam.lokutils.render.Font;
 import ru.konstanteam.lokutils.render.GLContext;
 import ru.konstanteam.lokutils.render.tools.GLFastTools;
+import ru.konstanteam.lokutils.tools.Action;
 import ru.konstanteam.lokutils.ui.UIObject;
 import ru.konstanteam.lokutils.ui.eventsystem.events.CharTypedEvent;
 import ru.konstanteam.lokutils.ui.eventsystem.events.KeyTypedEvent;
+
+import java.awt.*;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.io.IOException;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
@@ -21,6 +27,7 @@ public class UITextField extends UIObject {
     protected int pointer;
     protected float pointerPos;
     protected float translate;
+    protected Action enterAction;
 
     public UITextField() {
         size.set(new Size(100, 20));
@@ -30,11 +37,8 @@ public class UITextField extends UIObject {
         customersContainer.addCustomer((event) -> {
             if (event.key.action != KeyAction.RELEASE || !getOwner().isFocused(this))
                 return;
-            String originalText = text.getText();
 
-            text.setText(originalText.substring(0, pointer).concat(String.valueOf(event.key.aChar)).concat(originalText.substring(pointer)));
-            movePointer(1);
-
+            addText(String.valueOf(event.key.aChar));
         }, CharTypedEvent.class);
 
         customersContainer.addCustomer((event) -> {
@@ -55,7 +59,28 @@ public class UITextField extends UIObject {
             if (event.key.buttonID == GLFW_KEY_LEFT)
                 movePointer(-1);
 
+            if (event.key.buttonID == GLFW_KEY_V && event.key.mods == GLFW_MOD_CONTROL){
+                try {
+                    addText((String) Toolkit.getDefaultToolkit().getSystemClipboard().getData(DataFlavor.stringFlavor));
+                } catch (UnsupportedFlavorException | IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            if (event.key.buttonID == GLFW_KEY_ENTER && enterAction != null)
+                enterAction.call();
+
         }, KeyTypedEvent.class);
+    }
+
+    public Action getEnterAction() {
+        return enterAction;
+    }
+
+    public UITextField setEnterAction(Action action) {
+        this.enterAction = action;
+
+        return this;
     }
 
     public UITextField setText(UIText text) {
@@ -75,24 +100,35 @@ public class UITextField extends UIObject {
         return this;
     }
 
-    public void setPointerPos(int position) {
+    public UITextField addText(String newText){
+        String originalText = text.getText();
+
+        text.setText(originalText.substring(0, pointer).concat(newText).concat(originalText.substring(pointer)));
+        movePointer(newText.length());
+
+        return this;
+    }
+
+    public UITextField setPointerPos(int position) {
         String text = this.text.getText();
         Font font = this.text.getFont();
 
         pointer = Math.max(Math.min(position, text.length()), 0);
         if (font != null)
             pointerPos = font.getSize(text.substring(0, pointer), null).width;
+
+        return this;
     }
 
-    public void movePointer(int position) {
+    public UITextField movePointer(int position) {
         setPointerPos(pointer + position);
+
+        return this;
     }
 
     public int getPointerPosition() {
         return pointer;
     }
-
-
 
     public String getText(){
         return text.getText();
