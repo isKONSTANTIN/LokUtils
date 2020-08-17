@@ -61,6 +61,10 @@ public abstract class UIAbstractLayout extends UIObject {
         return focusedObject != null && focusedObject.equals(object);
     }
 
+    public void setFocus(UIObject object){
+        focusedObject = object.getFocusableObject();
+    }
+
     @Override
     public UIAbstractLayout getOwner() {
         return this;
