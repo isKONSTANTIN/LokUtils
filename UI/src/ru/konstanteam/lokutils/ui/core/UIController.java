@@ -14,15 +14,6 @@ public abstract class UIController {
     protected Event lastEvent;
     protected Point lastMousePosition = Point.ZERO;
 
-    public UIController(Window window, UIStyle style) {
-        this.window = window;
-        this.style = style;
-    }
-
-    public UIController(Window window) {
-        this(window, UIStyle.getDefault());
-    }
-
     public UIStyle getStyle() {
         return style;
     }
@@ -63,4 +54,9 @@ public abstract class UIController {
     public abstract void update();
 
     public abstract void render();
+
+    public void init(Window window, UIStyle uiStyle){
+        this.window = window;
+        this.style = uiStyle;
+    }
 }

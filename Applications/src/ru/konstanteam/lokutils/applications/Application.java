@@ -6,7 +6,6 @@ import ru.konstanteam.lokutils.render.Window;
 import ru.konstanteam.lokutils.tools.ExecutorServices;
 import ru.konstanteam.lokutils.ui.UIStyle;
 import ru.konstanteam.lokutils.ui.core.UIController;
-import ru.konstanteam.lokutils.ui.core.windows.UIWindowSystem;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -14,18 +13,17 @@ public class Application<T extends UIController> implements Runnable {
 
     protected Window window;
     protected T uiController;
-    protected ApplicationPreference<T> preference;
     protected boolean opened;
 
-    public Application(ApplicationPreference<T> preference) {
-        this.preference = preference;
-        window = preference.window;
+    public Application(T uiController, Window window) {
+        this.uiController = uiController;
+        this.window = window;
 
         opened = true;
     }
 
-    public Application() {
-        this(new ApplicationPreference(UIWindowSystem.class));
+    public Application(T uiController) {
+        this(uiController, new Window());
     }
 
     public boolean isOpened() {
@@ -63,7 +61,7 @@ public class Application<T extends UIController> implements Runnable {
             window.getGlContext().bind();
             UIStyle.generateDefaultStyle();
 
-            uiController = (T) preference.uiController.getConstructors()[0].newInstance(window);
+            uiController.init(window, UIStyle.getDefault());
 
             initEvent();
 

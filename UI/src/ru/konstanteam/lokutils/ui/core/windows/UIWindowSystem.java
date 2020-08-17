@@ -23,10 +23,6 @@ public class UIWindowSystem extends UIController {
     protected ArrayList<WindowTask> windowCreationTasks = new ArrayList<>();
     protected HashMap<AbstractWindow, Point> windowsPositions = new HashMap<>();
 
-    public UIWindowSystem(Window window) {
-        super(window);
-    }
-
     public Removable addWindow(AbstractWindow window) {
         windowCreationTasks.add(() -> {
             window.init(this);
