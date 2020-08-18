@@ -7,14 +7,15 @@ import ru.konstanteam.lokutils.ui.core.maincanvas.UIMainCanvasSystem;
 import ru.konstanteam.lokutils.ui.core.windows.UIWindowSystem;
 import ru.konstanteam.lokutils.ui.layout.Alignment;
 import ru.konstanteam.lokutils.ui.layout.FreeLayout;
+import ru.konstanteam.lokutils.ui.layout.ListLayout;
 import ru.konstanteam.lokutils.ui.objects.UITextField;
 
 import java.util.Random;
 
-public class Main extends Application<UIMainCanvasSystem<FreeLayout>> {
+public class Main extends Application<UIMainCanvasSystem<ListLayout>> {
     public Main() {
         super(
-                new UIMainCanvasSystem<>(new FreeLayout())
+                new UIMainCanvasSystem<>(new ListLayout())
         );
     }
 
@@ -27,7 +28,9 @@ public class Main extends Application<UIMainCanvasSystem<FreeLayout>> {
     @Override
     public void initEvent() {
         window.setWindowCloseCallback((window) -> this.close());
-        uiController.getLayout().addObject(new UITextField().setEnterAction(() -> System.out.println(new Random().nextInt())), Alignment.CENTER);
+        UITextField field = new UITextField().setEnterAction(() -> System.out.println(new Random().nextInt()));
+
+        uiController.getLayout().addObject(field);
     }
 
 }

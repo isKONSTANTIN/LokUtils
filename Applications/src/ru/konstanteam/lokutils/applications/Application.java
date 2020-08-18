@@ -54,9 +54,6 @@ public class Application<T extends UIController> implements Runnable {
     @Override
     public void run() {
         try {
-            if (window == null)
-                window = new Window();
-
             window.create();
             window.getGlContext().bind();
             UIStyle.generateDefaultStyle();
