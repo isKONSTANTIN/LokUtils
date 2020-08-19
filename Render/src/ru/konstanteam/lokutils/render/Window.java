@@ -23,7 +23,7 @@ public class Window {
     protected Vector4i resolutionLimits = new Vector4i(GLFW_DONT_CARE, GLFW_DONT_CARE, GLFW_DONT_CARE, GLFW_DONT_CARE);
 
     protected String title = "Window";
-    protected Monitor monitor = Monitor.getPrimary();
+    protected Monitor monitor;
 
     protected boolean isFullscreen;
     protected boolean isCreated;
@@ -50,6 +50,8 @@ public class Window {
 
     public Window create() {
         if (isCreated) return this;
+
+        monitor = Monitor.getPrimary();
 
         Vector2i monitorResolution = new Vector2i(monitor.getVideoMode().width(), monitor.getVideoMode().height());
 
