@@ -2,6 +2,7 @@ package ru.konstanteam.lokutils.applications;
 
 import org.lwjgl.util.vector.Vector4f;
 import ru.konstanteam.lokutils.objects.Vector2i;
+import ru.konstanteam.lokutils.render.GLFW;
 import ru.konstanteam.lokutils.render.Window;
 import ru.konstanteam.lokutils.tools.ExecutorServices;
 import ru.konstanteam.lokutils.ui.UIStyle;
@@ -54,6 +55,9 @@ public class Application<T extends UIController> implements Runnable {
     @Override
     public void run() {
         try {
+            if (!GLFW.init())
+                throw new RuntimeException("GLFW cannot be inited");
+
             window.create();
             window.getGlContext().bind();
             UIStyle.generateDefaultStyle();
