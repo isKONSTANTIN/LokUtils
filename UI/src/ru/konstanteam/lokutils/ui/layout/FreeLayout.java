@@ -41,6 +41,10 @@ public class FreeLayout extends ObjectFreeLayout {
         positions.clear();
     }
 
+    public void addObject(UIObject object, Point point) {
+        addObject(object, new Property<>(point));
+    }
+
     public void addObject(UIObject object, Property<Point> position) {
         super.addObject(object);
 

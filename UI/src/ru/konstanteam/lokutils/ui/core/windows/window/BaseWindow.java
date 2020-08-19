@@ -110,7 +110,7 @@ public class BaseWindow extends AbstractWindow<FreeLayout, BaseWindowBar<BaseWin
 
         layout.update(null);
 
-        GLContext.getCurrent().getViewTools().pushLook(new Rect(Point.ZERO, layout.size().get()));
+        GLContext.getCurrent().getViewTools().pushLook(new Rect(Point.ZERO, layout.size().get()), 0);
         layout.render();
         GLContext.getCurrent().getViewTools().popLook();
     }

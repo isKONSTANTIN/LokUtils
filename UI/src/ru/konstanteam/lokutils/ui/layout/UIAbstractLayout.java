@@ -135,7 +135,7 @@ public abstract class UIAbstractLayout extends UIObject {
         ViewTools viewTools = GLContext.getCurrent().getViewTools();
         Size mySize = size().get();
 
-        viewTools.pushLook(new Rect(0, 0, mySize.width, mySize.height));
+        viewTools.pushLook(new Rect(0, 0, mySize.width, mySize.height), 0);
 
         for (UIObject object : objects) {
             Point objectPosition = getObjectPos(object);

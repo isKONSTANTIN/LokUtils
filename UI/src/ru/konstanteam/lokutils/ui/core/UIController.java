@@ -1,7 +1,9 @@
 package ru.konstanteam.lokutils.ui.core;
 
+import org.lwjgl.util.vector.Vector2f;
 import ru.konstanteam.lokutils.input.Mouse;
 import ru.konstanteam.lokutils.objects.Point;
+import ru.konstanteam.lokutils.objects.Vector2i;
 import ru.konstanteam.lokutils.render.Window;
 import ru.konstanteam.lokutils.ui.UIStyle;
 import ru.konstanteam.lokutils.ui.eventsystem.Event;
@@ -27,6 +29,7 @@ public abstract class UIController {
         Event event = null;
 
         Point mousePosition = mouse.getMousePosition();
+        Vector2f mouseScroll = mouse.getMouseScroll();
 
         boolean pressedStatus = mouse.getPressedStatus();
         boolean lastMousePressed = mouse.getLastMousePressed();
@@ -44,6 +47,8 @@ public abstract class UIController {
             event = new KeyTypedEvent(window.getInputs().keyboard.getPressedKey());
         } else if (window.getInputs().keyboard.nextChar()) {
             event = new CharTypedEvent(window.getInputs().keyboard.getPressedChar());
+        }else if (mouseScroll.x != 0 || mouseScroll.y != 0){
+            event = new MouseScrollEvent(new Point(mouseScroll.x, mouseScroll.y));
         }
 
         lastEvent = event;
