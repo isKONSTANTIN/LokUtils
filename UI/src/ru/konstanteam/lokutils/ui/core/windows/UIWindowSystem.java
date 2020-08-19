@@ -3,7 +3,6 @@ package ru.konstanteam.lokutils.ui.core.windows;
 import ru.konstanteam.lokutils.objects.Point;
 import ru.konstanteam.lokutils.objects.Rect;
 import ru.konstanteam.lokutils.render.GLContext;
-import ru.konstanteam.lokutils.render.Window;
 import ru.konstanteam.lokutils.render.tools.ViewTools;
 import ru.konstanteam.lokutils.tools.Removable;
 import ru.konstanteam.lokutils.ui.core.UIController;
@@ -104,9 +103,9 @@ public class UIWindowSystem extends UIController {
         boolean stopCycle = false;
         for (AbstractWindow window : windows) {
             if (event instanceof MouseClickedEvent)
-                    stopCycle = handleMouseClickedEvent((MouseClickedEvent) event, window);
+                stopCycle = handleMouseClickedEvent((MouseClickedEvent) event, window);
             else if (event instanceof MouseMoveEvent)
-                    stopCycle = handleMouseMoveEvent((MouseMoveEvent) event, window);
+                stopCycle = handleMouseMoveEvent((MouseMoveEvent) event, window);
             else
                 window.handleEvent(event);
 

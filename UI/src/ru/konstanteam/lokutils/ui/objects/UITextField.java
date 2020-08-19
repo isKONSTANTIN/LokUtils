@@ -59,7 +59,7 @@ public class UITextField extends UIObject {
             if (event.key.buttonID == GLFW_KEY_LEFT)
                 movePointer(-1);
 
-            if (event.key.buttonID == GLFW_KEY_V && event.key.mods == GLFW_MOD_CONTROL){
+            if (event.key.buttonID == GLFW_KEY_V && event.key.mods == GLFW_MOD_CONTROL) {
                 try {
                     addText((String) Toolkit.getDefaultToolkit().getSystemClipboard().getData(DataFlavor.stringFlavor));
                 } catch (UnsupportedFlavorException | IOException e) {
@@ -83,24 +83,7 @@ public class UITextField extends UIObject {
         return this;
     }
 
-    public UITextField setText(UIText text) {
-        if (this.text != null)
-            text.setText(this.text.getText());
-
-        this.text = text;
-
-        movePointer(0);
-        return this;
-    }
-
-    public UITextField setText(String text) {
-        this.text.setText(text);
-
-        movePointer(0);
-        return this;
-    }
-
-    public UITextField addText(String newText){
+    public UITextField addText(String newText) {
         String originalText = text.getText();
 
         text.setText(originalText.substring(0, pointer).concat(newText).concat(originalText.substring(pointer)));
@@ -130,8 +113,25 @@ public class UITextField extends UIObject {
         return pointer;
     }
 
-    public String getText(){
+    public String getText() {
         return text.getText();
+    }
+
+    public UITextField setText(UIText text) {
+        if (this.text != null)
+            text.setText(this.text.getText());
+
+        this.text = text;
+
+        movePointer(0);
+        return this;
+    }
+
+    public UITextField setText(String text) {
+        this.text.setText(text);
+
+        movePointer(0);
+        return this;
     }
 
     @Override

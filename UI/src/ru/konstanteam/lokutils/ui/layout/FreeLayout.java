@@ -4,7 +4,6 @@ import ru.konstanteam.lokutils.objects.Point;
 import ru.konstanteam.lokutils.tools.property.Property;
 import ru.konstanteam.lokutils.ui.UIObject;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class FreeLayout extends ObjectFreeLayout {
@@ -36,7 +35,7 @@ public class FreeLayout extends ObjectFreeLayout {
         return result;
     }
 
-    public void removeAll(){
+    public void removeAll() {
         super.removeAll();
         positions.clear();
     }

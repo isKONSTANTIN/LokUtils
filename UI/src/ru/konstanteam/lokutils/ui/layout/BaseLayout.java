@@ -70,7 +70,7 @@ public class BaseLayout extends ObjectFreeLayout {
         return result;
     }
 
-    public void removeAll(){
+    public void removeAll() {
         super.removeAll();
         positions.clear();
     }

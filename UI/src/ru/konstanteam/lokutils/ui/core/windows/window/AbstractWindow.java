@@ -57,9 +57,10 @@ public abstract class AbstractWindow<T extends UIAbstractLayout, R extends Abstr
     }
 
     protected abstract T initLayout();
+
     protected abstract R initBar();
 
-    public void initContent(UIWindowSystem windowSystem){
+    public void initContent(UIWindowSystem windowSystem) {
         contendInited = true;
 
         if (style == null)

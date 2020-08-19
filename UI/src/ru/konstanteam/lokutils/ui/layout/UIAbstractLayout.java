@@ -1,6 +1,5 @@
 package ru.konstanteam.lokutils.ui.layout;
 
-import ru.konstanteam.lokutils.input.Inputs;
 import ru.konstanteam.lokutils.objects.Point;
 import ru.konstanteam.lokutils.objects.Rect;
 import ru.konstanteam.lokutils.objects.Size;
@@ -61,7 +60,7 @@ public abstract class UIAbstractLayout extends UIObject {
         return focusedObject != null && focusedObject.equals(object);
     }
 
-    public void setFocus(UIObject object){
+    public void setFocus(UIObject object) {
         focusedObject = object.getFocusableObject();
     }
 
@@ -97,8 +96,8 @@ public abstract class UIAbstractLayout extends UIObject {
         return result;
     }
 
-    protected void removeAll(){
-        for (UIObject object : objects){
+    protected void removeAll() {
+        for (UIObject object : objects) {
             listeners.get(object).delete();
             listeners.remove(object);
         }

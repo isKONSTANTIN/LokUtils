@@ -10,7 +10,7 @@ import ru.konstanteam.lokutils.ui.layout.UIAbstractLayout;
 public class UIMainCanvasSystem<T extends UIAbstractLayout> extends UIController {
     protected T layout;
 
-    public UIMainCanvasSystem(T layout){
+    public UIMainCanvasSystem(T layout) {
         this.layout = layout;
     }
 

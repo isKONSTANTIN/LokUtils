@@ -1,6 +1,5 @@
 package ru.konstanteam.lokutils.ui;
 
-import ru.konstanteam.lokutils.input.Inputs;
 import ru.konstanteam.lokutils.objects.Size;
 import ru.konstanteam.lokutils.tools.property.Property;
 import ru.konstanteam.lokutils.ui.animation.Animations;

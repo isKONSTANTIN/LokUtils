@@ -2,7 +2,6 @@ package ru.konstanteam.lokutils.ui.layout;
 
 import ru.konstanteam.lokutils.objects.Point;
 import ru.konstanteam.lokutils.objects.Size;
-import ru.konstanteam.lokutils.tools.property.Property;
 import ru.konstanteam.lokutils.ui.UIObject;
 
 import java.util.HashMap;

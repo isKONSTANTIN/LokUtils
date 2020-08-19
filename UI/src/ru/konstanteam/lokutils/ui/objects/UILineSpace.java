@@ -1,9 +1,7 @@
 package ru.konstanteam.lokutils.ui.objects;
 
-import org.omg.PortableServer.THREAD_POLICY_ID;
 import ru.konstanteam.lokutils.objects.Point;
 import ru.konstanteam.lokutils.objects.Size;
-import ru.konstanteam.lokutils.tools.property.SoftValue;
 import ru.konstanteam.lokutils.ui.UIObject;
 import ru.konstanteam.lokutils.ui.layout.ObjectFreeLayout;
 import ru.konstanteam.lokutils.ui.layout.UIAbstractLayout;

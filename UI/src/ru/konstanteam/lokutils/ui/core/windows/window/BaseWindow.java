@@ -6,7 +6,6 @@ import ru.konstanteam.lokutils.objects.Size;
 import ru.konstanteam.lokutils.render.GLContext;
 import ru.konstanteam.lokutils.ui.UIStyle;
 import ru.konstanteam.lokutils.ui.core.windows.UIWindowSystem;
-import ru.konstanteam.lokutils.ui.core.windows.bar.AbstractWindowBar;
 import ru.konstanteam.lokutils.ui.core.windows.bar.BaseWindowBar;
 import ru.konstanteam.lokutils.ui.eventsystem.Event;
 import ru.konstanteam.lokutils.ui.eventsystem.events.MouseMoveEvent;

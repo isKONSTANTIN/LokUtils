@@ -6,8 +6,6 @@ import ru.konstanteam.lokutils.objects.Size;
 import ru.konstanteam.lokutils.render.GLContext;
 import ru.konstanteam.lokutils.render.tools.ViewTools;
 import ru.konstanteam.lokutils.ui.UIObject;
-import ru.konstanteam.lokutils.ui.eventsystem.Event;
-import ru.konstanteam.lokutils.ui.eventsystem.EventCustomer;
 import ru.konstanteam.lokutils.ui.eventsystem.events.MouseScrollEvent;
 
 public class ScrollLayout extends FreeLayout {
