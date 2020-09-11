@@ -33,6 +33,14 @@ public abstract class ObjectFreeLayout extends UIAbstractLayout {
         return null;
     }
 
+    public boolean removeObject(UIObject object) {
+        return super.removeObject(object);
+    }
+
+    public void removeAll() {
+        super.removeAll();
+    }
+
     public ArrayList<UIObject> getObjects() {
         return objects;
     }

@@ -18,6 +18,7 @@ public abstract class UIAbstractLayout extends UIObject {
     protected ArrayList<UIObject> objects = new ArrayList<>();
     protected HashMap<UIObject, Removable> listeners = new HashMap<>();
     protected boolean positionsIsValid;
+    protected boolean restrictObjectsBySize = true;
     protected UIObject focusedObject;
 
     public UIAbstractLayout(UIStyle style) {
@@ -50,6 +51,10 @@ public abstract class UIAbstractLayout extends UIObject {
 
     public UIAbstractLayout() {
         this(UIStyle.getDefault());
+    }
+
+    public boolean isRestrictObjectsBySize() {
+        return restrictObjectsBySize;
     }
 
     public UIObject getFocusedObject() {
@@ -107,6 +112,13 @@ public abstract class UIAbstractLayout extends UIObject {
         setInvalidPositionsStatus();
     }
 
+    public boolean tryRemoveObject(UIObject object) {
+        if (!object.isPublicRemovableObject())
+            return false;
+
+        return removeObject(object);
+    }
+
     protected abstract void calculateAll();
 
     protected void setInvalidPositionsStatus() {
@@ -140,9 +152,20 @@ public abstract class UIAbstractLayout extends UIObject {
             Point objectPosition = getObjectPos(object);
             Size objectSize = object.size().get();
 
-            viewTools.pushLook(new Rect(objectPosition.x, objectPosition.y, objectSize.width, objectSize.height));
-            object.render();
-            viewTools.popLook();
+            if (restrictObjectsBySize) {
+                viewTools.pushLook(new Rect(objectPosition.x, objectPosition.y, objectSize.width, objectSize.height));
+
+                object.render();
+
+                viewTools.popLook();
+            } else {
+                viewTools.pushTranslate(objectPosition);
+
+                object.render();
+
+                viewTools.popTranslate();
+            }
+
         }
 
         viewTools.popLook();

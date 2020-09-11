@@ -17,6 +17,12 @@ public class UIObject {
 
     protected UIObject lastParent;
 
+    protected boolean isPublicRemovableObject;
+
+    public boolean isPublicRemovableObject() {
+        return isPublicRemovableObject;
+    }
+
     public UIObject getLastParent() {
         return lastParent;
     }

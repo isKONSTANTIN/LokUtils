@@ -40,6 +40,13 @@ public class ViewTools {
 
     public void pushScissor(Rect scissor, int smoothingDeviation) {
         if (stackScissor.size() == 0) GL11.glEnable(GL11.GL_SCISSOR_TEST);
+        Size size = scissor.size;
+
+        if (size.width == Float.MAX_VALUE || size.height == Float.MAX_VALUE) {
+            stackScissor.add(getCurrentScissor());
+            return;
+        }
+
 
         TranslateState translate = getCurrentTranslate();
         Rect globalScissor = translate != null ? scissor.offset(translate.global) : scissor;

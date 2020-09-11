@@ -10,6 +10,10 @@ public class ListLayout extends ObjectFreeLayout {
     protected HashMap<UIObject, Point> positions = new HashMap<>();
     protected float gap = 2;
 
+    public ListLayout() {
+        restrictObjectsBySize = false;
+    }
+
     public void addObject(UIObject object) {
         super.addObject(object);
     }
@@ -43,5 +47,10 @@ public class ListLayout extends ObjectFreeLayout {
 
             y += size.height + gap;
         }
+    }
+
+    @Override
+    public void render() {
+        super.render();
     }
 }
