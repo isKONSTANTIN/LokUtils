@@ -44,6 +44,11 @@ public class UIStyle {
                         .setColor("checkboxFillInactive", new Color(0.5f, 0.5f, 0.5f, 1))
 
                         .setColor("separateColor", new Color(0.6f, 0.6f, 0.6f, 0.9f))
+
+                        .setColor("sliderHead", new Color(0.2f, 0.2f, 0.2f, 1))
+                        .setColor("sliderFullness", new Color(0.8f, 0.8f, 0.8f, 1))
+                        .setColor("sliderEdges", new Color(0.15f, 0.15f, 0.15f, 0.8f))
+
                         .setObject("separateLineWidth", 1f)
 
                         .setColor("textFieldBackground", new Color(0.2f, 0.2f, 0.2f, 0.8f))
