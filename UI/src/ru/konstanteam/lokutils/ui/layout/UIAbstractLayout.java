@@ -127,6 +127,8 @@ public abstract class UIAbstractLayout extends UIObject {
         if (!positionsIsValid)
             calculateAll();
 
+        positionsIsValid = true;
+
         for (UIObject object : objects) {
             try {
                 object.update(this);

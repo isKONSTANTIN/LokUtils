@@ -38,6 +38,7 @@ public class ListLayout extends ObjectFreeLayout {
 
     @Override
     protected void calculateAll() {
+        float x = 0;
         float y = 0;
 
         for (UIObject object : objects) {
@@ -45,8 +46,11 @@ public class ListLayout extends ObjectFreeLayout {
 
             positions.put(object, new Point(0, y));
 
+            x = Math.max(x, size.width);
             y += size.height + gap;
         }
+
+        size.set(new Size(x, y));
     }
 
     @Override

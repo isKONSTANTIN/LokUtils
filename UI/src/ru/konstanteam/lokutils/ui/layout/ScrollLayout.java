@@ -13,6 +13,7 @@ public class ScrollLayout extends FreeLayout {
     protected float scrollMomentum;
     protected float momentumFactor = 0.8f;
     protected float scrollFactor = 2f;
+    protected Size contentSize = Size.ZERO;
 
     public ScrollLayout() {
         customersContainer.addCustomer(event -> {
@@ -55,22 +56,40 @@ public class ScrollLayout extends FreeLayout {
     }
 
     @Override
-    public void render() {
-        scroll += scrollMomentum * scrollFactor;
-        scrollMomentum *= momentumFactor;
-
-        ViewTools viewTools = GLContext.getCurrent().getViewTools();
-        Size mySize = size().get();
-
-        viewTools.pushLook(new Rect(0, 0, mySize.width, mySize.height), 0);
+    protected void calculateAll() {
+        float x = 0;
+        float y = 0;
 
         for (UIObject object : objects) {
             Point objectPosition = getObjectPos(object);
             Size objectSize = object.size().get();
 
-            viewTools.pushLook(new Rect(objectPosition.x, objectPosition.y, objectSize.width, objectSize.height));
+            Point bottomRightPoint = new Rect(objectPosition, objectSize).getBottomRightPoint();
+
+            x = Math.max(x, bottomRightPoint.x);
+            y = Math.max(y, bottomRightPoint.y);
+        }
+
+        contentSize = new Size(x, y);
+    }
+
+    @Override
+    public void render() {
+        Size mySize = size().get();
+
+        scroll = Math.max(-contentSize.height + mySize.height, Math.min(0, scroll + scrollMomentum * scrollFactor));
+        scrollMomentum *= momentumFactor;
+
+        ViewTools viewTools = GLContext.getCurrent().getViewTools();
+
+        viewTools.pushLook(new Rect(0, 0, mySize.width, mySize.height), 0);
+
+        for (UIObject object : objects) {
+            Point objectPosition = getObjectPos(object);
+
+            viewTools.pushTranslate(objectPosition);
             object.render();
-            viewTools.popLook();
+            viewTools.popTranslate();
         }
 
         viewTools.popLook();

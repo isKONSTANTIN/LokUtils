@@ -31,9 +31,12 @@ public class Main extends Application<UIMainCanvasSystem<ListLayout>> {
         layout.addObject(new UICheckBox());
         layout.addObject(new UILineSpace());
         layout.addObject(new UISeparate());
-        layout.addObject(new UIText().setText("Hello"));
         layout.addObject(new UITextField());
         layout.addObject(new UISlider());
+
+        for (int i = 0; i < 15; i++){
+            layout.addObject(new UIText().setText("Hello"));
+        }
 
         window.setWindowCloseCallback((window) -> this.close());
     }
