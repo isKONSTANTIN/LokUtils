@@ -1,10 +1,12 @@
 package ru.konstanteam.lokutils;
 
 import ru.konstanteam.lokutils.applications.Application;
+import ru.konstanteam.lokutils.objects.Point;
 import ru.konstanteam.lokutils.render.Texture;
 import ru.konstanteam.lokutils.ui.core.maincanvas.UIMainCanvasSystem;
 import ru.konstanteam.lokutils.ui.layout.FreeLayout;
 import ru.konstanteam.lokutils.ui.layout.ListLayout;
+import ru.konstanteam.lokutils.ui.layout.ScrollLayout;
 import ru.konstanteam.lokutils.ui.objects.*;
 import ru.konstanteam.lokutils.ui.objects.UISlider.UISlider;
 
@@ -21,12 +23,18 @@ public class Main extends Application<UIMainCanvasSystem<ListLayout>> {
 
     @Override
     public void initEvent() {
-        this.uiController.getLayout().addObject(new UICheckBox());
-        this.uiController.getLayout().addObject(new UILineSpace());
-        this.uiController.getLayout().addObject(new UISeparate());
-        this.uiController.getLayout().addObject(new UIText().setText("Hello"));
-        this.uiController.getLayout().addObject(new UITextField());
-        this.uiController.getLayout().addObject(new UISlider());
+        ListLayout layout = new ListLayout();
+        ScrollLayout scrollLayout = new ScrollLayout();
+        this.uiController.getLayout().addObject(scrollLayout);
+        scrollLayout.addObject(layout, Point.ZERO);
+
+        layout.addObject(new UICheckBox());
+        layout.addObject(new UILineSpace());
+        layout.addObject(new UISeparate());
+        layout.addObject(new UIText().setText("Hello"));
+        layout.addObject(new UITextField());
+        layout.addObject(new UISlider());
+
         window.setWindowCloseCallback((window) -> this.close());
     }
 

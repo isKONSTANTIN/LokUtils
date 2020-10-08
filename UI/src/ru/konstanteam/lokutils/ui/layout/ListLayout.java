@@ -11,7 +11,7 @@ public class ListLayout extends ObjectFreeLayout {
     protected float gap = 2;
 
     public ListLayout() {
-        restrictObjectsBySize = false;
+
     }
 
     public void addObject(UIObject object) {

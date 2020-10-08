@@ -18,7 +18,6 @@ public abstract class UIAbstractLayout extends UIObject {
     protected ArrayList<UIObject> objects = new ArrayList<>();
     protected HashMap<UIObject, Removable> listeners = new HashMap<>();
     protected boolean positionsIsValid;
-    protected boolean restrictObjectsBySize = true;
     protected UIObject focusedObject;
 
     public UIAbstractLayout(UIStyle style) {
@@ -51,10 +50,6 @@ public abstract class UIAbstractLayout extends UIObject {
 
     public UIAbstractLayout() {
         this(UIStyle.getDefault());
-    }
-
-    public boolean isRestrictObjectsBySize() {
-        return restrictObjectsBySize;
     }
 
     public UIObject getFocusedObject() {
@@ -144,31 +139,16 @@ public abstract class UIAbstractLayout extends UIObject {
     @Override
     public void render() {
         ViewTools viewTools = GLContext.getCurrent().getViewTools();
-        Size mySize = size().get();
-
-        viewTools.pushLook(new Rect(0, 0, mySize.width, mySize.height), 0);
 
         for (UIObject object : objects) {
             Point objectPosition = getObjectPos(object);
-            Size objectSize = object.size().get();
 
-            if (restrictObjectsBySize) {
-                viewTools.pushLook(new Rect(objectPosition.x, objectPosition.y, objectSize.width, objectSize.height));
+            viewTools.pushTranslate(objectPosition);
 
-                object.render();
+            object.render();
 
-                viewTools.popLook();
-            } else {
-                viewTools.pushTranslate(objectPosition);
-
-                object.render();
-
-                viewTools.popTranslate();
-            }
-
+            viewTools.popTranslate();
         }
-
-        viewTools.popLook();
     }
 
 }

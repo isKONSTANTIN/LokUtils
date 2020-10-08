@@ -148,8 +148,8 @@ public class UICheckBox extends UIObject {
             GLFastTools.drawRoundedHollowSquare(new Rect(new Point(borderWidth / 2, borderWidth / 2), boxSize.relativeTo(borderWidth, borderWidth)), roundFactor);
         }
 
-        GLContext.getCurrent().getViewTools().pushLook(new Rect(textPosition.get(), text.size().get()));
+        GLContext.getCurrent().getViewTools().pushTranslate(textPosition.get());
         text.render();
-        GLContext.getCurrent().getViewTools().popLook();
+        GLContext.getCurrent().getViewTools().popTranslate();
     }
 }

@@ -10,6 +10,8 @@ import ru.konstanteam.lokutils.ui.UIObject;
 import ru.konstanteam.lokutils.ui.eventsystem.Event;
 import ru.konstanteam.lokutils.ui.eventsystem.events.MouseMoveEvent;
 
+import java.util.concurrent.CompletableFuture;
+
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL13.GL_MULTISAMPLE;
 
