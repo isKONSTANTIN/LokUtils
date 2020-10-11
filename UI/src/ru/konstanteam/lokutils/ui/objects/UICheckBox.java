@@ -31,9 +31,9 @@ public class UICheckBox extends UIObject {
     public UICheckBox() {
         animations.addAnimation(new Animation("changeStatus") {
             @Override
-            public void update() {
+            public void update(double speed) {
                 Color end = object.getStyle().getColor(status ? "checkboxFillActive" : "checkboxFillInactive");
-                fillColor = softColorChange(fillColor, end, 2);
+                fillColor = softColorChange(fillColor, end, (float)speed * 2);
                 isRun = !softColorChangeDone(fillColor, end);
             }
         });

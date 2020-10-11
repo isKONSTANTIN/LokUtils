@@ -1,6 +1,7 @@
 package ru.konstanteam.lokutils.ui;
 
 import ru.konstanteam.lokutils.objects.Size;
+import ru.konstanteam.lokutils.render.GLContext;
 import ru.konstanteam.lokutils.tools.property.Property;
 import ru.konstanteam.lokutils.ui.animation.Animations;
 import ru.konstanteam.lokutils.ui.eventsystem.CustomersContainer;
@@ -68,11 +69,12 @@ public class UIObject {
 
     public void init(UIObject parent) {
         lastParent = parent;
+        animations.setRefreshRate(parent.animations.getRefreshRate());
     }
 
     public void update(UIObject parent) {
         lastParent = parent;
-        animations.update();
+        animations.update(getOwner().animations.getRefreshRate());
     }
 
     public void render() {

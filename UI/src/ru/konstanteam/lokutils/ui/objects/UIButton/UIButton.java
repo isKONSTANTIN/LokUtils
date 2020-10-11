@@ -40,13 +40,13 @@ public class UIButton extends UIPanel<FreeLayout> {
 
         this.getAnimations().addAnimation(new Animation("pressed") {
             @Override
-            public void update() {
+            public void update(double speed) {
                 UIButton button = (UIButton) object;
 
                 Color source = overrideColor;
                 Color end = button.getStyle().getColor("buttonPressed");
 
-                overrideColor = softColorChange(source, end, 2);
+                overrideColor = softColorChange(source, end, (float)speed * 2f);
 
                 isRun = !softColorChangeDone(source, end);
             }
@@ -54,13 +54,13 @@ public class UIButton extends UIPanel<FreeLayout> {
 
         this.getAnimations().addAnimation(new Animation("unpressed") {
             @Override
-            public void update() {
+            public void update(double speed) {
                 UIButton button = (UIButton) object;
 
                 Color source = overrideColor;
                 Color end = button.getStyle().getColor("buttonBackground");
 
-                overrideColor = softColorChange(source, end, 2);
+                overrideColor = softColorChange(source, end, (float)speed * 2);
 
                 isRun = !softColorChangeDone(source, end);
             }

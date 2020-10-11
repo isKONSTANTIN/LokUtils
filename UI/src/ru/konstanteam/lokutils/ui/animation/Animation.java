@@ -14,7 +14,9 @@ public class Animation<T extends UIObject> {
     }
 
     public static float softChange(float source, float end, float speed) {
-        return source + (end - source) * (speed / 10f);
+        float result = source + (end - source) * (speed / 10f);
+
+        return (end - source) > 0 ? (Math.min(result, end)) : (Math.max(result, end));
     }
 
     public static Color softColorChange(Color source, Color end, float speed) {
@@ -75,7 +77,7 @@ public class Animation<T extends UIObject> {
         object.size().set(object.size().get().offset(x, y));
     }
 
-    public void update() {
+    public void update(double speed) {
     }
 
     public void started() {

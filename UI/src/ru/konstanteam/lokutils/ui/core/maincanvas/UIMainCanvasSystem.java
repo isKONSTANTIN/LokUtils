@@ -29,6 +29,7 @@ public class UIMainCanvasSystem<T extends UIAbstractLayout> extends UIController
         super.init(window, uiStyle);
         layout.setStyle(uiStyle);
         layout.size().set(() -> new Size(window.getResolution()));
+        layout.getAnimations().setRefreshRate(window.getMonitor().getVideoMode().refreshRate());
     }
 
     @Override

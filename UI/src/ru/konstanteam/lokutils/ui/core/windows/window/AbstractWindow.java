@@ -1,6 +1,7 @@
 package ru.konstanteam.lokutils.ui.core.windows.window;
 
 import ru.konstanteam.lokutils.objects.Size;
+import ru.konstanteam.lokutils.render.GLContext;
 import ru.konstanteam.lokutils.ui.UIStyle;
 import ru.konstanteam.lokutils.ui.core.windows.UIWindowSystem;
 import ru.konstanteam.lokutils.ui.core.windows.bar.AbstractWindowBar;
@@ -73,6 +74,7 @@ public abstract class AbstractWindow<T extends UIAbstractLayout, R extends Abstr
             bar = initBar();
 
         this.layout.size().set(() -> size);
+        layout.getAnimations().setRefreshRate(GLContext.getCurrent().getWindow().getMonitor().getVideoMode().refreshRate());
     }
 
     public void init(UIWindowSystem windowSystem) {

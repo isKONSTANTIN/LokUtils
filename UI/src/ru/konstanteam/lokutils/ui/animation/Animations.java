@@ -1,5 +1,7 @@
 package ru.konstanteam.lokutils.ui.animation;
 
+import ru.konstanteam.lokutils.render.GLContext;
+import ru.konstanteam.lokutils.render.Window;
 import ru.konstanteam.lokutils.ui.UIObject;
 
 import java.util.ArrayList;
@@ -10,9 +12,19 @@ public class Animations {
     protected HashMap<String, Animation> animationHashMap = new HashMap<>();
     protected ArrayList<String> animationsTasks = new ArrayList<>();
     protected UIObject source;
+    protected long lastUpdate = System.nanoTime();
+    protected int refreshRate;
 
     public Animations(UIObject source) {
         this.source = source;
+    }
+
+    public int getRefreshRate() {
+        return refreshRate;
+    }
+
+    public void setRefreshRate(int refreshRate) {
+        this.refreshRate = refreshRate;
     }
 
     public Animation getAnimation(String name) {
@@ -66,17 +78,26 @@ public class Animations {
         return this;
     }
 
-    public void update() {
+    public void update(int refreshRate) {
+        long nanoTime = System.nanoTime();
         for (Animation animation : animationHashMap.values()) {
             if (animation.isRun())
-                animation.update();
+                animation.update((nanoTime - lastUpdate) / 1000000000d / (1d / refreshRate));
         }
+
+        lastUpdate = nanoTime;
 
         if (animationsTasks.size() > 0 && !somethingIsRun()) {
             startAnimation(animationsTasks.get(0));
             animationsTasks.remove(0);
         }
+    }
 
+    public void update(Window window) {
+        if (refreshRate == 0)
+            refreshRate = window.getMonitor().getVideoMode().refreshRate();
+
+        update(refreshRate);
     }
 
 }

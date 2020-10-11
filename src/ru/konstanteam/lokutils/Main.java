@@ -23,10 +23,12 @@ public class Main extends Application<UIMainCanvasSystem<ListLayout>> {
 
     @Override
     public void initEvent() {
+        window.setResizable(true);
         ListLayout layout = new ListLayout();
         ScrollLayout scrollLayout = new ScrollLayout();
         this.uiController.getLayout().addObject(scrollLayout);
         scrollLayout.addObject(layout, Point.ZERO);
+        scrollLayout.size().set(this.uiController.getLayout().size());
 
         layout.addObject(new UICheckBox());
         layout.addObject(new UILineSpace());
@@ -34,7 +36,7 @@ public class Main extends Application<UIMainCanvasSystem<ListLayout>> {
         layout.addObject(new UITextField());
         layout.addObject(new UISlider());
 
-        for (int i = 0; i < 15; i++){
+        for (int i = 0; i < 50; i++){
             layout.addObject(new UIText().setText("Hello"));
         }
 

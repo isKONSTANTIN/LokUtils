@@ -4,6 +4,7 @@ import org.lwjgl.opengl.GL11;
 import ru.konstanteam.lokutils.objects.Circle;
 import ru.konstanteam.lokutils.objects.Color;
 import ru.konstanteam.lokutils.objects.Size;
+import ru.konstanteam.lokutils.render.GLContext;
 import ru.konstanteam.lokutils.render.tools.GLFastTools;
 import ru.konstanteam.lokutils.ui.UIObject;
 import ru.konstanteam.lokutils.ui.animation.Animation;
@@ -47,10 +48,10 @@ public class WindowButton extends UIObject {
 
         this.getAnimations().addAnimation(new Animation<WindowButton>("pressed") {
             @Override
-            public void update() {
+            public void update(double speed) {
                 Color end = object.pressedColor;
 
-                overrideColor = softColorChange(overrideColor, end, 2);
+                overrideColor = softColorChange(overrideColor, end, (float)speed * 2f);
 
                 isRun = !softColorChangeDone(overrideColor, end);
             }
@@ -58,10 +59,10 @@ public class WindowButton extends UIObject {
 
         this.getAnimations().addAnimation(new Animation<WindowButton>("unpressed") {
             @Override
-            public void update() {
+            public void update(double speed) {
                 Color end = object.defaultColor;
 
-                overrideColor = softColorChange(overrideColor, end, 2);
+                overrideColor = softColorChange(overrideColor, end, (float)speed * 2f);
 
                 isRun = !softColorChangeDone(overrideColor, end);
             }
@@ -69,7 +70,7 @@ public class WindowButton extends UIObject {
     }
 
     public void render() {
-        animations.update();
+        animations.update(GLContext.getCurrent().getWindow());
 
         GL11.glColor4f(overrideColor.red, overrideColor.green, overrideColor.blue, overrideColor.alpha);
         GLFastTools.drawCircle(field);
