@@ -9,10 +9,6 @@ public class Property<T> implements SoftValue<T> {
     protected SoftValue<T> parent;
     protected Vector<PropertyChangeListener<T>> changeListeners = new Vector<>();
 
-    public Property() {
-
-    }
-
     public Property(SoftValue<T> startParent) {
         this.parent = startParent;
     }

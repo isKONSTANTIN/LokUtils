@@ -1,4 +1,4 @@
-package ru.konstanteam.lokutils.ui.objects.UISlider;
+package ru.konstanteam.lokutils.ui.objects.slider;
 
 import ru.konstanteam.lokutils.objects.Circle;
 import ru.konstanteam.lokutils.objects.Color;
@@ -13,10 +13,10 @@ public class SliderHead extends UIObject {
     public Color overrideColor;
 
     public SliderHead(UISlider slider){
-        customersContainer.addCustomer(event -> {
+        customersContainer.addCustomer(MouseMoveEvent.class, event -> {
             float sliderWidth = slider.size().get().width;
             slider.setHead(event.startPosition.x / sliderWidth + event.deltaPositionChange.x / sliderWidth);
-        }, MouseMoveEvent.class);
+        });
     }
 
     protected float getCircleRadius() {

@@ -30,7 +30,7 @@ public class UIPanel<T extends UIAbstractLayout> extends UIBlackout {
 
         this.rootLayout = rootLayout;
         rootLayout.size().set(canvasSize);
-        customersContainer.addCustomer(rootLayout.getCustomersContainer(), Event.class);
+        customersContainer.addCustomer(Event.class, rootLayout.getCustomersContainer());
 
         size().set(new Size(100, 100));
         setRounded(0.3f);

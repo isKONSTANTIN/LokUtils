@@ -16,7 +16,7 @@ public class ScrollLayout extends FreeLayout {
     protected Size contentSize = Size.ZERO;
 
     public ScrollLayout() {
-        customersContainer.addCustomer(event -> {
+        customersContainer.addCustomer(MouseScrollEvent.class, event -> {
             if (focusedObject == null && lastParent == null)
                 return;
 
@@ -26,7 +26,7 @@ public class ScrollLayout extends FreeLayout {
                 return;
 
             scrollMomentum += event.scrollDelta.y;
-        }, MouseScrollEvent.class);
+        });
     }
 
     @Override

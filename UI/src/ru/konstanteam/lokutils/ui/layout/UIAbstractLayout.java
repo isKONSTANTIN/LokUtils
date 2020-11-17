@@ -17,13 +17,13 @@ import java.util.HashMap;
 public abstract class UIAbstractLayout extends UIObject {
     protected ArrayList<UIObject> objects = new ArrayList<>();
     protected HashMap<UIObject, Removable> listeners = new HashMap<>();
-    protected boolean positionsIsValid;
+    protected boolean isValid;
     protected UIObject focusedObject;
 
     public UIAbstractLayout(UIStyle style) {
         this.style = style;
         this.size.set(new Size(256, 256));
-        this.size.addListener((oldValue, newValue) -> setInvalidPositionsStatus());
+        this.size.addListener((oldValue, newValue) -> setInvalidStatus());
 
         customersContainer.addCustomer(event -> {
             if (event instanceof MouseClickedEvent)
@@ -45,7 +45,7 @@ public abstract class UIAbstractLayout extends UIObject {
 
                 object.getCustomersContainer().handle(localizedEvent);
             }
-        }, Event.class);
+        });
     }
 
     public UIAbstractLayout() {
@@ -78,7 +78,7 @@ public abstract class UIAbstractLayout extends UIObject {
         objects.add(object);
         listeners.put(object,
                 object.size().addListener((oldValue, newValue) -> {
-                    setInvalidPositionsStatus();
+                    setInvalidStatus();
                 })
         );
     }
@@ -90,7 +90,7 @@ public abstract class UIAbstractLayout extends UIObject {
             listeners.get(object).delete();
             listeners.remove(object);
 
-            setInvalidPositionsStatus();
+            setInvalidStatus();
         }
 
         return result;
@@ -104,30 +104,18 @@ public abstract class UIAbstractLayout extends UIObject {
 
         objects.clear();
 
-        setInvalidPositionsStatus();
-    }
-
-    public boolean tryRemoveObject(UIObject object) {
-        if (!object.isPublicRemovableObject())
-            return false;
-
-        return removeObject(object);
+        setInvalidStatus();
     }
 
     protected abstract void calculateAll();
 
-    protected void setInvalidPositionsStatus() {
-        positionsIsValid = false;
+    protected void setInvalidStatus() {
+        isValid = false;
     }
 
     @Override
     public void update(UIObject parent) {
         super.update(parent != null ? parent : this);
-
-        if (!positionsIsValid)
-            calculateAll();
-
-        positionsIsValid = true;
 
         for (UIObject object : objects) {
             try {
@@ -136,14 +124,29 @@ public abstract class UIAbstractLayout extends UIObject {
                 e.printStackTrace();
             }
         }
+
+        if (!isValid){
+            calculateAll();
+
+            isValid = true;
+        }
     }
 
     @Override
     public void render() {
         ViewTools viewTools = GLContext.getCurrent().getViewTools();
+        Rect scissor = viewTools.getCurrentScissor();
+
+        if (scissor != null){
+            scissor = scissor.relativeTo(new Point(0, viewTools.getCurrentTranslate().global.y));
+        }
 
         for (UIObject object : objects) {
             Point objectPosition = getObjectPos(object);
+
+            if (scissor != null && !scissor.isIntersect(new Rect(objectPosition, object.size().get()))) {
+                continue;
+            }
 
             viewTools.pushTranslate(objectPosition);
 

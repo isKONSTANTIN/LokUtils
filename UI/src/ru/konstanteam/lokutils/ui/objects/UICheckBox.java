@@ -22,7 +22,7 @@ public class UICheckBox extends UIObject {
     protected Size boxSize;
     protected UIText text;
 
-    protected Property<Point> textPosition = new Property<>();
+    protected Property<Point> textPosition = new Property<>(Point.ZERO);
 
     protected float roundFactor;
     protected float borderWidth = 1;
@@ -38,10 +38,10 @@ public class UICheckBox extends UIObject {
             }
         });
 
-        customersContainer.addCustomer(event -> {
+        customersContainer.addCustomer(MouseClickedEvent.class, event -> {
             if (EventTools.realized(event, customersContainer.getLastEvent(MouseClickedEvent.class), new Rect(Point.ZERO, boxSize)))
                 switchStatus();
-        }, MouseClickedEvent.class);
+        });
 
         boxSize = new Size(20, 20);
         roundFactor = 0.6f;

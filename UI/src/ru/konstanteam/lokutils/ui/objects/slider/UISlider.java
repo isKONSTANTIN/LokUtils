@@ -1,4 +1,4 @@
-package ru.konstanteam.lokutils.ui.objects.UISlider;
+package ru.konstanteam.lokutils.ui.objects.slider;
 
 import ru.konstanteam.lokutils.objects.Color;
 import ru.konstanteam.lokutils.objects.Point;
@@ -7,13 +7,9 @@ import ru.konstanteam.lokutils.objects.Size;
 import ru.konstanteam.lokutils.render.GLContext;
 import ru.konstanteam.lokutils.render.tools.GLFastTools;
 import ru.konstanteam.lokutils.ui.UIObject;
-import ru.konstanteam.lokutils.ui.eventsystem.Event;
 import ru.konstanteam.lokutils.ui.eventsystem.events.MouseMoveEvent;
 
-import java.util.concurrent.CompletableFuture;
-
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL13.GL_MULTISAMPLE;
 
 public class UISlider extends UIObject {
     protected SliderHead head;
@@ -23,10 +19,10 @@ public class UISlider extends UIObject {
         this.head = new SliderHead(this);
         this.head.size().set(() -> size.get().setWidth(0));
 
-        customersContainer.addCustomer((event) ->{
+        customersContainer.addCustomer(MouseMoveEvent.class, (event) ->{
             if (new Rect(Point.ZERO, size.get()).inside(event.startPosition))
                 this.head.getCustomersContainer().handle(event);
-        }, MouseMoveEvent.class);
+        });
 
         size.set(new Size(100,12));
     }

@@ -5,6 +5,7 @@ import ru.konstanteam.lokutils.render.Window;
 import ru.konstanteam.lokutils.ui.UIStyle;
 import ru.konstanteam.lokutils.ui.core.UIController;
 import ru.konstanteam.lokutils.ui.eventsystem.Event;
+import ru.konstanteam.lokutils.ui.eventsystem.events.MouseClickedEvent;
 import ru.konstanteam.lokutils.ui.layout.UIAbstractLayout;
 
 public class UIMainCanvasSystem<T extends UIAbstractLayout> extends UIController {
@@ -35,8 +36,9 @@ public class UIMainCanvasSystem<T extends UIAbstractLayout> extends UIController
     @Override
     public void update() {
         Event event = checkEvent();
-        if (event != null)
+        if (event != null){
             layout.getCustomersContainer().handle(event);
+        }
 
         layout.update(null);
     }

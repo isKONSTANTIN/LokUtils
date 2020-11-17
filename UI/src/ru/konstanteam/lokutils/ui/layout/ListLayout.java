@@ -52,9 +52,4 @@ public class ListLayout extends ObjectFreeLayout {
 
         size.set(new Size(x, y));
     }
-
-    @Override
-    public void render() {
-        super.render();
-    }
 }

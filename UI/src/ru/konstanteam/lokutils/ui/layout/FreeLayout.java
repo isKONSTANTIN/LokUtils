@@ -51,7 +51,7 @@ public class FreeLayout extends ObjectFreeLayout {
     }
 
     public void addObject(UIObject object, Alignment alignment) {
-        Property<Point> property = new Property<>();
+        Property<Point> property = new Property<>(Point.ZERO);
         property.set(() -> alignment.getPosition(object.size().get(), size().get()));
 
         this.addObject(object, property);

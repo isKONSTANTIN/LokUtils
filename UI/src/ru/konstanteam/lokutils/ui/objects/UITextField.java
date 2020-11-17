@@ -34,14 +34,14 @@ public class UITextField extends UIObject {
 
         setText(new UIText());
 
-        customersContainer.addCustomer((event) -> {
+        customersContainer.addCustomer(CharTypedEvent.class, (event) -> {
             if (event.key.action != KeyAction.RELEASE || !getOwner().isFocused(this))
                 return;
 
             addText(String.valueOf(event.key.aChar));
-        }, CharTypedEvent.class);
+        });
 
-        customersContainer.addCustomer((event) -> {
+        customersContainer.addCustomer(KeyTypedEvent.class, (event) -> {
             if (event.key.action == KeyAction.RELEASE || !getOwner().isFocused(this))
                 return;
 
@@ -70,7 +70,7 @@ public class UITextField extends UIObject {
             if (event.key.buttonID == GLFW_KEY_ENTER && enterAction != null)
                 enterAction.call();
 
-        }, KeyTypedEvent.class);
+        });
     }
 
     public Action getEnterAction() {
@@ -148,7 +148,9 @@ public class UITextField extends UIObject {
         if (translate + size.width < pointerPos)
             translate = pointerPos - size.width;
         else if (translate > pointerPos)
-            translate = pointerPos;
+            translate = pointerPos - size.width;
+
+        translate = Math.max(0, translate);
 
         GLContext.getCurrent().getViewTools().pushScissor(new Rect(size), 0);
         GLContext.getCurrent().getViewTools().pushTranslate(new Point(-translate, size.height / 2f - textSize.height / 2f));

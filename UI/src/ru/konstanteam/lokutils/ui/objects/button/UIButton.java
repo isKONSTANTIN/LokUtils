@@ -1,4 +1,4 @@
-package ru.konstanteam.lokutils.ui.objects.UIButton;
+package ru.konstanteam.lokutils.ui.objects.button;
 
 import ru.konstanteam.lokutils.objects.Color;
 import ru.konstanteam.lokutils.objects.Point;
@@ -25,7 +25,7 @@ public class UIButton extends UIPanel<FreeLayout> {
         this.text = new UIText().setText("Button");
         this.getRootLayout().addObject(text, CENTER);
 
-        customersContainer.addCustomer(event -> {
+        customersContainer.addCustomer(MouseClickedEvent.class, event -> {
             if (event.clickType == ClickType.CLICKED && new Rect(Point.ZERO, size().get()).inside(event.position)) {
                 getAnimations().stopAll();
                 getAnimations().startAnimation("pressed");
@@ -36,7 +36,7 @@ public class UIButton extends UIPanel<FreeLayout> {
                     action.clicked();
             }
 
-        }, MouseClickedEvent.class);
+        });
 
         this.getAnimations().addAnimation(new Animation("pressed") {
             @Override

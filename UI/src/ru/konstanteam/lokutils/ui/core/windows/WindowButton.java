@@ -33,7 +33,7 @@ public class WindowButton extends UIObject {
 
         size().set(() -> new Size(field.radius * 2, field.radius * 2));
 
-        customersContainer.addCustomer(event -> {
+        customersContainer.addCustomer(MouseClickedEvent.class, event -> {
             if (event.clickType == ClickType.CLICKED && field.inside(event.position)) {
                 this.getAnimations().stopAll();
                 this.getAnimations().startAnimation("pressed");
@@ -44,7 +44,7 @@ public class WindowButton extends UIObject {
                     this.action.take();
             }
 
-        }, MouseClickedEvent.class);
+        });
 
         this.getAnimations().addAnimation(new Animation<WindowButton>("pressed") {
             @Override

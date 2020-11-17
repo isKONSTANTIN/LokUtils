@@ -51,7 +51,7 @@ public class BaseLayout extends ObjectFreeLayout {
             maxHeightLine = Math.max(maxHeightLine, objectSize.height);
         }
 
-        this.positionsIsValid = true;
+        this.isValid = true;
     }
 
     public float getGap() {
@@ -60,7 +60,7 @@ public class BaseLayout extends ObjectFreeLayout {
 
     public void setGap(float gap) {
         this.gap = gap;
-        setInvalidPositionsStatus();
+        setInvalidStatus();
     }
 
     public boolean removeObject(UIObject object) {
@@ -77,7 +77,7 @@ public class BaseLayout extends ObjectFreeLayout {
 
     public void addObject(UIObject object) {
         super.addObject(object);
-        setInvalidPositionsStatus();
+        setInvalidStatus();
     }
 
 }
