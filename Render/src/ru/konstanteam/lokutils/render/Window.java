@@ -5,6 +5,7 @@ import org.lwjgl.util.vector.Vector2f;
 import ru.konstanteam.lokutils.input.Inputs;
 import ru.konstanteam.lokutils.objects.Vector2i;
 import ru.konstanteam.lokutils.objects.Vector4i;
+import ru.konstanteam.lokutils.render.context.GLContext;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
@@ -23,7 +24,6 @@ public class Window {
     protected Vector4i resolutionLimits = new Vector4i(GLFW_DONT_CARE, GLFW_DONT_CARE, GLFW_DONT_CARE, GLFW_DONT_CARE);
 
     protected String title = "Window";
-    protected Monitor monitor;
 
     protected boolean isFullscreen;
     protected boolean isCreated;
@@ -34,6 +34,7 @@ public class Window {
 
     protected GLContext glContext;
     protected Inputs inputs;
+    protected Monitor currentMonitor;
 
     public Window() {
 
@@ -51,18 +52,18 @@ public class Window {
     public Window create() {
         if (isCreated) return this;
 
-        monitor = Monitor.getPrimary();
+        currentMonitor = Monitor.getPrimary();
 
-        Vector2i monitorResolution = new Vector2i(monitor.getVideoMode().width(), monitor.getVideoMode().height());
+        Vector2i monitorResolution = new Vector2i(currentMonitor.getVideoMode().width(), currentMonitor.getVideoMode().height());
 
         if (isFullscreen)
             resolution = monitorResolution;
 
         glfwWindowHint(GLFW_SAMPLES, MSAASamples);
-        window = glfwCreateWindow(resolution.getX(), resolution.getY(), title, isFullscreen ? monitor.getMonitor() : NULL, NULL);
+        window = glfwCreateWindow(resolution.getX(), resolution.getY(), title, isFullscreen ? currentMonitor.getMonitor() : NULL, NULL);
 
         isCreated = window != NULL;
-        if (!isCreated) return this;
+        if (!isCreated) return null;
 
         glContext = new GLContext(this);
 
@@ -144,13 +145,7 @@ public class Window {
     }
 
     public Monitor getMonitor() {
-        return monitor;
-    }
-
-    public Window setMonitor(Monitor monitor) {
-        this.monitor = monitor;
-
-        return this;
+        return currentMonitor;
     }
 
     public Window setAspectRatio(Vector2i aspectRatio) {
@@ -238,6 +233,8 @@ public class Window {
     }
 
     public Window setFullscreen(boolean fullscreen) {
+        Monitor monitor = getMonitor();
+
         if (isCreated)
             glfwSetWindowMonitor(window,
                     fullscreen ? monitor.getMonitor() : NULL,

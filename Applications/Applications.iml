@@ -12,6 +12,6 @@
     <orderEntry type="module" module-name="Tools" />
     <orderEntry type="module" module-name="Objects" />
     <orderEntry type="module" module-name="Render" />
-    <orderEntry type="module" module-name="UI" />
+    <orderEntry type="module" module-name="GUI" />
   </component>
 </module>

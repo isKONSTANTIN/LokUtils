@@ -4,6 +4,7 @@ import org.lwjgl.opengl.ARBFramebufferObject;
 import org.lwjgl.util.vector.Matrix4f;
 import ru.konstanteam.lokutils.objects.Vector2i;
 import ru.konstanteam.lokutils.objects.Vector4i;
+import ru.konstanteam.lokutils.render.context.GLContext;
 import ru.konstanteam.lokutils.render.tools.MatrixTools;
 
 import java.nio.ByteBuffer;

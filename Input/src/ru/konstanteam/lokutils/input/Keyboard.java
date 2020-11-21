@@ -2,7 +2,7 @@ package ru.konstanteam.lokutils.input;
 
 import org.lwjgl.glfw.GLFWCharCallback;
 import org.lwjgl.glfw.GLFWKeyCallback;
-import ru.konstanteam.lokutils.render.GLContext;
+import ru.konstanteam.lokutils.render.context.GLContext;
 
 import java.util.ArrayList;
 

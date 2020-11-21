@@ -5,8 +5,8 @@ import ru.konstanteam.lokutils.objects.Vector2i;
 import ru.konstanteam.lokutils.render.GLFW;
 import ru.konstanteam.lokutils.render.Window;
 import ru.konstanteam.lokutils.tools.ExecutorServices;
-import ru.konstanteam.lokutils.ui.UIStyle;
-import ru.konstanteam.lokutils.ui.core.UIController;
+import ru.konstanteam.lokutils.gui.GUIStyle;
+import ru.konstanteam.lokutils.gui.core.UIController;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -60,9 +60,9 @@ public class Application<T extends UIController> implements Runnable {
 
             window.create();
             window.getGlContext().bind();
-            UIStyle.generateDefaultStyle();
+            GUIStyle.generateDefaultStyle();
 
-            uiController.init(window, UIStyle.getDefault());
+            uiController.init(window, GUIStyle.getDefault());
 
             initEvent();
 

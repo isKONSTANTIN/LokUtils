@@ -1,6 +1,7 @@
 package ru.konstanteam.lokutils.render;
 
 import org.lwjgl.opengl.GL30;
+import ru.konstanteam.lokutils.render.context.GLContext;
 
 public class VAO extends GLObject {
 

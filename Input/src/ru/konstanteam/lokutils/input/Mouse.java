@@ -5,7 +5,7 @@ import org.lwjgl.glfw.GLFWMouseButtonCallback;
 import org.lwjgl.glfw.GLFWScrollCallback;
 import org.lwjgl.util.vector.Vector2f;
 import ru.konstanteam.lokutils.objects.Point;
-import ru.konstanteam.lokutils.render.GLContext;
+import ru.konstanteam.lokutils.render.context.GLContext;
 
 import java.nio.DoubleBuffer;
 

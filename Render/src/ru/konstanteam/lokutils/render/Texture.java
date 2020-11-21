@@ -4,6 +4,7 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import ru.konstanteam.lokutils.objects.Vector2i;
+import ru.konstanteam.lokutils.render.context.GLContext;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;

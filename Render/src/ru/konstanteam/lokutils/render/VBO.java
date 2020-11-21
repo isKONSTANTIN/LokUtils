@@ -3,6 +3,7 @@ package ru.konstanteam.lokutils.render;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL15C;
 import org.lwjgl.util.vector.Vector2f;
+import ru.konstanteam.lokutils.render.context.GLContext;
 
 import java.util.ArrayList;
 
