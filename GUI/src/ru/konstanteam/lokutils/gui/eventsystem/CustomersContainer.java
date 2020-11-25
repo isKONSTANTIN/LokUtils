@@ -21,7 +21,7 @@ public class CustomersContainer implements EventCustomer {
     }
 
     public <T extends Event> Removable addCustomer(EventCustomer<T> customer) {
-        return addCustomer(Event.class, (EventCustomer<Event>)customer);
+        return addCustomer(Event.class, (EventCustomer<Event>) customer);
     }
 
     public <T extends Event> T getLastEvent(Class<T> eventClass) {

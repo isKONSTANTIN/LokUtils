@@ -1,8 +1,8 @@
 package ru.konstanteam.lokutils.gui.layout;
 
+import ru.konstanteam.lokutils.gui.GUIObject;
 import ru.konstanteam.lokutils.objects.Point;
 import ru.konstanteam.lokutils.tools.property.Property;
-import ru.konstanteam.lokutils.gui.GUIObject;
 
 import java.util.HashMap;
 
@@ -14,18 +14,12 @@ public class FreeLayout extends ObjectFreeLayout {
         return positions.get(object).get();
     }
 
-    @Override
-    protected Point getLazyObjectPos(GUIObject object) {
-        return positions.get(object).lazyGet();
-    }
-
     public Property<Point> getObjectPropertyPosition(GUIObject object) {
         return positions.get(object);
     }
 
     @Override
     protected void calculateAll() {
-
     }
 
     public boolean removeObject(GUIObject object) {

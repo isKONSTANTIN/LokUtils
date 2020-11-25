@@ -1,17 +1,17 @@
 package ru.konstanteam.lokutils.gui.core.windows;
 
 import org.lwjgl.opengl.GL11;
-import ru.konstanteam.lokutils.objects.Circle;
-import ru.konstanteam.lokutils.objects.Color;
-import ru.konstanteam.lokutils.objects.Size;
-import ru.konstanteam.lokutils.render.context.GLContext;
-import ru.konstanteam.lokutils.render.tools.GLFastTools;
 import ru.konstanteam.lokutils.gui.GUIObject;
 import ru.konstanteam.lokutils.gui.animation.Animation;
 import ru.konstanteam.lokutils.gui.core.windows.window.BaseWindow;
 import ru.konstanteam.lokutils.gui.eventsystem.EventTools;
 import ru.konstanteam.lokutils.gui.eventsystem.events.ClickType;
 import ru.konstanteam.lokutils.gui.eventsystem.events.MouseClickedEvent;
+import ru.konstanteam.lokutils.objects.Circle;
+import ru.konstanteam.lokutils.objects.Color;
+import ru.konstanteam.lokutils.objects.Size;
+import ru.konstanteam.lokutils.render.context.GLContext;
+import ru.konstanteam.lokutils.render.tools.GLFastTools;
 
 public class WindowButton extends GUIObject {
     protected Circle field;
@@ -51,7 +51,7 @@ public class WindowButton extends GUIObject {
             public void update(double speed) {
                 Color end = object.pressedColor;
 
-                overrideColor = softColorChange(overrideColor, end, (float)speed * 2f);
+                overrideColor = softColorChange(overrideColor, end, (float) speed * 2f);
 
                 isRun = !softColorChangeDone(overrideColor, end);
             }
@@ -62,7 +62,7 @@ public class WindowButton extends GUIObject {
             public void update(double speed) {
                 Color end = object.defaultColor;
 
-                overrideColor = softColorChange(overrideColor, end, (float)speed * 2f);
+                overrideColor = softColorChange(overrideColor, end, (float) speed * 2f);
 
                 isRun = !softColorChangeDone(overrideColor, end);
             }

@@ -1,7 +1,7 @@
 package ru.konstanteam.lokutils.gui.layout;
 
-import ru.konstanteam.lokutils.objects.Point;
 import ru.konstanteam.lokutils.gui.GUIObject;
+import ru.konstanteam.lokutils.objects.Point;
 
 import java.util.ArrayList;
 
@@ -47,9 +47,5 @@ public abstract class ObjectFreeLayout extends GUIAbstractLayout {
 
     public Point getObjectPosition(GUIObject object) {
         return getObjectPos(object);
-    }
-
-    public Point getLazyObjectPosition(GUIObject object) {
-        return getLazyObjectPos(object);
     }
 }

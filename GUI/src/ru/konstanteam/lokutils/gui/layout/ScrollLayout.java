@@ -1,12 +1,12 @@
 package ru.konstanteam.lokutils.gui.layout;
 
+import ru.konstanteam.lokutils.gui.GUIObject;
+import ru.konstanteam.lokutils.gui.eventsystem.events.MouseScrollEvent;
 import ru.konstanteam.lokutils.objects.Point;
 import ru.konstanteam.lokutils.objects.Rect;
 import ru.konstanteam.lokutils.objects.Size;
 import ru.konstanteam.lokutils.render.context.GLContext;
 import ru.konstanteam.lokutils.render.tools.ViewTools;
-import ru.konstanteam.lokutils.gui.GUIObject;
-import ru.konstanteam.lokutils.gui.eventsystem.events.MouseScrollEvent;
 
 public class ScrollLayout extends FreeLayout {
     protected float scroll;
@@ -31,11 +31,6 @@ public class ScrollLayout extends FreeLayout {
         return super.getObjectPos(object).offset(0, scroll);
     }
 
-    @Override
-    protected Point getLazyObjectPos(GUIObject object) {
-        return super.getLazyObjectPos(object).offset(0, scroll);
-    }
-
     public float getMomentumFactor() {
         return momentumFactor;
     }
@@ -53,12 +48,17 @@ public class ScrollLayout extends FreeLayout {
     }
 
     @Override
+    protected void setInvalidStatus() {
+        super.setInvalidStatus();
+    }
+
+    @Override
     protected void calculateAll() {
         float x = 0;
         float y = 0;
 
         for (GUIObject object : objects) {
-            Point objectPosition = getObjectPos(object);
+            Point objectPosition = super.getObjectPos(object);
             Size objectSize = object.size().get();
 
             Point bottomRightPoint = new Rect(objectPosition, objectSize).getBottomRightPoint();

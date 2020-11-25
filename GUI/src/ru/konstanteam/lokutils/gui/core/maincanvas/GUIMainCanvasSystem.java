@@ -1,16 +1,16 @@
 package ru.konstanteam.lokutils.gui.core.maincanvas;
 
-import ru.konstanteam.lokutils.objects.Size;
-import ru.konstanteam.lokutils.render.Window;
 import ru.konstanteam.lokutils.gui.GUIStyle;
-import ru.konstanteam.lokutils.gui.core.UIController;
+import ru.konstanteam.lokutils.gui.core.GUIController;
 import ru.konstanteam.lokutils.gui.eventsystem.Event;
 import ru.konstanteam.lokutils.gui.layout.GUIAbstractLayout;
+import ru.konstanteam.lokutils.objects.Size;
+import ru.konstanteam.lokutils.render.Window;
 
-public class UIMainCanvasSystem<T extends GUIAbstractLayout> extends UIController {
+public class GUIMainCanvasSystem<T extends GUIAbstractLayout> extends GUIController {
     protected T layout;
 
-    public UIMainCanvasSystem(T layout) {
+    public GUIMainCanvasSystem(T layout) {
         this.layout = layout;
     }
 
@@ -34,7 +34,7 @@ public class UIMainCanvasSystem<T extends GUIAbstractLayout> extends UIControlle
     @Override
     public void update() {
         Event event = checkEvent();
-        if (event != null){
+        if (event != null) {
             layout.getCustomersContainer().handle(event);
         }
 

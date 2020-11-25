@@ -1,16 +1,16 @@
 package ru.konstanteam.lokutils.applications;
 
 import org.lwjgl.util.vector.Vector4f;
+import ru.konstanteam.lokutils.gui.GUIStyle;
+import ru.konstanteam.lokutils.gui.core.GUIController;
 import ru.konstanteam.lokutils.objects.Vector2i;
 import ru.konstanteam.lokutils.render.GLFW;
 import ru.konstanteam.lokutils.render.Window;
 import ru.konstanteam.lokutils.tools.ExecutorServices;
-import ru.konstanteam.lokutils.gui.GUIStyle;
-import ru.konstanteam.lokutils.gui.core.UIController;
 
 import static org.lwjgl.opengl.GL11.*;
 
-public class Application<T extends UIController> implements Runnable {
+public class Application<T extends GUIController> implements Runnable {
 
     protected Window window;
     protected T uiController;

@@ -1,14 +1,16 @@
 package ru.konstanteam.lokutils.gui.layout;
 
+import ru.konstanteam.lokutils.gui.GUIObject;
+import ru.konstanteam.lokutils.gui.GUIStyle;
+import ru.konstanteam.lokutils.gui.eventsystem.Event;
+import ru.konstanteam.lokutils.gui.eventsystem.events.ClickType;
+import ru.konstanteam.lokutils.gui.eventsystem.events.MouseClickedEvent;
 import ru.konstanteam.lokutils.objects.Point;
+import ru.konstanteam.lokutils.objects.Rect;
 import ru.konstanteam.lokutils.objects.Size;
 import ru.konstanteam.lokutils.render.context.GLContext;
 import ru.konstanteam.lokutils.render.tools.ViewTools;
 import ru.konstanteam.lokutils.tools.Removable;
-import ru.konstanteam.lokutils.gui.GUIObject;
-import ru.konstanteam.lokutils.gui.GUIStyle;
-import ru.konstanteam.lokutils.gui.eventsystem.Event;
-import ru.konstanteam.lokutils.gui.eventsystem.events.MouseClickedEvent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,12 +24,16 @@ public abstract class GUIAbstractLayout extends GUIObject {
 
     public GUIAbstractLayout(GUIStyle style) {
         this.style = style;
-        this.size.set(new Size(256, 256));
+        this.minimumSize().set(new Size(256, 256));
         this.size.addListener((oldValue, newValue) -> setInvalidStatus());
 
         customersContainer.addCustomer(event -> {
-            if (event instanceof MouseClickedEvent)
-                focusedObject = null;
+            if (event instanceof MouseClickedEvent) {
+                MouseClickedEvent mouseClickedEvent = (MouseClickedEvent) event;
+
+                if (mouseClickedEvent.clickType == ClickType.CLICKED || !(new Rect(Point.ZERO, size.get()).inside(mouseClickedEvent.position)))
+                    focusedObject = null;
+            }
 
             for (GUIObject object : objects) {
                 Point position = getObjectPos(object);
@@ -39,7 +45,7 @@ public abstract class GUIAbstractLayout extends GUIObject {
                     MouseClickedEvent mouseClickedEvent = (MouseClickedEvent) localizedEvent;
                     Size objectSize = object.size().get();
 
-                    if (mouseClickedEvent.position.x >= 0 && mouseClickedEvent.position.y >= 0 && mouseClickedEvent.position.x <= objectSize.width && mouseClickedEvent.position.y <= objectSize.height)
+                    if (new Rect(Point.ZERO, objectSize).inside(mouseClickedEvent.position) && mouseClickedEvent.clickType == ClickType.CLICKED)
                         focusedObject = object.getFocusableObject();
                 }
 
@@ -70,8 +76,6 @@ public abstract class GUIAbstractLayout extends GUIObject {
     }
 
     protected abstract Point getObjectPos(GUIObject object);
-
-    protected abstract Point getLazyObjectPos(GUIObject object);
 
     protected void addObject(GUIObject object) {
         object.init(this);
@@ -123,14 +127,14 @@ public abstract class GUIAbstractLayout extends GUIObject {
             }
         }
 
-        if (!isValid){
+        if (!isValid) {
             calculateAll();
 
             isValid = true;
         }
     }
 
-    public int getRefreshRate(){
+    public int getRefreshRate() {
         return owner != null ? owner.getRefreshRate() : refreshRate;
     }
 

@@ -7,14 +7,19 @@ import java.util.Vector;
 public class Property<T> implements SoftValue<T> {
     protected T value;
     protected SoftValue<T> parent;
+
     protected Vector<PropertyChangeListener<T>> changeListeners = new Vector<>();
 
+    public Property(Property<T> startPropertyParent) {
+        set(startPropertyParent);
+    }
+
     public Property(SoftValue<T> startParent) {
-        this.parent = startParent;
+        set(startParent);
     }
 
     public Property(T startValue) {
-        this.value = startValue;
+        set(startValue);
     }
 
     public Removable addListener(PropertyChangeListener<T> changeListener) {
@@ -28,6 +33,12 @@ public class Property<T> implements SoftValue<T> {
     }
 
     public void set(T value) {
+        this.parent = null;
+
+        setWithoutParentReset(value);
+    }
+
+    protected void setWithoutParentReset(T value) {
         T oldValue = this.value;
         this.value = value;
 
@@ -39,7 +50,7 @@ public class Property<T> implements SoftValue<T> {
         T parentValue = parent.get();
 
         if (!parentValue.equals(value))
-            set(parentValue);
+            setWithoutParentReset(parentValue);
     }
 
     @Override
@@ -47,10 +58,6 @@ public class Property<T> implements SoftValue<T> {
         if (parent != null)
             checkParentChanges();
 
-        return value;
-    }
-
-    public T lazyGet() {
         return value;
     }
 }

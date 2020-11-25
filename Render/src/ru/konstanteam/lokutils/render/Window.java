@@ -1,6 +1,7 @@
 package ru.konstanteam.lokutils.render;
 
 import org.lwjgl.BufferUtils;
+import org.lwjgl.opengl.GL;
 import org.lwjgl.util.vector.Vector2f;
 import ru.konstanteam.lokutils.input.Inputs;
 import ru.konstanteam.lokutils.objects.Vector2i;
@@ -60,6 +61,7 @@ public class Window {
             resolution = monitorResolution;
 
         glfwWindowHint(GLFW_SAMPLES, MSAASamples);
+
         window = glfwCreateWindow(resolution.getX(), resolution.getY(), title, isFullscreen ? currentMonitor.getMonitor() : NULL, NULL);
 
         isCreated = window != NULL;
@@ -68,6 +70,7 @@ public class Window {
         glContext = new GLContext(this);
 
         glContext.bind();
+        GL.createCapabilities();
 
         glEnable(GL_TEXTURE_2D);
         glEnable(GL_ALPHA_TEST);

@@ -1,5 +1,8 @@
 package ru.konstanteam.lokutils.gui.objects;
 
+import ru.konstanteam.lokutils.gui.GUIObject;
+import ru.konstanteam.lokutils.gui.eventsystem.events.CharTypedEvent;
+import ru.konstanteam.lokutils.gui.eventsystem.events.KeyTypedEvent;
 import ru.konstanteam.lokutils.input.KeyAction;
 import ru.konstanteam.lokutils.objects.Color;
 import ru.konstanteam.lokutils.objects.Point;
@@ -9,9 +12,6 @@ import ru.konstanteam.lokutils.render.Font;
 import ru.konstanteam.lokutils.render.context.GLContext;
 import ru.konstanteam.lokutils.render.tools.GLFastTools;
 import ru.konstanteam.lokutils.tools.Action;
-import ru.konstanteam.lokutils.gui.GUIObject;
-import ru.konstanteam.lokutils.gui.eventsystem.events.CharTypedEvent;
-import ru.konstanteam.lokutils.gui.eventsystem.events.KeyTypedEvent;
 
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
@@ -30,7 +30,7 @@ public class GUITextField extends GUIObject {
     protected Action enterAction;
 
     public GUITextField() {
-        size.set(new Size(100, 20));
+        size().set(new Size(100, 20));
 
         setText(new GUIText());
 

@@ -1,15 +1,15 @@
 package ru.konstanteam.lokutils.gui.objects.slider;
 
+import ru.konstanteam.lokutils.gui.GUIObject;
+import ru.konstanteam.lokutils.gui.eventsystem.events.MouseMoveEvent;
 import ru.konstanteam.lokutils.objects.Color;
 import ru.konstanteam.lokutils.objects.Point;
 import ru.konstanteam.lokutils.objects.Rect;
 import ru.konstanteam.lokutils.objects.Size;
 import ru.konstanteam.lokutils.render.context.GLContext;
 import ru.konstanteam.lokutils.render.tools.GLFastTools;
-import ru.konstanteam.lokutils.gui.GUIObject;
-import ru.konstanteam.lokutils.gui.eventsystem.events.MouseMoveEvent;
 
-import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.glColor4f;
 
 public class GUISlider extends GUIObject {
     protected SliderHead head;
@@ -19,12 +19,14 @@ public class GUISlider extends GUIObject {
         this.head = new SliderHead(this);
         this.head.size().set(() -> size.get().setWidth(0));
 
-        customersContainer.addCustomer(MouseMoveEvent.class, (event) ->{
+        customersContainer.addCustomer(MouseMoveEvent.class, (event) -> {
             if (new Rect(Point.ZERO, size.get()).inside(event.startPosition))
                 this.head.getCustomersContainer().handle(event);
         });
 
-        size.set(new Size(100,12));
+        minimumSize().set(head.minimumSize());
+
+        size().set(new Size(100, 12));
     }
 
     protected Point getHeadPosition() {

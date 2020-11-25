@@ -1,8 +1,8 @@
 package ru.konstanteam.lokutils.gui.layout;
 
+import ru.konstanteam.lokutils.gui.GUIObject;
 import ru.konstanteam.lokutils.objects.Point;
 import ru.konstanteam.lokutils.objects.Size;
-import ru.konstanteam.lokutils.gui.GUIObject;
 
 import java.util.HashMap;
 
@@ -21,11 +21,6 @@ public class BaseLayout extends ObjectFreeLayout {
     @Override
     protected Point getObjectPos(GUIObject object) {
         return positions.get(object);
-    }
-
-    @Override
-    protected Point getLazyObjectPos(GUIObject object) {
-        return getObjectPos(object);
     }
 
     @Override
@@ -51,7 +46,7 @@ public class BaseLayout extends ObjectFreeLayout {
             maxHeightLine = Math.max(maxHeightLine, objectSize.height);
         }
 
-        this.isValid = true;
+        minimumSize().set(new Size(filledX, filledY));
     }
 
     public float getGap() {

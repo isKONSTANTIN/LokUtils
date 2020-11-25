@@ -1,8 +1,8 @@
 package ru.konstanteam.lokutils.gui.animation;
 
+import ru.konstanteam.lokutils.gui.GUIObject;
 import ru.konstanteam.lokutils.objects.Color;
 import ru.konstanteam.lokutils.objects.Size;
-import ru.konstanteam.lokutils.gui.GUIObject;
 
 public class Animation<T extends GUIObject> {
     protected String name;

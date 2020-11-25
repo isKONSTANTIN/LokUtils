@@ -1,13 +1,16 @@
 package ru.konstanteam.lokutils.gui;
 
-import ru.konstanteam.lokutils.objects.Size;
-import ru.konstanteam.lokutils.tools.property.Property;
 import ru.konstanteam.lokutils.gui.animation.Animations;
 import ru.konstanteam.lokutils.gui.eventsystem.CustomersContainer;
 import ru.konstanteam.lokutils.gui.layout.GUIAbstractLayout;
+import ru.konstanteam.lokutils.objects.Size;
+import ru.konstanteam.lokutils.tools.property.Property;
 
 public abstract class GUIObject {
-    protected Property<Size> size = new Property<>(Size.ZERO);
+
+    protected Property<Size> minimumSize = new Property<>(Size.ZERO);
+    protected Property<Size> maximumSize = new Property<>(new Size(Float.MAX_VALUE, Float.MAX_VALUE));
+    protected Property<Size> size = new Property<>(minimumSize);
 
     protected GUIStyle style;
     protected String name = "UIObject";
@@ -57,6 +60,14 @@ public abstract class GUIObject {
 
     public Property<Size> size() {
         return size;
+    }
+
+    public Property<Size> minimumSize() {
+        return minimumSize;
+    }
+
+    public Property<Size> maximumSize() {
+        return maximumSize;
     }
 
     public CustomersContainer getCustomersContainer() {

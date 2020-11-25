@@ -1,21 +1,28 @@
 package ru.konstanteam.lokutils.gui.objects.slider;
 
+import ru.konstanteam.lokutils.gui.GUIObject;
+import ru.konstanteam.lokutils.gui.eventsystem.events.MouseMoveEvent;
 import ru.konstanteam.lokutils.objects.Circle;
 import ru.konstanteam.lokutils.objects.Color;
 import ru.konstanteam.lokutils.objects.Point;
+import ru.konstanteam.lokutils.objects.Size;
 import ru.konstanteam.lokutils.render.tools.GLFastTools;
-import ru.konstanteam.lokutils.gui.GUIObject;
-import ru.konstanteam.lokutils.gui.eventsystem.events.MouseMoveEvent;
 
 import static org.lwjgl.opengl.GL11.glColor4f;
 
 public class SliderHead extends GUIObject {
     public Color overrideColor;
 
-    public SliderHead(GUISlider slider){
+    public SliderHead(GUISlider slider) {
         customersContainer.addCustomer(MouseMoveEvent.class, event -> {
             float sliderWidth = slider.size().get().width;
             slider.setHead(event.startPosition.x / sliderWidth + event.deltaPositionChange.x / sliderWidth);
+        });
+
+        minimumSize().set(() -> {
+            float radius = getCircleRadius();
+
+            return new Size(radius, radius);
         });
     }
 

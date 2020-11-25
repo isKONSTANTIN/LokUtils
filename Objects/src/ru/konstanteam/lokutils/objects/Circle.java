@@ -1,5 +1,7 @@
 package ru.konstanteam.lokutils.objects;
 
+import java.util.Objects;
+
 public class Circle extends Field {
     public final Point position;
     public final float radius;
@@ -25,4 +27,17 @@ public class Circle extends Field {
         return Math.sqrt(Math.pow(point.x - (position.x + radius), 2) + Math.pow(point.y - (position.y + radius), 2)) <= radius;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Circle circle = (Circle) o;
+        return Float.compare(circle.radius, radius) == 0 &&
+                position.equals(circle.position);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(position, radius);
+    }
 }

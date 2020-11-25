@@ -2,20 +2,17 @@ package ru.konstanteam.lokutils.render.context;
 
 import org.lwjgl.opengl.GL;
 
-import java.util.ArrayList;
 import java.util.Vector;
 import java.util.concurrent.locks.ReentrantLock;
 
 import static org.lwjgl.glfw.GLFW.glfwMakeContextCurrent;
 
 public class ContextsList {
+    private final ReentrantLock lock = new ReentrantLock();
     private GLContext binded;
-
     private Vector<GLContext> contexts = new Vector<>();
 
-    private final ReentrantLock lock = new ReentrantLock();
-
-    public void add(GLContext context){
+    public void add(GLContext context) {
         contexts.add(context);
     }
 
@@ -33,7 +30,10 @@ public class ContextsList {
         lock.lock();
 
         glfwMakeContextCurrent(context.getWindow().getGLFWWindow());
-        GL.createCapabilities();
+
+        if (contexts.size() > 1)
+            GL.createCapabilities();
+
         binded = context;
     }
 

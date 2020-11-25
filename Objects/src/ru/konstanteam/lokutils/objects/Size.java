@@ -25,6 +25,14 @@ public class Size {
         this.height = height;
     }
 
+    public static Size min(Size s1, Size s2) {
+        return new Size(Math.min(s1.width, s2.width), Math.min(s1.height, s2.height));
+    }
+
+    public static Size max(Size s1, Size s2) {
+        return new Size(Math.max(s1.width, s2.width), Math.max(s1.height, s2.height));
+    }
+
     public Size setWidth(float width) {
         return new Size(width, height);
     }

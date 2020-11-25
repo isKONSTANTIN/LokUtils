@@ -1,7 +1,7 @@
 package ru.konstanteam.lokutils.gui.eventsystem.events;
 
-import ru.konstanteam.lokutils.input.KeyInfo;
 import ru.konstanteam.lokutils.gui.eventsystem.Event;
+import ru.konstanteam.lokutils.input.KeyInfo;
 
 public class CharTypedEvent extends Event {
     public final KeyInfo key;

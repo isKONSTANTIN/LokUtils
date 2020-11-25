@@ -3,11 +3,7 @@ package ru.konstanteam.lokutils.render.context;
 import ru.konstanteam.lokutils.render.Window;
 import ru.konstanteam.lokutils.render.tools.ViewTools;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.concurrent.locks.ReentrantLock;
-
-import static org.lwjgl.glfw.GLFW.glfwMakeContextCurrent;
 
 public class GLContext {
     private static volatile HashMap<Long, ContextsList> contexts = new HashMap<>();
@@ -24,12 +20,12 @@ public class GLContext {
         this.threadID = Thread.currentThread().getId();
         this.viewTools = new ViewTools(window);
 
-        if (!contexts.containsKey(threadID)){
+        if (!contexts.containsKey(threadID)) {
             ContextsList contextsList = new ContextsList();
             contextsList.add(this);
 
             contexts.put(threadID, contextsList);
-        }else
+        } else
             contexts.get(threadID).add(this);
     }
 

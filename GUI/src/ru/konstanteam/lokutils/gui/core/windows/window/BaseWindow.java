@@ -1,11 +1,7 @@
 package ru.konstanteam.lokutils.gui.core.windows.window;
 
-import ru.konstanteam.lokutils.objects.Point;
-import ru.konstanteam.lokutils.objects.Rect;
-import ru.konstanteam.lokutils.objects.Size;
-import ru.konstanteam.lokutils.render.context.GLContext;
 import ru.konstanteam.lokutils.gui.GUIStyle;
-import ru.konstanteam.lokutils.gui.core.windows.UIWindowSystem;
+import ru.konstanteam.lokutils.gui.core.windows.GUIWindowSystem;
 import ru.konstanteam.lokutils.gui.core.windows.bar.BaseWindowBar;
 import ru.konstanteam.lokutils.gui.eventsystem.Event;
 import ru.konstanteam.lokutils.gui.eventsystem.events.MouseMoveEvent;
@@ -13,88 +9,129 @@ import ru.konstanteam.lokutils.gui.eventsystem.events.MoveType;
 import ru.konstanteam.lokutils.gui.layout.Alignment;
 import ru.konstanteam.lokutils.gui.layout.FreeLayout;
 import ru.konstanteam.lokutils.gui.objects.GUIBlackout;
+import ru.konstanteam.lokutils.objects.Point;
+import ru.konstanteam.lokutils.objects.Rect;
+import ru.konstanteam.lokutils.objects.Size;
+import ru.konstanteam.lokutils.render.context.GLContext;
+import ru.konstanteam.lokutils.tools.property.Property;
 
-public class BaseWindow extends AbstractWindow<FreeLayout, BaseWindowBar<BaseWindow>> {
+public class BaseWindow extends GUIWindow {
+    protected final Property<Boolean> minimized = new Property<>(false);
+    protected final Property<Boolean> resizable = new Property<>(false);
+    protected final Property<Boolean> closable = new Property<>(false);
+    protected final Property<Size> contentSize = new Property<>(Size.ZERO);
     protected Point lastMoveDelta = Point.ZERO;
     protected boolean resizeStatus;
+    protected FreeLayout layout;
+    protected BaseWindowBar<BaseWindow> bar;
 
-    public void setMinimized(boolean minimized) {
-        this.minimized = minimized;
+    public BaseWindow() {
+        minimumSize().set(() -> Size.max(layout.minimumSize().get().offset(contentOffset().get().x, contentOffset().get().y), bar.minimumSize().get()));
+
+        size().set(() -> {
+            Point offset = contentOffset().get();
+
+            return (minimized.get() ? contentSize.get().setHeight(0) : contentSize.get()).offset(offset.x, offset.y);
+        });
+
+        contentSize.set(new Size(300, 300));
     }
 
-    public void setStyle(GUIStyle style) {
-        this.style = style;
+    public Property<Boolean> closable() {
+        return closable;
     }
 
-    public void setSize(Size size) {
-        this.size = size;
+    public Property<Boolean> resizable() {
+        return resizable;
+    }
+
+    public Property<Boolean> minimized() {
+        return minimized;
     }
 
     @Override
-    protected FreeLayout initLayout() {
-        return new FreeLayout();
+    public GUIStyle getStyle() {
+        return windowSystem.getStyle();
+    }
+
+    public FreeLayout getLayout() {
+        return layout;
+    }
+
+    public BaseWindowBar<BaseWindow> getBar() {
+        return bar;
     }
 
     @Override
-    protected BaseWindowBar<BaseWindow> initBar() {
-        BaseWindowBar<BaseWindow> baseWindowBar = new BaseWindowBar<>();
-        baseWindowBar.init(this);
-
-        return baseWindowBar;
+    public Property<Size> contentSize() {
+        return contentSize;
     }
 
-    @Override
-    public void initContent(UIWindowSystem windowSystem) {
-        super.initContent(windowSystem);
+    public void init(GUIWindowSystem windowSystem) {
+        super.init(windowSystem);
 
-        GUIBlackout blackout = new GUIBlackout();
-        blackout.size().set(layout.size());
-        layout.addObject(blackout, Alignment.TOP_LEFT);
+        bar = new BaseWindowBar<>();
+        bar.init(this);
+        contentOffset.set(() -> bar.getRect().getBottomRightPoint().setX(0));
+
+        layout = new FreeLayout();
+        layout.size().set(contentSize);
+
+        layout.minimumSize().set(new Size(50, 50));
+
+        layout.addObject(new GUIBlackout(), Alignment.TOP_LEFT);
     }
 
-    public void handleMouseMoveEvent(MouseMoveEvent event) {
+    public boolean handleMouseMoveEvent(MouseMoveEvent event) {
         if (event.type == MoveType.STARTED && bar.getRect().inside(event.startPosition))
             lastMoveDelta = event.deltaPositionChange;
 
         if (lastMoveDelta != Point.ZERO) {
             windowSystem.setWindowsPosition(windowSystem.getWindowsPosition(this).offset(event.deltaPositionChange.relativeTo(lastMoveDelta)), this);
             lastMoveDelta = event.deltaPositionChange;
+
+            return true;
         }
+
+        Size contentSize = this.contentSize.get();
+        Size size = this.size.get();
 
         float distance = new Point(size.width, size.height).distance(event.startPosition);
 
-        if (resizable() && (distance <= 3 && event.type == MoveType.STARTED || event.type == MoveType.CONTINUED && resizeStatus)) {
-            if (event.type == MoveType.STARTED)
-                windowSystem.bringToFront(this);
+        if (!(resizable().get() && (distance <= 3 && event.type == MoveType.STARTED || event.type == MoveType.CONTINUED && resizeStatus)))
+            return false;
 
-            Point deltaPos = event.endPosition.relativeTo(new Rect(Point.ZERO, size).getBottomRightPoint());
+        if (event.type == MoveType.STARTED)
+            windowSystem.bringToFront(this);
 
-            Size newSize = size.offset(deltaPos.x, deltaPos.y);
-            newSize = new Size(
-                    Math.max(newSize.width, getMinSize().width),
-                    Math.max(newSize.height, getMinSize().height)
-            );
+        Point deltaPos = event.endPosition.relativeTo(new Rect(Point.ZERO, size).getBottomRightPoint());
 
-            setSize(newSize);
+        Size newSize = contentSize.offset(deltaPos.x, deltaPos.y);
+        newSize = new Size(
+                Math.max(newSize.width, minimumSize().get().width),
+                Math.max(newSize.height, minimumSize().get().height)
+        );
 
-            resizeStatus = true;
-        }
+        this.contentSize.set(newSize);
 
+        resizeStatus = true;
+
+        return true;
     }
 
     @Override
     public void handleEvent(Event event) {
-        if (event instanceof MouseMoveEvent) {
-            handleMouseMoveEvent((MouseMoveEvent) event);
+        if (event instanceof MouseMoveEvent && handleMouseMoveEvent((MouseMoveEvent) event)) {
+            return;
         } else {
             lastMoveDelta = Point.ZERO;
             resizeStatus = false;
         }
 
-        bar.getCustomersContainer().handle(event.relativeTo(bar.getRect().position));
+        bar.getCustomersContainer().handle(event);
 
-        if (!minimized)
-            layout.getCustomersContainer().handle(event);
+        if (!minimized.get())
+            layout.getCustomersContainer().handle(event.relativeTo(contentOffset.get()));
     }
 
     @Override
@@ -105,11 +142,11 @@ public class BaseWindow extends AbstractWindow<FreeLayout, BaseWindowBar<BaseWin
         bar.render();
         GLContext.getCurrent().getViewTools().popLook();
 
-        if (minimized) return;
+        if (minimized.get()) return;
 
         layout.update();
 
-        GLContext.getCurrent().getViewTools().pushLook(new Rect(Point.ZERO, layout.size().get()), 0);
+        GLContext.getCurrent().getViewTools().pushLook(new Rect(contentOffset.get(), layout.size().get()), 0);
         layout.render();
         GLContext.getCurrent().getViewTools().popLook();
     }

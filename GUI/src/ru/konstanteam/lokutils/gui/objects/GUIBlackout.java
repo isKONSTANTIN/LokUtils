@@ -1,10 +1,9 @@
 package ru.konstanteam.lokutils.gui.objects;
 
+import ru.konstanteam.lokutils.gui.GUIObject;
 import ru.konstanteam.lokutils.objects.Color;
 import ru.konstanteam.lokutils.objects.Rect;
-import ru.konstanteam.lokutils.objects.Size;
 import ru.konstanteam.lokutils.render.tools.GLFastTools;
-import ru.konstanteam.lokutils.gui.GUIObject;
 
 import static org.lwjgl.opengl.GL11.glColor4f;
 
@@ -13,7 +12,7 @@ public class GUIBlackout extends GUIObject {
     protected float rounded;
 
     public GUIBlackout() {
-        size().set(new Size(-1, -1));
+        minimumSize().set(() -> owner.size().get());
     }
 
     public GUIBlackout(float rounded) {
@@ -26,14 +25,6 @@ public class GUIBlackout extends GUIObject {
 
     public void setRounded(float rounded) {
         this.rounded = Math.max(Math.min(rounded, 1), 0);
-    }
-
-    @Override
-    public void update() {
-        super.update();
-
-        if (size().get().height == -1 || size().get().width == -1)
-            size().set(owner.size());
     }
 
     @Override

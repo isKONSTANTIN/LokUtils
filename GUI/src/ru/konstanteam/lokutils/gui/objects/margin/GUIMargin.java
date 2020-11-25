@@ -1,24 +1,41 @@
 package ru.konstanteam.lokutils.gui.objects.margin;
 
-import ru.konstanteam.lokutils.objects.Point;
-import ru.konstanteam.lokutils.render.context.GLContext;
-import ru.konstanteam.lokutils.tools.property.Property;
 import ru.konstanteam.lokutils.gui.GUIObject;
 import ru.konstanteam.lokutils.gui.eventsystem.Event;
 import ru.konstanteam.lokutils.gui.layout.GUIAbstractLayout;
+import ru.konstanteam.lokutils.objects.Point;
+import ru.konstanteam.lokutils.objects.Size;
+import ru.konstanteam.lokutils.render.context.GLContext;
+import ru.konstanteam.lokutils.tools.property.Property;
 
 public class GUIMargin extends GUIObject {
     protected GUIObject object;
     protected Property<Margin> margin = new Property<>(Margin.PIXEL_MARGIN);
 
-    public GUIMargin(GUIObject object, Margin startMargin){
+    public GUIMargin(GUIObject object, Margin startMargin) {
         this.object = object;
         this.margin.set(startMargin);
 
-        size.set(() -> {
+        minimumSize().set(() -> {
+            Margin margin = margin().get();
+
+            return this.object.minimumSize().get().offset(margin.left + margin.right, margin.top + margin.bottom);
+        });
+
+        size().set(() -> {
             Margin margin = margin().get();
 
             return this.object.size().get().offset(margin.left + margin.right, margin.top + margin.bottom);
+        });
+
+        maximumSize().set(() -> {
+            Margin margin = margin().get();
+            Size maxObjectSize = this.object.maximumSize().get();
+
+            boolean widthIsMax = maxObjectSize.width == Float.MAX_VALUE;
+            boolean heightIsMax = maxObjectSize.height == Float.MAX_VALUE;
+
+            return maxObjectSize.offset(widthIsMax ? 0 : margin.left + margin.right, heightIsMax ? 0 : margin.top + margin.bottom);
         });
 
         customersContainer.addCustomer(event -> {
@@ -29,11 +46,11 @@ public class GUIMargin extends GUIObject {
 
     }
 
-    public GUIMargin(GUIObject object){
+    public GUIMargin(GUIObject object) {
         this.object = object;
     }
 
-    public Property<Margin> margin(){
+    public Property<Margin> margin() {
         return margin;
     }
 

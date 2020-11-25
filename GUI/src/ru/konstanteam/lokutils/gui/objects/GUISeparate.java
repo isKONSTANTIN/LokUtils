@@ -1,9 +1,9 @@
 package ru.konstanteam.lokutils.gui.objects;
 
-import ru.konstanteam.lokutils.objects.Color;
-import ru.konstanteam.lokutils.objects.Size;
 import ru.konstanteam.lokutils.gui.GUIObject;
 import ru.konstanteam.lokutils.gui.GUIStyle;
+import ru.konstanteam.lokutils.objects.Color;
+import ru.konstanteam.lokutils.objects.Size;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL13.GL_MULTISAMPLE;
@@ -14,7 +14,7 @@ public class GUISeparate extends GUIObject {
     protected float lineSizePercent = 0.85f;
 
     public GUISeparate() {
-        size.set(new Size(100, 11));
+        size().set(new Size(100, 11));
     }
 
     public boolean isHorizontal() {

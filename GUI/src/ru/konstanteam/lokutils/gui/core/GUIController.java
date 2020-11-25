@@ -1,14 +1,14 @@
 package ru.konstanteam.lokutils.gui.core;
 
 import org.lwjgl.util.vector.Vector2f;
-import ru.konstanteam.lokutils.input.Mouse;
-import ru.konstanteam.lokutils.objects.Point;
-import ru.konstanteam.lokutils.render.Window;
 import ru.konstanteam.lokutils.gui.GUIStyle;
 import ru.konstanteam.lokutils.gui.eventsystem.Event;
 import ru.konstanteam.lokutils.gui.eventsystem.events.*;
+import ru.konstanteam.lokutils.input.Mouse;
+import ru.konstanteam.lokutils.objects.Point;
+import ru.konstanteam.lokutils.render.Window;
 
-public abstract class UIController {
+public abstract class GUIController {
     protected Window window;
     protected GUIStyle style;
 

@@ -2,6 +2,11 @@ package ru.konstanteam.lokutils.gui.objects;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector2f;
+import ru.konstanteam.lokutils.gui.GUIObject;
+import ru.konstanteam.lokutils.gui.animation.Animation;
+import ru.konstanteam.lokutils.gui.eventsystem.EventTools;
+import ru.konstanteam.lokutils.gui.eventsystem.events.MouseClickedEvent;
+import ru.konstanteam.lokutils.gui.layout.GUIAbstractLayout;
 import ru.konstanteam.lokutils.objects.Color;
 import ru.konstanteam.lokutils.objects.Point;
 import ru.konstanteam.lokutils.objects.Rect;
@@ -10,11 +15,6 @@ import ru.konstanteam.lokutils.render.context.GLContext;
 import ru.konstanteam.lokutils.render.tools.GLFastTools;
 import ru.konstanteam.lokutils.tools.Vector2fTools;
 import ru.konstanteam.lokutils.tools.property.Property;
-import ru.konstanteam.lokutils.gui.GUIObject;
-import ru.konstanteam.lokutils.gui.animation.Animation;
-import ru.konstanteam.lokutils.gui.eventsystem.EventTools;
-import ru.konstanteam.lokutils.gui.eventsystem.events.MouseClickedEvent;
-import ru.konstanteam.lokutils.gui.layout.GUIAbstractLayout;
 
 import static org.lwjgl.opengl.GL11.glColor4f;
 
@@ -34,7 +34,7 @@ public class GUICheckBox extends GUIObject {
             @Override
             public void update(double speed) {
                 Color end = object.getStyle().getColor(status ? "checkboxFillActive" : "checkboxFillInactive");
-                fillColor = softColorChange(fillColor, end, (float)speed * 2);
+                fillColor = softColorChange(fillColor, end, (float) speed * 2);
                 isRun = !softColorChangeDone(fillColor, end);
             }
         });
@@ -49,7 +49,7 @@ public class GUICheckBox extends GUIObject {
 
         setText(new GUIText().setText("CheckBox"));
 
-        size.set(() ->
+        minimumSize().set(() ->
                 new Size(Vector2fTools.max(new Vector2f(boxSize.width + borderWidth * 2, boxSize.height + borderWidth * 2), new Vector2f(text.size().get().width, text.size().get().height)).translate(boxSize.width + boxSize.width / 4f, 0))
         );
 

@@ -1,12 +1,11 @@
 package ru.konstanteam.lokutils.gui.objects;
 
+import ru.konstanteam.lokutils.gui.eventsystem.Event;
+import ru.konstanteam.lokutils.gui.layout.GUIAbstractLayout;
 import ru.konstanteam.lokutils.objects.Point;
-import ru.konstanteam.lokutils.objects.Rect;
 import ru.konstanteam.lokutils.objects.Size;
 import ru.konstanteam.lokutils.render.context.GLContext;
 import ru.konstanteam.lokutils.tools.property.Property;
-import ru.konstanteam.lokutils.gui.eventsystem.Event;
-import ru.konstanteam.lokutils.gui.layout.GUIAbstractLayout;
 
 import static java.lang.Math.min;
 
@@ -17,6 +16,8 @@ public class GUIPanel<T extends GUIAbstractLayout> extends GUIBlackout {
     protected Property<Size> canvasSize;
 
     public GUIPanel(T rootLayout) {
+        this.rootLayout = rootLayout;
+
         canvasPosition = new Property<>(() -> {
             float pixelsRound = this.getPixelsIndentation();
             return new Point(pixelsRound, pixelsRound);
@@ -24,14 +25,13 @@ public class GUIPanel<T extends GUIAbstractLayout> extends GUIBlackout {
 
         canvasSize = new Property<>(() -> {
             float pixelsRound = this.getPixelsIndentation();
-            return size().get().relativeTo(pixelsRound * 2, pixelsRound * 2);
+            return Size.max(size().get().relativeTo(pixelsRound * 2, pixelsRound * 2), rootLayout.minimumSize().get());
         });
 
-        this.rootLayout = rootLayout;
         rootLayout.size().set(canvasSize);
         customersContainer.addCustomer(Event.class, rootLayout.getCustomersContainer());
 
-        size().set(new Size(100, 100));
+        minimumSize().set(rootLayout.minimumSize());
         setRounded(0.3f);
     }
 
@@ -53,8 +53,8 @@ public class GUIPanel<T extends GUIAbstractLayout> extends GUIBlackout {
 
     @Override
     public void render() {
-        GLContext.getCurrent().getViewTools().pushLook(new Rect(canvasPosition.get(), canvasSize.get()));
+        GLContext.getCurrent().getViewTools().pushTranslate(canvasPosition.get());
         rootLayout.render();
-        GLContext.getCurrent().getViewTools().popLook();
+        GLContext.getCurrent().getViewTools().popTranslate();
     }
 }
