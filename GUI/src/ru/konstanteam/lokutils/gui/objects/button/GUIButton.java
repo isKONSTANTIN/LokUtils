@@ -9,6 +9,7 @@ import ru.konstanteam.lokutils.gui.layout.GUIAbstractLayout;
 import ru.konstanteam.lokutils.gui.objects.GUIPanel;
 import ru.konstanteam.lokutils.gui.objects.GUIText;
 import ru.konstanteam.lokutils.gui.objects.margin.GUIMargin;
+import ru.konstanteam.lokutils.gui.objects.margin.Margin;
 import ru.konstanteam.lokutils.objects.Color;
 import ru.konstanteam.lokutils.objects.Point;
 import ru.konstanteam.lokutils.objects.Rect;
@@ -16,15 +17,15 @@ import ru.konstanteam.lokutils.objects.Rect;
 import static ru.konstanteam.lokutils.gui.layout.Alignment.CENTER;
 
 public class GUIButton extends GUIPanel<FreeLayout> {
-
     protected GUIText text;
     protected GUIMargin margin;
     protected ButtonAction action;
 
     public GUIButton() {
         super(new FreeLayout());
+
         this.text = new GUIText().setText("Button");
-        this.margin = new GUIMargin(text);
+        this.margin = new GUIMargin(text, new Margin(10, 10, 7,7));
         this.getRootLayout().addObject(margin, CENTER);
 
         customersContainer.addCustomer(MouseClickedEvent.class, event -> {
@@ -68,6 +69,7 @@ public class GUIButton extends GUIPanel<FreeLayout> {
         });
 
         minimumSize().set(margin.minimumSize());
+        size().set(minimumSize());
     }
 
     public GUIButton setAction(ButtonAction action) {

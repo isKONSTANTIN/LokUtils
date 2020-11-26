@@ -32,6 +32,8 @@ public class GUIPanel<T extends GUIAbstractLayout> extends GUIBlackout {
         customersContainer.addCustomer(Event.class, rootLayout.getCustomersContainer());
 
         minimumSize().set(rootLayout.minimumSize());
+        size().set(new Size(256, 256));
+
         setRounded(0.3f);
     }
 
@@ -53,6 +55,8 @@ public class GUIPanel<T extends GUIAbstractLayout> extends GUIBlackout {
 
     @Override
     public void render() {
+        super.render();
+
         GLContext.getCurrent().getViewTools().pushTranslate(canvasPosition.get());
         rootLayout.render();
         GLContext.getCurrent().getViewTools().popTranslate();

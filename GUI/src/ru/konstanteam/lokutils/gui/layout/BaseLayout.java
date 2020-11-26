@@ -45,6 +45,7 @@ public class BaseLayout extends ObjectFreeLayout {
             filledX += objectSize.width;
             maxHeightLine = Math.max(maxHeightLine, objectSize.height);
         }
+        filledY += maxHeightLine;
 
         minimumSize().set(new Size(filledX, filledY));
     }

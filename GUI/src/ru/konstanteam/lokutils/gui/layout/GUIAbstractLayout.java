@@ -24,7 +24,8 @@ public abstract class GUIAbstractLayout extends GUIObject {
 
     public GUIAbstractLayout(GUIStyle style) {
         this.style = style;
-        this.minimumSize().set(new Size(256, 256));
+
+        this.size.set(new Size(256, 256));
         this.size.addListener((oldValue, newValue) -> setInvalidStatus());
 
         customersContainer.addCustomer(event -> {
@@ -119,6 +120,8 @@ public abstract class GUIAbstractLayout extends GUIObject {
 
     @Override
     public void update() {
+        size.checkParentChanges();
+
         for (GUIObject object : objects) {
             try {
                 object.update();

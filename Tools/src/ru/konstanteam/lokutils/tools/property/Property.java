@@ -47,6 +47,9 @@ public class Property<T> implements SoftValue<T> {
     }
 
     public void checkParentChanges() {
+        if (parent == null)
+            return;
+
         T parentValue = parent.get();
 
         if (!parentValue.equals(value))
@@ -55,8 +58,7 @@ public class Property<T> implements SoftValue<T> {
 
     @Override
     public T get() {
-        if (parent != null)
-            checkParentChanges();
+        checkParentChanges();
 
         return value;
     }

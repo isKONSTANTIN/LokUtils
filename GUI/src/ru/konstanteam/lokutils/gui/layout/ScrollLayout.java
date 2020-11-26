@@ -74,7 +74,11 @@ public class ScrollLayout extends FreeLayout {
     public void render() {
         Size mySize = size().get();
 
-        scroll = Math.max(-contentSize.height + mySize.height, Math.min(0, scroll + scrollMomentum * scrollFactor));
+        if (contentSize.height > mySize.height)
+            scroll = Math.max(-contentSize.height + mySize.height, Math.min(0, scroll + scrollMomentum * scrollFactor));
+        else
+            scroll = 0;
+
         scrollMomentum *= momentumFactor;
 
         ViewTools viewTools = GLContext.getCurrent().getViewTools();

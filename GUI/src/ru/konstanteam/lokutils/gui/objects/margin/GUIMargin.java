@@ -47,7 +47,7 @@ public class GUIMargin extends GUIObject {
     }
 
     public GUIMargin(GUIObject object) {
-        this.object = object;
+        this(object, Margin.PIXEL_MARGIN);
     }
 
     public Property<Margin> margin() {
