@@ -1,6 +1,7 @@
 package ru.konstanteam.lokutils.render;
 
 import org.lwjgl.BufferUtils;
+import org.lwjgl.glfw.GLFWImage;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.util.vector.Vector2f;
 import ru.konstanteam.lokutils.input.Inputs;
@@ -8,6 +9,8 @@ import ru.konstanteam.lokutils.objects.Vector2i;
 import ru.konstanteam.lokutils.objects.Vector4i;
 import ru.konstanteam.lokutils.render.context.GLContext;
 
+import java.awt.image.BufferedImage;
+import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
@@ -30,6 +33,7 @@ public class Window {
     protected boolean isCreated;
     protected boolean isShow;
     protected boolean isResizable;
+    protected String[] iconPaths;
 
     protected int MSAASamples = 8;
 
@@ -66,6 +70,9 @@ public class Window {
 
         isCreated = window != NULL;
         if (!isCreated) return null;
+
+        if (iconPaths != null)
+            setIcon(iconPaths);
 
         glContext = new GLContext(this);
 
@@ -231,6 +238,12 @@ public class Window {
         return this;
     }
 
+    public Window movePosition(Vector2i delta) {
+        setPosition(new Vector2i(position.getX() + delta.getX(), position.getY() + delta.getY()));
+
+        return this;
+    }
+
     public boolean isFullscreen() {
         return isFullscreen;
     }
@@ -248,6 +261,15 @@ public class Window {
                     monitor.getVideoMode().refreshRate());
 
         isFullscreen = fullscreen;
+
+        return this;
+    }
+
+    public Window setIcon(String[] paths){
+        if (isCreated)
+            glfwSetWindowIcon(window, WindowIconLoader.load(paths));
+        else
+            iconPaths = paths;
 
         return this;
     }

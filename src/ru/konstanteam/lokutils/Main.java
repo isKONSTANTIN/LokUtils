@@ -16,12 +16,13 @@ import ru.konstanteam.lokutils.gui.objects.margin.Margin;
 import ru.konstanteam.lokutils.gui.objects.slider.GUISlider;
 import ru.konstanteam.lokutils.objects.Point;
 import ru.konstanteam.lokutils.objects.Size;
+import ru.konstanteam.lokutils.render.Window;
 
 import java.util.ArrayList;
 
 public class Main extends Application<GUIMainCanvasSystem> {
     public Main() {
-        super(new GUIMainCanvasSystem());
+        super(new GUIMainCanvasSystem(), new Window().setIcon(new String[]{"/home/lokin135/LokUtils.png"}));
     }
 
     public static void main(String[] args) {

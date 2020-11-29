@@ -33,7 +33,7 @@ public class Texture extends GLObject {
         } else {
             image = ImageIO.read(new File(path));
         }
-        size = new Vector2i(image.getWidth(), image.getHeight());
+        this.size = new Vector2i(image.getWidth(), image.getHeight());
 
         int texture_size = image.getWidth() * image.getHeight() * 4;
         int[] pixels = new int[image.getWidth() * image.getHeight()];
@@ -52,6 +52,8 @@ public class Texture extends GLObject {
         }
         textureBuffer.flip();
 
+        this.path = path;
+
         return load(textureBuffer, size);
     }
 
@@ -69,7 +71,6 @@ public class Texture extends GLObject {
 
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
 
-        this.path = "<generated from memory>";
         this.size = size;
 
         return this;
