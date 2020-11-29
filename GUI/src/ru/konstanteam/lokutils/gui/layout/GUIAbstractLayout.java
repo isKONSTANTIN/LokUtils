@@ -11,22 +11,23 @@ import ru.konstanteam.lokutils.objects.Size;
 import ru.konstanteam.lokutils.render.context.GLContext;
 import ru.konstanteam.lokutils.render.tools.ViewTools;
 import ru.konstanteam.lokutils.tools.Removable;
+import ru.konstanteam.lokutils.tools.property.PropertyChangeListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public abstract class GUIAbstractLayout extends GUIObject {
     protected ArrayList<GUIObject> objects = new ArrayList<>();
-    protected HashMap<GUIObject, Removable> listeners = new HashMap<>();
     protected boolean isValid;
     protected GUIObject focusedObject;
     protected int refreshRate = 60;
+    protected PropertyChangeListener invalidListener;
 
     public GUIAbstractLayout(GUIStyle style) {
         this.style = style;
-
+        this.invalidListener = (oldValue, newValue) -> setInvalidStatus();
         this.size.set(new Size(256, 256));
-        this.size.addListener((oldValue, newValue) -> setInvalidStatus());
+        this.size.addListener(invalidListener);
 
         customersContainer.addCustomer(event -> {
             if (event instanceof MouseClickedEvent) {
@@ -81,19 +82,19 @@ public abstract class GUIAbstractLayout extends GUIObject {
     protected void addObject(GUIObject object) {
         object.init(this);
         objects.add(object);
-        listeners.put(object,
-                object.size().addListener((oldValue, newValue) -> {
-                    setInvalidStatus();
-                })
-        );
+
+        object.size().addListener(invalidListener);
+        object.minimumSize().addListener(invalidListener);
+        object.maximumSize().addListener(invalidListener);
     }
 
     protected boolean removeObject(GUIObject object) {
         boolean result = objects.remove(object);
 
         if (result) {
-            listeners.get(object).delete();
-            listeners.remove(object);
+            object.size().removeListener(invalidListener);
+            object.minimumSize().removeListener(invalidListener);
+            object.maximumSize().removeListener(invalidListener);
 
             setInvalidStatus();
         }
@@ -103,8 +104,9 @@ public abstract class GUIAbstractLayout extends GUIObject {
 
     protected void removeAll() {
         for (GUIObject object : objects) {
-            listeners.get(object).delete();
-            listeners.remove(object);
+            object.size().removeListener(invalidListener);
+            object.minimumSize().removeListener(invalidListener);
+            object.maximumSize().removeListener(invalidListener);
         }
 
         objects.clear();
@@ -120,8 +122,6 @@ public abstract class GUIAbstractLayout extends GUIObject {
 
     @Override
     public void update() {
-        size.checkParentChanges();
-
         for (GUIObject object : objects) {
             try {
                 object.update();

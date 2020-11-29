@@ -25,7 +25,12 @@ public class Property<T> implements SoftValue<T> {
     public Removable addListener(PropertyChangeListener<T> changeListener) {
         changeListeners.add(changeListener);
 
-        return () -> changeListeners.remove(changeListener);
+        return () -> removeListener(changeListener);
+    }
+
+    public void removeListener(PropertyChangeListener<T> changeListener) {
+
+        changeListeners.remove(changeListener);
     }
 
     public void set(SoftValue<T> parent) {

@@ -28,6 +28,7 @@ public class BaseLayout extends ObjectFreeLayout {
         float filledX = 0;
         float filledY = 0;
         float maxHeightLine = 0;
+        float maxX = 0;
 
         Size mySize = size.get();
 
@@ -43,11 +44,13 @@ public class BaseLayout extends ObjectFreeLayout {
             positions.put(object, new Point(filledX, filledY));
 
             filledX += objectSize.width;
+            maxX = Math.max(maxX, filledX);
+
             maxHeightLine = Math.max(maxHeightLine, objectSize.height);
         }
         filledY += maxHeightLine;
 
-        minimumSize().set(new Size(filledX, filledY));
+        minimumSize().set(new Size(maxX, filledY));
     }
 
     public float getGap() {

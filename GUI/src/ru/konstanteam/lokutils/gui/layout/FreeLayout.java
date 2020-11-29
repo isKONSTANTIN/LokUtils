@@ -39,7 +39,7 @@ public class FreeLayout extends ObjectFreeLayout {
     }
 
     public void addObject(GUIObject object, Property<Point> position) {
-        super.addObject(object);
+        this.addObject(object);
 
         positions.put(object, position);
     }

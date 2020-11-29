@@ -79,6 +79,7 @@ public abstract class GUIObject {
     }
 
     public void update() {
+        size.checkParentChanges();
         animations.update(owner.getRefreshRate());
     }
 

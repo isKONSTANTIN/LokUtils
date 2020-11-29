@@ -1,28 +1,19 @@
 package ru.konstanteam.lokutils;
 
 import ru.konstanteam.lokutils.applications.Application;
-import ru.konstanteam.lokutils.gui.GUIObject;
 import ru.konstanteam.lokutils.gui.core.maincanvas.GUIMainCanvasSystem;
-import ru.konstanteam.lokutils.gui.core.windows.GUIWindowSystem;
-import ru.konstanteam.lokutils.gui.core.windows.window.BaseWindow;
 import ru.konstanteam.lokutils.gui.layout.*;
-import ru.konstanteam.lokutils.gui.objects.GUICheckBox;
-import ru.konstanteam.lokutils.gui.objects.GUILineSpace;
-import ru.konstanteam.lokutils.gui.objects.GUIText;
-import ru.konstanteam.lokutils.gui.objects.GUITextField;
 import ru.konstanteam.lokutils.gui.objects.button.GUIButton;
 import ru.konstanteam.lokutils.gui.objects.margin.GUIMargin;
 import ru.konstanteam.lokutils.gui.objects.margin.Margin;
-import ru.konstanteam.lokutils.gui.objects.slider.GUISlider;
 import ru.konstanteam.lokutils.objects.Point;
 import ru.konstanteam.lokutils.objects.Size;
-import ru.konstanteam.lokutils.render.Window;
-
-import java.util.ArrayList;
 
 public class Main extends Application<GUIMainCanvasSystem> {
+    BaseLayout layout;
+
     public Main() {
-        super(new GUIMainCanvasSystem(), new Window().setIcon(new String[]{"/home/lokin135/LokUtils.png"}));
+        super(new GUIMainCanvasSystem());
     }
 
     public static void main(String[] args) {
@@ -33,8 +24,11 @@ public class Main extends Application<GUIMainCanvasSystem> {
     public void initEvent() {
         window.setResizable(true);
 
-        BaseLayout layout = new BaseLayout();
+        layout = new BaseLayout();
 
+        layout.addObject(new GUIButton());
+        layout.addObject(new GUIButton());
+        layout.addObject(new GUIButton());
         layout.addObject(new GUIButton());
         layout.addObject(new GUIButton());
         layout.addObject(new GUIButton());
@@ -49,7 +43,7 @@ public class Main extends Application<GUIMainCanvasSystem> {
         scrollLayout.size().set(uiController.getLayout().size());
 
         scrollLayout.size().addListener((old, newV) -> {
-            layout.size().set(layout.minimumSize().get().setWidth(newV.width));
+            layout.size().set(new Size(newV.width, layout.minimumSize().get().height));
         });
 
         this.uiController.getLayout().addObject(scrollLayout, Point.ZERO);
