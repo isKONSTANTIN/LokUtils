@@ -3,7 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Applications/Applications.iml" filepath="$PROJECT_DIR$/Applications/Applications.iml" />
-      <module fileurl="file://$PROJECT_DIR$/UI/GUI.iml" filepath="$PROJECT_DIR$/UI/GUI.iml" />
+      <module fileurl="file://$PROJECT_DIR$/GUI/GUI.iml" filepath="$PROJECT_DIR$/GUI/GUI.iml" />
       <module fileurl="file://$PROJECT_DIR$/Input/Input.iml" filepath="$PROJECT_DIR$/Input/Input.iml" />
       <module fileurl="file://$PROJECT_DIR$/LokUtils.iml" filepath="$PROJECT_DIR$/LokUtils.iml" />
       <module fileurl="file://$PROJECT_DIR$/Objects/Objects.iml" filepath="$PROJECT_DIR$/Objects/Objects.iml" />
