@@ -49,10 +49,18 @@ public class GUIStyle {
                         .setColor("sliderFullness", new Color(0.8f, 0.8f, 0.8f, 1))
                         .setColor("sliderEdges", new Color(0.15f, 0.15f, 0.15f, 0.8f))
 
+                        .setColor("verticalScrollBarBackground", new Color(0.9f, 0.9f, 0.9f, 0.5f))
+                        .setColor("verticalScrollBarHead", new Color(1f, 1f, 1f, 0.5f))
+
+                        .setColor("horizontalScrollBarBackground", new Color(0.9f, 0.9f, 0.9f, 0.5f))
+                        .setColor("horizontalScrollBarHead", new Color(1f, 1f, 1f, 0.5f))
+
                         .setObject("separateLineWidth", 1f)
 
                         .setColor("textFieldBackground", new Color(0.2f, 0.2f, 0.2f, 0.8f))
                         .setObject("textFieldRounded", 0.3f)
+
+
         );
     }
 

@@ -6,7 +6,7 @@ import ru.konstanteam.lokutils.gui.eventsystem.events.ClickType;
 import ru.konstanteam.lokutils.gui.eventsystem.events.MouseClickedEvent;
 import ru.konstanteam.lokutils.gui.layout.FreeLayout;
 import ru.konstanteam.lokutils.gui.layout.GUIAbstractLayout;
-import ru.konstanteam.lokutils.gui.objects.GUIPanel;
+import ru.konstanteam.lokutils.gui.panels.GUIPanel;
 import ru.konstanteam.lokutils.gui.objects.GUIText;
 import ru.konstanteam.lokutils.gui.objects.margin.GUIMargin;
 import ru.konstanteam.lokutils.gui.objects.margin.Margin;
@@ -28,7 +28,7 @@ public class GUIButton extends GUIPanel<FreeLayout> {
         this.margin = new GUIMargin(text, new Margin(10, 10, 7,7));
         this.getRootLayout().addObject(margin, CENTER);
 
-        customersContainer.addCustomer(MouseClickedEvent.class, event -> {
+        customersContainer.setCustomer(MouseClickedEvent.class, event -> {
             if (event.clickType == ClickType.CLICKED && new Rect(Point.ZERO, size().get()).inside(event.position)) {
                 getAnimations().stopAll();
                 getAnimations().startAnimation("pressed");

@@ -33,7 +33,7 @@ public class WindowButton extends GUIObject {
 
         size().set(() -> new Size(field.radius * 2, field.radius * 2));
 
-        customersContainer.addCustomer(MouseClickedEvent.class, event -> {
+        customersContainer.setCustomer(MouseClickedEvent.class, event -> {
             if (event.clickType == ClickType.CLICKED && field.inside(event.position)) {
                 this.getAnimations().stopAll();
                 this.getAnimations().startAnimation("pressed");

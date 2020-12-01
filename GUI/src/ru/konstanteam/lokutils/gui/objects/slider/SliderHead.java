@@ -14,7 +14,7 @@ public class SliderHead extends GUIObject {
     public Color overrideColor;
 
     public SliderHead(GUISlider slider) {
-        customersContainer.addCustomer(MouseMoveEvent.class, event -> {
+        customersContainer.setCustomer(MouseMoveEvent.class, event -> {
             float sliderWidth = slider.size().get().width;
             slider.setHead(event.startPosition.x / sliderWidth + event.deltaPositionChange.x / sliderWidth);
         });

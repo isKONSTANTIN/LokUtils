@@ -146,7 +146,7 @@ public class BaseWindow extends GUIWindow {
 
         layout.update();
 
-        GLContext.getCurrent().getViewTools().pushLook(new Rect(contentOffset.get(), layout.size().get()), 0);
+        GLContext.getCurrent().getViewTools().pushLook(new Rect(contentOffset.get(), layout.size().get()));
         layout.render();
         GLContext.getCurrent().getViewTools().popLook();
     }

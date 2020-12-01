@@ -14,14 +14,14 @@ public class CustomersContainer implements EventCustomer {
         handlers.put(eventClass, eventHandler);
     }
 
-    public <T extends Event> Removable addCustomer(Class<T> eventClass, EventCustomer<T> customer) {
+    public <T extends Event> Removable setCustomer(Class<T> eventClass, EventCustomer<T> customer) {
         customers.put(eventClass, customer);
 
         return () -> customers.remove(customer);
     }
 
-    public <T extends Event> Removable addCustomer(EventCustomer<T> customer) {
-        return addCustomer(Event.class, (EventCustomer<Event>) customer);
+    public <T extends Event> Removable setCustomer(EventCustomer<T> customer) {
+        return setCustomer(Event.class, (EventCustomer<Event>) customer);
     }
 
     public <T extends Event> T getLastEvent(Class<T> eventClass) {

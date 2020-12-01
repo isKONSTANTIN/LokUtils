@@ -19,7 +19,7 @@ public class GUISlider extends GUIObject {
         this.head = new SliderHead(this);
         this.head.size().set(() -> size.get().setWidth(0));
 
-        customersContainer.addCustomer(MouseMoveEvent.class, (event) -> {
+        customersContainer.setCustomer(MouseMoveEvent.class, (event) -> {
             if (new Rect(Point.ZERO, size.get()).inside(event.startPosition))
                 this.head.getCustomersContainer().handle(event);
         });

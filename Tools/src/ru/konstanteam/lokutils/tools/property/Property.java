@@ -29,7 +29,6 @@ public class Property<T> implements SoftValue<T> {
     }
 
     public void removeListener(PropertyChangeListener<T> changeListener) {
-
         changeListeners.remove(changeListener);
     }
 

@@ -27,8 +27,9 @@ public class ViewTools {
     public Rect getCurrentScissor() {
         int id = stackScissor.size() - 1;
         if (id < 0) return null;
+        TranslateState translate = getCurrentTranslate();
 
-        return stackScissor.get(id);
+        return translate != null ? stackScissor.get(id).relativeTo(translate.global) : stackScissor.get(id);
     }
 
     public TranslateState getCurrentTranslate() {
@@ -47,11 +48,17 @@ public class ViewTools {
             return;
         }
 
-
         TranslateState translate = getCurrentTranslate();
-        Rect globalScissor = translate != null ? scissor.offset(translate.global) : scissor;
+        Rect absoluteScissor = translate != null ? scissor.offset(translate.global) : scissor;
 
-        globalScissor = globalScissor.setPosition(new Point(globalScissor.getX(), window.getResolution().getY() - globalScissor.getY() - globalScissor.getHeight()));
+        Rect lastScissor = getCurrentScissor();
+        if (lastScissor != null){
+            if (translate != null) lastScissor = lastScissor.offset(translate.global);
+            absoluteScissor = lastScissor.intersect(absoluteScissor);
+        }
+
+
+        Rect globalScissor = absoluteScissor.setPosition(new Point(absoluteScissor.getX(), window.getResolution().getY() - absoluteScissor.getY() - absoluteScissor.getHeight()));
 
         globalScissor = globalScissor.setPosition(new Point(
                 (int) Math.ceil(globalScissor.getX()) - smoothingDeviation,
@@ -61,10 +68,6 @@ public class ViewTools {
                 (int) Math.ceil(globalScissor.getHeight()) + smoothingDeviation * 2
         ));
 
-        Rect currentScissor = getCurrentScissor();
-        if (currentScissor != null)
-            globalScissor = currentScissor.intersect(globalScissor);
-
         GL11.glScissor(
                 (int) globalScissor.position.x,
                 (int) globalScissor.position.y,
@@ -72,7 +75,7 @@ public class ViewTools {
                 (int) globalScissor.size.height
         );
 
-        stackScissor.add(globalScissor);
+        stackScissor.add(absoluteScissor);
     }
 
     public void pushScissor(Rect scissor) {

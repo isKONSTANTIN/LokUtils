@@ -6,49 +6,35 @@ import ru.konstanteam.lokutils.gui.layout.*;
 import ru.konstanteam.lokutils.gui.objects.button.GUIButton;
 import ru.konstanteam.lokutils.gui.objects.margin.GUIMargin;
 import ru.konstanteam.lokutils.gui.objects.margin.Margin;
+import ru.konstanteam.lokutils.gui.panels.scroll.ScrollPanel;
 import ru.konstanteam.lokutils.objects.Point;
 import ru.konstanteam.lokutils.objects.Size;
 
 public class Main extends Application<GUIMainCanvasSystem> {
-    BaseLayout layout;
-
-    public Main() {
-        super(new GUIMainCanvasSystem());
-    }
-
-    public static void main(String[] args) {
-        new Main().open();
-    }
+    public Main() { super(new GUIMainCanvasSystem()); }
+    public static void main(String[] args) { new Main().open(); }
 
     @Override
     public void initEvent() {
         window.setResizable(true);
+        window.setTitle("GUI Test");
 
-        layout = new BaseLayout();
+        BaseLayout layout = new BaseLayout();
+        for (int i = 0; i < 100; i++){
+            GUIButton button = new GUIButton();
+            button.size().set(() -> {
+                float size = (float)(Math.sin(System.nanoTime() / 1000000000f) + 1 + 4) / 2f / 2f * 100;
+                return new Size(size, size);
+            });
+            layout.addObject(button);
+        }
 
-        layout.addObject(new GUIButton());
-        layout.addObject(new GUIButton());
-        layout.addObject(new GUIButton());
-        layout.addObject(new GUIButton());
-        layout.addObject(new GUIButton());
-        layout.addObject(new GUIButton());
-        layout.addObject(new GUIButton());
-        layout.addObject(new GUIButton());
-        layout.addObject(new GUIButton());
-        layout.addObject(new GUIButton());
+        ScrollPanel scrollPanel = new ScrollPanel();
+        scrollPanel.layout().addObject(new GUIMargin(layout, new Margin(5, 5, 5, 5)), Point.ZERO);
+        scrollPanel.size().set(uiController.getLayout().size());
+        layout.size().set(() -> new Size(scrollPanel.size().get().width, layout.minimumSize().get().height));
 
-        ScrollLayout scrollLayout = new ScrollLayout();
-        scrollLayout.addObject(new GUIMargin(layout, new Margin(5, 5, 5, 5)), Point.ZERO);
-
-        scrollLayout.size().set(uiController.getLayout().size());
-
-        scrollLayout.size().addListener((old, newV) -> {
-            layout.size().set(new Size(newV.width, layout.minimumSize().get().height));
-        });
-
-        this.uiController.getLayout().addObject(scrollLayout, Point.ZERO);
-
+        this.uiController.getLayout().addObject(scrollPanel, Point.ZERO);
         this.window.setWindowCloseCallback((win) -> this.close());
     }
-
 }

@@ -1,7 +1,8 @@
-package ru.konstanteam.lokutils.gui.objects;
+package ru.konstanteam.lokutils.gui.panels;
 
 import ru.konstanteam.lokutils.gui.eventsystem.Event;
 import ru.konstanteam.lokutils.gui.layout.GUIAbstractLayout;
+import ru.konstanteam.lokutils.gui.objects.GUIBlackout;
 import ru.konstanteam.lokutils.objects.Point;
 import ru.konstanteam.lokutils.objects.Size;
 import ru.konstanteam.lokutils.render.context.GLContext;
@@ -29,7 +30,7 @@ public class GUIPanel<T extends GUIAbstractLayout> extends GUIBlackout {
         });
 
         rootLayout.size().set(canvasSize);
-        customersContainer.addCustomer(Event.class, rootLayout.getCustomersContainer());
+        customersContainer.setCustomer(Event.class, rootLayout.getCustomersContainer());
 
         minimumSize().set(rootLayout.minimumSize());
         size().set(new Size(256, 256));
@@ -44,6 +45,13 @@ public class GUIPanel<T extends GUIAbstractLayout> extends GUIBlackout {
 
     public T getRootLayout() {
         return rootLayout;
+    }
+
+    @Override
+    public void init(GUIAbstractLayout owner) {
+        super.init(owner);
+
+        rootLayout.init(owner);
     }
 
     @Override

@@ -14,7 +14,7 @@ public class GUIText extends GUIObject {
     protected Font lastFont;
 
     public GUIText() {
-        minimumSize().set(() -> getStyle().getFont(styleFontName).getSize(text, null));
+
     }
 
     public String getText() {
@@ -23,6 +23,7 @@ public class GUIText extends GUIObject {
 
     public GUIText setText(String text) {
         this.text = text;
+        minimumSize().set(getStyle().getFont(styleFontName).getSize(text, null));
 
         return this;
     }

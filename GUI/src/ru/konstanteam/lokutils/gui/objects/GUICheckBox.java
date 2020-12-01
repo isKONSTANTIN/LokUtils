@@ -39,7 +39,7 @@ public class GUICheckBox extends GUIObject {
             }
         });
 
-        customersContainer.addCustomer(MouseClickedEvent.class, event -> {
+        customersContainer.setCustomer(MouseClickedEvent.class, event -> {
             if (EventTools.realized(event, customersContainer.getLastEvent(MouseClickedEvent.class), new Rect(Point.ZERO, boxSize)))
                 switchStatus();
         });

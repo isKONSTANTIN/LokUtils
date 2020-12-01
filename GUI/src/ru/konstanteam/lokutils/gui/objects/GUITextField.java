@@ -34,14 +34,14 @@ public class GUITextField extends GUIObject {
 
         setText(new GUIText());
 
-        customersContainer.addCustomer(CharTypedEvent.class, (event) -> {
+        customersContainer.setCustomer(CharTypedEvent.class, (event) -> {
             if (event.key.action != KeyAction.RELEASE || !getOwner().isFocused(this))
                 return;
 
             addText(String.valueOf(event.key.aChar));
         });
 
-        customersContainer.addCustomer(KeyTypedEvent.class, (event) -> {
+        customersContainer.setCustomer(KeyTypedEvent.class, (event) -> {
             if (event.key.action == KeyAction.RELEASE || !getOwner().isFocused(this))
                 return;
 
@@ -175,7 +175,7 @@ public class GUITextField extends GUIObject {
             glEnable(GL_MULTISAMPLE);
         }
 
-        GLContext.getCurrent().getViewTools().popTranslate();
         GLContext.getCurrent().getViewTools().popScissor();
+        GLContext.getCurrent().getViewTools().popTranslate();
     }
 }

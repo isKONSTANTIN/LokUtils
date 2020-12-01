@@ -38,7 +38,7 @@ public class GUIMargin extends GUIObject {
             return maxObjectSize.offset(widthIsMax ? 0 : margin.left + margin.right, heightIsMax ? 0 : margin.top + margin.bottom);
         });
 
-        customersContainer.addCustomer(event -> {
+        customersContainer.setCustomer(event -> {
             Point position = new Point(margin.get().left, margin.get().top);
             Event localizedEvent = event.relativeTo(position);
             this.object.getCustomersContainer().handle(localizedEvent);
@@ -64,6 +64,10 @@ public class GUIMargin extends GUIObject {
         super.update();
 
         object.update();
+
+        size.checkParentChanges();
+        minimumSize.checkParentChanges();
+        maximumSize.checkParentChanges();
     }
 
     @Override

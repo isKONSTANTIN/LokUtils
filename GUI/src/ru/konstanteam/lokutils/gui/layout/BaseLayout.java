@@ -53,6 +53,11 @@ public class BaseLayout extends ObjectFreeLayout {
         minimumSize().set(new Size(maxX, filledY));
     }
 
+    @Override
+    protected void setInvalidStatus() {
+        isValid = false;
+    }
+
     public float getGap() {
         return gap;
     }

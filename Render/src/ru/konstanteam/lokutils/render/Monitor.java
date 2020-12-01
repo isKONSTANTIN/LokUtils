@@ -12,11 +12,13 @@ import java.nio.IntBuffer;
 import static org.lwjgl.glfw.GLFW.*;
 
 public class Monitor {
-
     protected long monitor;
+    protected GLFWVidMode vidMode;
 
     public Monitor(long monitor) {
         this.monitor = monitor;
+
+        this.vidMode = glfwGetVideoMode(monitor);
     }
 
     public static Monitor[] getAll() {
@@ -43,7 +45,7 @@ public class Monitor {
     }
 
     public GLFWVidMode getVideoMode() {
-        return glfwGetVideoMode(monitor);
+        return vidMode;
     }
 
     public Vector2i getPosition() {

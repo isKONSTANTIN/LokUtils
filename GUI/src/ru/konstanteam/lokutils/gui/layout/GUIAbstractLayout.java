@@ -10,11 +10,9 @@ import ru.konstanteam.lokutils.objects.Rect;
 import ru.konstanteam.lokutils.objects.Size;
 import ru.konstanteam.lokutils.render.context.GLContext;
 import ru.konstanteam.lokutils.render.tools.ViewTools;
-import ru.konstanteam.lokutils.tools.Removable;
 import ru.konstanteam.lokutils.tools.property.PropertyChangeListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public abstract class GUIAbstractLayout extends GUIObject {
     protected ArrayList<GUIObject> objects = new ArrayList<>();
@@ -29,7 +27,7 @@ public abstract class GUIAbstractLayout extends GUIObject {
         this.size.set(new Size(256, 256));
         this.size.addListener(invalidListener);
 
-        customersContainer.addCustomer(event -> {
+        customersContainer.setCustomer(event -> {
             if (event instanceof MouseClickedEvent) {
                 MouseClickedEvent mouseClickedEvent = (MouseClickedEvent) event;
 
@@ -149,11 +147,14 @@ public abstract class GUIAbstractLayout extends GUIObject {
 
         for (GUIObject object : objects) {
             Point objectPosition = getObjectPos(object);
+            Rect ob = new Rect(objectPosition, object.size().get());
+            Rect v = viewTools.getCurrentScissor();
+
+            if (viewTools.getCurrentScissor() != null && !v.isIntersect(ob))
+                continue;
 
             viewTools.pushTranslate(objectPosition);
-
             object.render();
-
             viewTools.popTranslate();
         }
     }
