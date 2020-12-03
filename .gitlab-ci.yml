@@ -3,6 +3,7 @@ image: java:8-jdk
 stages:
   - build
   - test
+  - deploy
 
 cache:
   paths:
@@ -24,6 +25,12 @@ test:
   stage: test
   script:
     - ./gradlew check
+
+deploy:
+  stage: deploy
+  script:
+    - ./gradlew publish
+
 
 after_script:
   - echo "End CI"
