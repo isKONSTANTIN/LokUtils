@@ -1,4 +1,4 @@
-package ru.konstanteam.lokutils;
+package ru.konstanteam.lokutils.testing;
 
 import ru.konstanteam.lokutils.applications.Application;
 import ru.konstanteam.lokutils.gui.core.maincanvas.GUIMainCanvasSystem;

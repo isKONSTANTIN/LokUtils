@@ -1,0 +1,27 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+mainClassName = 'ru.konstanteam.lokutils.testing.Main'
+
+group 'ru.konstanteam'
+version '0.1'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*/*.jar'])
+}
+
+jar {
+    from configurations.compileClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+
+    manifest {
+        attributes(
+                'Main-Class': 'ru.konstanteam.lokutils.testing.Main'
+        )
+    }
+}
