@@ -39,18 +39,18 @@ public class ScrollPanel extends GUIObject {
 
         customersContainer.setCustomer(MouseClickedEvent.class, event -> {
             if (new Rect(vBarPos.get(), vBar.size().get()).inside(event.position))
-                vBar.getCustomersContainer().handle(event);
+                vBar.getCustomersContainer().handle(event.relativeTo(vBarPos.get()));
 
             if (new Rect(hBarPos.get(), hBar.size().get()).inside(event.position))
-                hBar.getCustomersContainer().handle(event);
+                hBar.getCustomersContainer().handle(event.relativeTo(hBarPos.get()));
         });
 
         customersContainer.setCustomer(MouseMoveEvent.class, event -> {
             if (new Rect(vBarPos.get(), vBar.size().get()).inside(event.startPosition))
-                vBar.getCustomersContainer().handle(event);
+                vBar.getCustomersContainer().handle(event.relativeTo(vBarPos.get()));
 
             if (new Rect(hBarPos.get(), hBar.size().get()).inside(event.startPosition))
-                hBar.getCustomersContainer().handle(event);
+                hBar.getCustomersContainer().handle(event.relativeTo(hBarPos.get()));
         });
 
         size().set(new Size(256, 256));

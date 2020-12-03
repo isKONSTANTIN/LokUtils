@@ -1,10 +1,7 @@
 package ru.konstanteam.lokutils.gui.panels.scroll;
 
 import ru.konstanteam.lokutils.gui.GUIObject;
-import ru.konstanteam.lokutils.gui.eventsystem.events.ClickType;
-import ru.konstanteam.lokutils.gui.eventsystem.events.MouseClickedEvent;
-import ru.konstanteam.lokutils.gui.eventsystem.events.MouseMoveEvent;
-import ru.konstanteam.lokutils.gui.eventsystem.events.MouseScrollEvent;
+import ru.konstanteam.lokutils.gui.eventsystem.events.*;
 import ru.konstanteam.lokutils.gui.layout.ScrollLayout;
 import ru.konstanteam.lokutils.objects.Color;
 import ru.konstanteam.lokutils.objects.Point;
@@ -42,23 +39,27 @@ public class VerticalScrollBar extends ScrollBar {
         customersContainer.setCustomer(MouseClickedEvent.class, (event) -> {
             ScrollLayout layout = this.panel.layout;
             Size size = size().get();
-            Size headSize = this.headSize.get();
+            Rect head = new Rect(headPosition.get(), headSize.get());
 
             if (!active() || event.clickType != ClickType.CLICKED)
                 return;
 
-            layout.setScroll(layout.getScroll().setY((event.position.y - headSize.height / 2f) / (size.height - headSize.height) * (layout.size().get().height - layout.getContentSize().height)));
+            if (!head.inside(event.position))
+                layout.setScroll(layout.getScroll().setY((event.position.y - head.size.height / 2f) / (size.height - head.size.height) * (layout.size().get().height - layout.getContentSize().height)));
         });
 
         customersContainer.setCustomer(MouseMoveEvent.class, (event) -> {
             ScrollLayout layout = this.panel.layout;
             Size size = size().get();
-            Size headSize = this.headSize.get();
+            Rect head = new Rect(headPosition.get(), headSize.get());
+
+            if (event.type == MoveType.STARTED)
+                startMoveBarState = head;
 
             if (!active())
                 return;
 
-            layout.setScroll(layout.getScroll().setY((event.lastPosition.y - headSize.height / 2f) / (size.height - headSize.height) * (layout.size().get().height - layout.getContentSize().height)));
+            layout.setScroll(layout.getScroll().setY((event.endPosition.y - (event.startPosition.y - startMoveBarState.position.y)) / (size.height - head.size.height) * (layout.size().get().height - layout.getContentSize().height)));
         });
     }
 

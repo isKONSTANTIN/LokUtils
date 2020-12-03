@@ -38,17 +38,16 @@ public abstract class GUIController {
         else if (!pressedStatus && lastMousePressed)
             event = new MouseClickedEvent(mousePosition, ClickType.UNCLICKED, mouse.buttonID);
         else if (pressedStatus && lastMousePressed) {
-            if (lastEvent instanceof MouseClickedEvent)
-                event = new MouseMoveEvent(((MouseClickedEvent) lastEvent).position, lastMousePosition, mousePosition, MoveType.STARTED);
-            else if (lastEvent instanceof MouseMoveEvent)
+            if (lastEvent instanceof MouseMoveEvent)
                 event = new MouseMoveEvent(((MouseMoveEvent) lastEvent).startPosition, lastMousePosition, mousePosition, MoveType.CONTINUED);
-        } else if (window.getInputs().keyboard.nextKey()) {
+            else
+                event = new MouseMoveEvent(((MouseClickedEvent) lastEvent).position, lastMousePosition, mousePosition, MoveType.STARTED);
+        } else if (window.getInputs().keyboard.nextKey())
             event = new KeyTypedEvent(window.getInputs().keyboard.getPressedKey());
-        } else if (window.getInputs().keyboard.nextChar()) {
+        else if (window.getInputs().keyboard.nextChar())
             event = new CharTypedEvent(window.getInputs().keyboard.getPressedChar());
-        } else if (mouseScroll.x != 0 || mouseScroll.y != 0) {
+        else if (mouseScroll.x != 0 || mouseScroll.y != 0)
             event = new MouseScrollEvent(new Point(mouseScroll.x, mouseScroll.y));
-        }
 
         lastEvent = event;
         lastMousePosition = mousePosition;

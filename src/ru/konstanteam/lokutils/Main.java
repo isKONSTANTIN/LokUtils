@@ -11,8 +11,13 @@ import ru.konstanteam.lokutils.objects.Point;
 import ru.konstanteam.lokutils.objects.Size;
 
 public class Main extends Application<GUIMainCanvasSystem> {
-    public Main() { super(new GUIMainCanvasSystem()); }
-    public static void main(String[] args) { new Main().open(); }
+    public Main() {
+        super(new GUIMainCanvasSystem());
+    }
+
+    public static void main(String[] args) {
+        new Main().open();
+    }
 
     @Override
     public void initEvent() {
@@ -20,12 +25,9 @@ public class Main extends Application<GUIMainCanvasSystem> {
         window.setTitle("GUI Test");
 
         BaseLayout layout = new BaseLayout();
+
         for (int i = 0; i < 100; i++){
             GUIButton button = new GUIButton();
-            button.size().set(() -> {
-                float size = (float)(Math.sin(System.nanoTime() / 1000000000f) + 1 + 4) / 2f / 2f * 100;
-                return new Size(size, size);
-            });
             layout.addObject(button);
         }
 

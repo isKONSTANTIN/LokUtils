@@ -3,6 +3,7 @@ package ru.konstanteam.lokutils.gui.panels.scroll;
 import ru.konstanteam.lokutils.gui.eventsystem.events.ClickType;
 import ru.konstanteam.lokutils.gui.eventsystem.events.MouseClickedEvent;
 import ru.konstanteam.lokutils.gui.eventsystem.events.MouseMoveEvent;
+import ru.konstanteam.lokutils.gui.eventsystem.events.MoveType;
 import ru.konstanteam.lokutils.gui.layout.ScrollLayout;
 import ru.konstanteam.lokutils.objects.Color;
 import ru.konstanteam.lokutils.objects.Point;
@@ -39,24 +40,28 @@ public class HorizontalScrollBar extends ScrollBar {
         customersContainer.setCustomer(MouseClickedEvent.class, (event) -> {
             ScrollLayout layout = this.panel.layout;
             Size size = size().get();
-            Size headSize = this.headSize.get();
+            Rect head = new Rect(headPosition.get(), headSize.get());
 
             if (!active() || event.clickType != ClickType.CLICKED)
                 return;
 
-            layout.setScroll(layout.getScroll().setX((event.position.x - headSize.width / 2f) / (size.width - headSize.width) * (layout.size().get().width - layout.getContentSize().width)));
+            if (!head.inside(event.position))
+                layout.setScroll(layout.getScroll().setX((event.position.x - head.size.width / 2f) / (size.width - head.size.width) * (layout.size().get().width - layout.getContentSize().width)));
         });
 
         customersContainer.setCustomer(MouseMoveEvent.class, (event) -> {
             ScrollLayout layout = this.panel.layout;
             Size size = size().get();
-            Size headSize = this.headSize.get();
+            Rect head = new Rect(headPosition.get(), headSize.get());
+
+            if (event.type == MoveType.STARTED)
+                startMoveBarState = head;
 
             if (!active())
                 return;
 
-            layout.setScroll(layout.getScroll().setX((event.lastPosition.x - headSize.width / 2f) / (size.width - headSize.width) * (layout.size().get().width - layout.getContentSize().width)));
-        });
+            layout.setScroll(layout.getScroll().setX((event.endPosition.x - (event.startPosition.x - startMoveBarState.position.x)) / (size.width - head.size.width) * (layout.size().get().width - layout.getContentSize().width)));
+       });
     }
 
     @Override
