@@ -8,6 +8,8 @@ mainClassName = 'ru.konstanteam.lokutils.testing.Main'
 
 group 'ru.konstanteam'
 version '0.1-' + getDate()
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 repositories {
     mavenCentral()
