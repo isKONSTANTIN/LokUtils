@@ -13,6 +13,7 @@ cache:
 build:
   stage: build
   script:
+    - java -version
     - ./gradlew assemble
   artifacts:
     paths:
