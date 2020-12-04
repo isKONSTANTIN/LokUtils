@@ -7,10 +7,14 @@ plugins {
 mainClassName = 'ru.konstanteam.lokutils.testing.Main'
 
 group 'ru.konstanteam'
-version '0.1'
+version '0.1-' + getDate()
 
 repositories {
     mavenCentral()
+}
+
+static def getDate() {
+    return new Date().format('yyyy_MM_dd_HH:mm:ss')
 }
 
 dependencies {
