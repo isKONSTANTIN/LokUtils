@@ -4,6 +4,8 @@ import ru.konstanteam.lokutils.gui.GUIObject;
 import ru.konstanteam.lokutils.gui.GUIStyle;
 import ru.konstanteam.lokutils.objects.Color;
 import ru.konstanteam.lokutils.objects.Size;
+import ru.konstanteam.lokutils.render.context.GLContext;
+import ru.konstanteam.lokutils.render.tools.GUIRenderBuffer;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL13.GL_MULTISAMPLE;
@@ -55,17 +57,19 @@ public class GUISeparate extends GUIObject {
 
         glLineWidth(lineWidth);
         glColor4f(lineColor.red, lineColor.green, lineColor.blue, lineColor.alpha);
-        glBegin(GL_LINES);
+
+        GUIRenderBuffer buffer = GLContext.getCurrent().getViewTools().getGuiRenderBuffer();
+        buffer.begin();
 
         if (horizontal) {
-            glVertex2d(size.width / 2f - lineSize / 2f, size.height / 2f - lineWidth / 2f - 1);
-            glVertex2d(size.width / 2f - lineSize / 2f + lineSize, size.height / 2f - lineWidth / 2f - 1);
+            buffer.addVertex(size.width / 2f - lineSize / 2f, size.height / 2f - lineWidth / 2f - 1);
+            buffer.addVertex(size.width / 2f - lineSize / 2f + lineSize, size.height / 2f - lineWidth / 2f - 1);
         } else {
-            glVertex2d(size.width / 2f - lineWidth / 2f, size.height / 2f - lineSize / 2f);
-            glVertex2d(size.width / 2f - lineWidth / 2f, size.height / 2f - lineSize / 2f + lineSize);
+            buffer.addVertex(size.width / 2f - lineWidth / 2f, size.height / 2f - lineSize / 2f);
+            buffer.addVertex(size.width / 2f - lineWidth / 2f, size.height / 2f - lineSize / 2f + lineSize);
         }
 
-        glEnd();
+        buffer.draw(GL_LINES);
 
         glEnable(GL_MULTISAMPLE);
     }

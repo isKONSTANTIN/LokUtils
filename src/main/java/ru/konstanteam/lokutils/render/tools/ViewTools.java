@@ -2,11 +2,13 @@ package ru.konstanteam.lokutils.render.tools;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector4f;
+import ru.konstanteam.lokutils.gui.core.GUIShader;
 import ru.konstanteam.lokutils.objects.Point;
 import ru.konstanteam.lokutils.objects.Rect;
 import ru.konstanteam.lokutils.objects.Size;
 import ru.konstanteam.lokutils.render.Window;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -19,9 +21,20 @@ public class ViewTools {
     private ArrayList<Rect> stackScissor = new ArrayList<>();
     private ArrayList<TranslateState> stackTranslate = new ArrayList<>();
     private Window window;
+    private GUIRenderBuffer guiRenderBuffer;
 
-    public ViewTools(Window window) {
+    public ViewTools(Window window) throws Exception {
         this.window = window;
+
+        this.guiRenderBuffer = new GUIRenderBuffer(new GUIShader());
+    }
+
+    public void update(){
+        guiRenderBuffer.getDefaultShader().update(new Size(window.getResolution()));
+    }
+
+    public GUIRenderBuffer getGuiRenderBuffer() {
+        return guiRenderBuffer;
     }
 
     public Rect getCurrentScissor() {
@@ -34,7 +47,7 @@ public class ViewTools {
 
     public TranslateState getCurrentTranslate() {
         int id = stackTranslate.size() - 1;
-        if (id < 0) return null;
+        if (id < 0) return TranslateState.ZERO;
 
         return stackTranslate.get(id);
     }
@@ -49,11 +62,11 @@ public class ViewTools {
         }
 
         TranslateState translate = getCurrentTranslate();
-        Rect absoluteScissor = translate != null ? scissor.offset(translate.global) : scissor;
+        Rect absoluteScissor = scissor.offset(translate.global);
 
         Rect lastScissor = getCurrentScissor();
         if (lastScissor != null){
-            if (translate != null) lastScissor = lastScissor.offset(translate.global);
+            lastScissor = lastScissor.offset(translate.global);
             absoluteScissor = lastScissor.intersect(absoluteScissor);
         }
 
@@ -115,12 +128,12 @@ public class ViewTools {
 
         GL11.glTranslatef(translate.x, translate.y, 0);
 
-        stackTranslate.add(new TranslateState(translate, currentTranslate != null ? currentTranslate.global.offset(translate) : translate));
+        stackTranslate.add(new TranslateState(translate, currentTranslate.global.offset(translate)));
     }
 
     public void popTranslate() {
         TranslateState currentTranslate = getCurrentTranslate();
-        if (currentTranslate == null) return;
+        if (currentTranslate == TranslateState.ZERO) return;
 
         stackTranslate.remove(currentTranslate);
 

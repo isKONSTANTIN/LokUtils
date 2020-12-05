@@ -26,7 +26,7 @@ public class Main extends Application<GUIMainCanvasSystem> {
 
         BaseLayout layout = new BaseLayout();
 
-        for (int i = 0; i < 100; i++){
+        for (int i = 0; i < 1000; i++){
             GUIButton button = new GUIButton();
             layout.addObject(button);
         }

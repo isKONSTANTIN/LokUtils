@@ -1,5 +1,6 @@
 package ru.konstanteam.lokutils.render.context;
 
+import org.lwjgl.opengl.GL;
 import ru.konstanteam.lokutils.render.Window;
 import ru.konstanteam.lokutils.render.tools.ViewTools;
 
@@ -10,7 +11,7 @@ public class GLContext {
 
     private final Window window;
     private final long threadID;
-    private final ViewTools viewTools;
+    private ViewTools viewTools;
 
     public GLContext(Window window) {
         if (window.getGlContext() != null) throw new RuntimeException("This window already has context!");
@@ -18,7 +19,6 @@ public class GLContext {
         this.window = window;
 
         this.threadID = Thread.currentThread().getId();
-        this.viewTools = new ViewTools(window);
 
         if (!contexts.containsKey(threadID)) {
             ContextsList contextsList = new ContextsList();
@@ -27,6 +27,17 @@ public class GLContext {
             contexts.put(threadID, contextsList);
         } else
             contexts.get(threadID).add(this);
+
+        try {
+            bind();
+            GL.createCapabilities();
+
+            this.viewTools = new ViewTools(window);
+            unbind();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
     }
 
     public static boolean check(GLContext context) {
@@ -42,6 +53,10 @@ public class GLContext {
             return null;
 
         return contexts.get(currentThread).getBinded();
+    }
+
+    public void update(){
+        viewTools.update();
     }
 
     public Window getWindow() {

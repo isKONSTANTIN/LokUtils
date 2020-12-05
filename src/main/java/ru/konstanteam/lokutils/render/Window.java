@@ -13,6 +13,10 @@ import java.awt.image.BufferedImage;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
@@ -40,6 +44,8 @@ public class Window {
     protected GLContext glContext;
     protected Inputs inputs;
     protected Monitor currentMonitor;
+    protected boolean decorated = true;
+    protected HashMap<Integer, Integer> windowCreationHints = new HashMap<>();
 
     public Window() {
 
@@ -47,9 +53,9 @@ public class Window {
 
     public void update() {
         glfwSwapBuffers(window);
+
         glfwPollEvents();
         inputs.update();
-
         Vector2i resolution = getResolution();
         glViewport(0, 0, resolution.getX(), resolution.getY());
     }
@@ -64,7 +70,16 @@ public class Window {
         if (isFullscreen)
             resolution = monitorResolution;
 
+        glfwDefaultWindowHints();
+
+        for (Map.Entry<Integer, Integer> hint : windowCreationHints.entrySet())
+            glfwWindowHint(hint.getKey(), hint.getValue());
+
         glfwWindowHint(GLFW_SAMPLES, MSAASamples);
+        glfwWindowHint(GLFW_DECORATED, decorated ? GLFW_TRUE : GLFW_FALSE);
+
+        windowCreationHints.clear();
+        windowCreationHints = null;
 
         window = glfwCreateWindow(resolution.getX(), resolution.getY(), title, isFullscreen ? currentMonitor.getMonitor() : NULL, NULL);
 
@@ -77,7 +92,6 @@ public class Window {
         glContext = new GLContext(this);
 
         glContext.bind();
-        GL.createCapabilities();
 
         glEnable(GL_TEXTURE_2D);
         glEnable(GL_ALPHA_TEST);
@@ -108,9 +122,25 @@ public class Window {
         return this;
     }
 
+    public Window setHint(int hint, int value){
+        windowCreationHints.put(hint, value);
+
+        return this;
+    }
+
     public Window createAndShow() {
         create();
         show();
+
+        return this;
+    }
+
+    public boolean isDecorated() {
+        return decorated;
+    }
+
+    public Window setDecorated(boolean decorated) {
+        this.decorated = decorated;
 
         return this;
     }

@@ -52,8 +52,16 @@ public class Rect extends Field {
         return position;
     }
 
+    public Point getTopRightPoint() {
+        return getTopLeftPoint().offset(size.width, 0);
+    }
+
     public Point getBottomRightPoint() {
-        return new Point(position.x + size.width, position.y + size.height);
+        return getTopRightPoint().offset(0, size.height);
+    }
+
+    public Point getBottomLeftPoint() {
+        return getTopLeftPoint().offset(0, size.height);
     }
 
     public Point getCenterPoint() {

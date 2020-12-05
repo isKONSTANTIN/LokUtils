@@ -3,6 +3,7 @@ package ru.konstanteam.lokutils.render.tools;
 import ru.konstanteam.lokutils.objects.Circle;
 import ru.konstanteam.lokutils.objects.Point;
 import ru.konstanteam.lokutils.objects.Rect;
+import ru.konstanteam.lokutils.render.context.GLContext;
 
 import static java.lang.Math.*;
 import static org.lwjgl.opengl.GL11.*;
@@ -49,15 +50,17 @@ public class GLFastTools {
     }
 
     public static void drawHollowSquare(Rect rect) {
-        glBegin(GL_LINE_STRIP);
+        GUIRenderBuffer buffer = GLContext.getCurrent().getViewTools().getGuiRenderBuffer();
 
-        glVertex3f(rect.getX(), rect.getY(), 0);
-        glVertex3f(rect.getWidth() + rect.getX(), rect.getY(), 0);
-        glVertex3f(rect.getWidth() + rect.getX(), rect.getWidth() + rect.getY(), 0);
-        glVertex3f(rect.getX(), rect.getWidth() + rect.getY(), 0);
-        glVertex3f(rect.getX(), rect.getY(), 0);
+        buffer.begin();
 
-        glEnd();
+        buffer.addVertex(rect.getX(), rect.getY());
+        buffer.addVertex(rect.getWidth() + rect.getX(), rect.getY());
+        buffer.addVertex(rect.getWidth() + rect.getX(), rect.getWidth() + rect.getY());
+        buffer.addVertex(rect.getX(), rect.getWidth() + rect.getY());
+        buffer.addVertex(rect.getX(), rect.getY());
+
+        buffer.draw(GL_LINE_STRIP);
     }
 
     public static void drawCircle(Circle circle) {
@@ -66,51 +69,55 @@ public class GLFastTools {
 
         Point position = new Point(circle.position.x + circle.radius, circle.position.y + circle.radius);
 
-        glBegin(GL_TRIANGLE_FAN);
-        glVertex2f(position.x, position.y);
+        GUIRenderBuffer buffer = GLContext.getCurrent().getViewTools().getGuiRenderBuffer();
+        buffer.begin();
+        buffer.addVertex(position.x, position.y);
 
         for (int i = 0; i <= pieces; i++) {
-            glVertex2f(
+            buffer.addVertex(
                     (float) (position.x + (circle.radius * cos(i * twicePi / pieces))),
                     (float) (position.y + (circle.radius * sin(i * twicePi / pieces)))
             );
         }
-        glEnd();
+
+        buffer.draw(GL_TRIANGLE_FAN);
     }
 
     public static void drawRoundedHollowSquare(Rect rect, float radius) {
         float glRadius = min(rect.getWidth(), rect.getHeight()) / 2 * radius;
         int roundingPieces = (int) max(Math.ceil(glRadius / 2f), 2);
+        GUIRenderBuffer buffer = GLContext.getCurrent().getViewTools().getGuiRenderBuffer();
 
-        glBegin(GL_LINE_LOOP);
+        buffer.begin();
 
-        drawRoundedCorner(rect.getX(), rect.getY() + glRadius, 3 * PI / 2, glRadius, roundingPieces);
-        drawRoundedCorner(rect.getX() + rect.getWidth() - glRadius, rect.getY(), 0.0, glRadius, roundingPieces);
-        drawRoundedCorner(rect.getX() + rect.getWidth(), rect.getY() + rect.getHeight() - glRadius, PI / 2, glRadius, roundingPieces);
-        drawRoundedCorner(rect.getX() + glRadius, rect.getY() + rect.getHeight(), PI, glRadius, roundingPieces);
+        drawRoundedCorner(rect.getX(), rect.getY() + glRadius, 3 * PI / 2, glRadius, roundingPieces, buffer);
+        drawRoundedCorner(rect.getX() + rect.getWidth() - glRadius, rect.getY(), 0.0, glRadius, roundingPieces, buffer);
+        drawRoundedCorner(rect.getX() + rect.getWidth(), rect.getY() + rect.getHeight() - glRadius, PI / 2, glRadius, roundingPieces, buffer);
+        drawRoundedCorner(rect.getX() + glRadius, rect.getY() + rect.getHeight(), PI, glRadius, roundingPieces, buffer);
 
-        glEnd();
+        buffer.draw(GL_LINE_LOOP);
     }
 
     public static void drawRoundedSquare(Rect rect, float glRadius, int roundingPieces, boolean[] corners) {
-        glBegin(GL_POLYGON);
+        GUIRenderBuffer buffer = GLContext.getCurrent().getViewTools().getGuiRenderBuffer();
+        buffer.begin();
 
-        if (corners[0]) drawRoundedCorner(rect.getX(), rect.getY() + glRadius, 3 * PI / 2, glRadius, roundingPieces);
-        else glVertex2d(rect.getX(), rect.getY());
+        if (corners[0]) drawRoundedCorner(rect.getX(), rect.getY() + glRadius, 3 * PI / 2, glRadius, roundingPieces, buffer);
+        else buffer.addVertex(rect.getX(), rect.getY());
 
         if (corners[1])
-            drawRoundedCorner(rect.getX() + rect.getWidth() - glRadius, rect.getY(), 0.0, glRadius, roundingPieces);
-        else glVertex2d(rect.getX() + rect.getWidth(), rect.getY());
+            drawRoundedCorner(rect.getX() + rect.getWidth() - glRadius, rect.getY(), 0.0, glRadius, roundingPieces, buffer);
+        else buffer.addVertex(rect.getX() + rect.getWidth(), rect.getY());
 
         if (corners[2])
-            drawRoundedCorner(rect.getX() + rect.getWidth(), rect.getY() + rect.getHeight() - glRadius, PI / 2, glRadius, roundingPieces);
-        else glVertex2d(rect.getX() + rect.getWidth(), rect.getY() + rect.getHeight());
+            drawRoundedCorner(rect.getX() + rect.getWidth(), rect.getY() + rect.getHeight() - glRadius, PI / 2, glRadius, roundingPieces, buffer);
+        else buffer.addVertex(rect.getX() + rect.getWidth(), rect.getY() + rect.getHeight());
 
         if (corners[3])
-            drawRoundedCorner(rect.getX() + glRadius, rect.getY() + rect.getHeight(), PI, glRadius, roundingPieces);
-        else glVertex2d(rect.getX(), rect.getY() + rect.getHeight());
+            drawRoundedCorner(rect.getX() + glRadius, rect.getY() + rect.getHeight(), PI, glRadius, roundingPieces, buffer);
+        else buffer.addVertex(rect.getX(), rect.getY() + rect.getHeight());
 
-        glEnd();
+        buffer.draw(GL_POLYGON);
     }
 
     public static void drawRoundedSquare(Rect rect, float glRadius, int roundingPieces) {
@@ -132,7 +139,7 @@ public class GLFastTools {
         drawRoundedSquare(rect, glRadius, roundingPieces);
     }
 
-    private static void drawRoundedCorner(float x, float y, double sa, float r, int roundingPieces) {
+    private static void drawRoundedCorner(float x, float y, double sa, float r, int roundingPieces, GUIRenderBuffer buffer) {
         double cent_x = x + r * cos(sa + PI / 2);
         double cent_y = y + r * sin(sa + PI / 2);
 
@@ -140,10 +147,10 @@ public class GLFastTools {
         for (int i = 0; i <= n; i++) {
             double ang = sa + 1.5707963267948966 * (double) i / (double) n;
 
-            double next_x = cent_x + r * sin(ang);
-            double next_y = cent_y - r * cos(ang);
+            float next_x = (float)(cent_x + r * sin(ang));
+            float next_y = (float)(cent_y - r * cos(ang));
 
-            glVertex2d(next_x, next_y);
+            buffer.addVertex(next_x, next_y);
         }
     }
 

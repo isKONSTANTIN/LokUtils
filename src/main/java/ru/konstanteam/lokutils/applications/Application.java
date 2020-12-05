@@ -76,6 +76,7 @@ public class Application<T extends GUIController> implements Runnable {
                 uiController.update();
 
                 window.getGlContext().bind();
+                window.getGlContext().update();
 
                 window.getGlContext().getViewTools().setOrtho2DView(new Vector4f(0, resolution.getX(), resolution.getY(), 0));
 

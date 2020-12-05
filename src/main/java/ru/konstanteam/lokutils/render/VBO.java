@@ -23,7 +23,8 @@ public class VBO extends GLObject {
 
     @Override
     public void unbind() {
-        if (GLContext.getCurrent() == null) throw new RuntimeException("VBO cannot be binded without OpenGL context!");
+        if (!GLContext.check(GLcontext))
+            throw new RuntimeException("VBO cannot be unbinded without or another OpenGL context!");
 
         GL15C.glBindBuffer(GL15C.GL_ARRAY_BUFFER, 0);
     }
@@ -82,8 +83,8 @@ public class VBO extends GLObject {
     public void delete() {
         if (id == 0) return;
 
-        GLcontext = GLContext.getCurrent();
-        if (GLcontext == null) throw new RuntimeException("VBO cannot be deleted without OpenGL context!");
+        if (!GLContext.check(GLcontext))
+            throw new RuntimeException("VBO cannot be deleted without or another OpenGL context!");
 
         GL15.glDeleteBuffers(id);
         id = 0;

@@ -1,4 +1,4 @@
-package ru.konstanteam.lokutils.render;
+package ru.konstanteam.lokutils.render.shader;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.ARBFragmentShader;
@@ -8,6 +8,8 @@ import org.lwjgl.util.vector.*;
 import ru.konstanteam.lokutils.objects.Vector2i;
 import ru.konstanteam.lokutils.objects.Vector3i;
 import ru.konstanteam.lokutils.objects.Vector4i;
+import ru.konstanteam.lokutils.render.GLObject;
+import ru.konstanteam.lokutils.render.context.GLContext;
 
 import java.io.*;
 import java.nio.FloatBuffer;
@@ -16,15 +18,22 @@ import java.util.HashMap;
 
 import static org.lwjgl.opengl.GL20.*;
 
-public class Shader {
-
-    protected static Shader bindedShader;
-    protected int program;
+public class Shader extends GLObject {
     protected String vertPath;
     protected String fragPath;
-    HashMap<String, Integer> uniformsName = new HashMap<>();
+    protected HashMap<String, Integer> uniformsName = new HashMap<>();
 
-    public Shader(String vertPath, String fragPath) throws IOException {
+    protected Shader(String vertPath, String fragPath) throws IOException {
+        this.vertPath = vertPath;
+        this.fragPath = fragPath;
+        generate();
+    }
+
+    @Override
+    public void generate() throws IOException {
+        GLcontext = GLContext.getCurrent();
+        if (GLcontext == null) throw new RuntimeException("Shader cannot be created without OpenGL context!");
+
         int vertShader = loadShaderObject(vertPath, ARBVertexShader.GL_VERTEX_SHADER_ARB);
         int fragShader = loadShaderObject(fragPath, ARBFragmentShader.GL_FRAGMENT_SHADER_ARB);
         int program = ARBShaderObjects.glCreateProgramObjectARB();
@@ -35,114 +44,125 @@ public class Shader {
         ARBShaderObjects.glLinkProgramARB(program);
         ARBShaderObjects.glValidateProgramARB(program);
 
-        this.program = program;
-        this.vertPath = vertPath;
-        this.fragPath = fragPath;
+        this.id = program;
     }
 
+    @Override
+    public void delete() {
+        if (!GLContext.check(GLcontext))
+            throw new RuntimeException("Shader cannot be deleted without or another OpenGL context!");
+
+        ARBShaderObjects.glDeleteObjectARB(id);
+
+        id = 0;
+        vertPath = null;
+        fragPath = null;
+    }
+
+    @Override
     public void bind() {
-        ARBShaderObjects.glUseProgramObjectARB(program);
-        bindedShader = this;
+        if (!GLContext.check(GLcontext))
+            throw new RuntimeException("Shader cannot be binded without or another OpenGL context!");
+
+        ARBShaderObjects.glUseProgramObjectARB(id);
     }
 
+    @Override
     public void unbind() {
+        if (!GLContext.check(GLcontext))
+            throw new RuntimeException("Shader cannot be unbinded without or another OpenGL context!");
+
         ARBShaderObjects.glUseProgramObjectARB(0);
-        bindedShader = null;
     }
 
-    public Shader getBindedShader() {
-        return bindedShader;
+    protected int getProgram() {
+        return id;
     }
 
-    public int getProgram() {
-        return program;
-    }
-
-    public String getVertPath() {
+    protected String getVertPath() {
         return vertPath;
     }
 
-    public String getFragPath() {
+    protected String getFragPath() {
         return fragPath;
     }
 
     public boolean equals(Object obj) {
         Shader objs = (Shader) obj;
-        return objs.program == program;
+        return objs.id == id;
     }
 
-    public int getUniformLocationID(String name) {
-        if (!uniformsName.containsKey(name)) {
-            int id = glGetUniformLocation(program, name);
-            uniformsName.put(name, id);
-            return id;
-        } else {
+    protected int getUniformLocationID(String name) {
+        if (uniformsName.containsKey(name))
             return uniformsName.get(name);
-        }
+
+        int uid = glGetUniformLocation(id, name);
+        uniformsName.put(name, uid);
+        return uid;
     }
 
-    public void setUniformData(String uniformName, int data) {
+    protected void setUniformData(String uniformName, int data) {
         glUniform1i(getUniformLocationID(uniformName), data);
     }
 
-    public void setUniformData(String uniformName, boolean data) {
+    protected void setUniformData(String uniformName, boolean data) {
         glUniform1i(getUniformLocationID(uniformName), data ? 1 : 0);
     }
 
-    public void setUniformData(String uniformName, Vector2i data) {
+    protected void setUniformData(String uniformName, Vector2i data) {
         glUniform2i(getUniformLocationID(uniformName), data.getX(), data.getY());
     }
 
-    public void setUniformData(String uniformName, Vector3i data) {
+    protected void setUniformData(String uniformName, Vector3i data) {
         glUniform3i(getUniformLocationID(uniformName), data.getX(), data.getY(), data.getZ());
     }
 
-    public void setUniformData(String uniformName, Vector4i data) {
+    protected void setUniformData(String uniformName, Vector4i data) {
         glUniform4i(getUniformLocationID(uniformName), data.getX(), data.getY(), data.getZ(), data.getW());
     }
 
-    public void setUniformData(String uniformName, float data) {
+    protected void setUniformData(String uniformName, float data) {
         glUniform1f(getUniformLocationID(uniformName), data);
     }
 
-    public void setUniformData(String uniformName, Vector2f data) {
+    protected void setUniformData(String uniformName, Vector2f data) {
         glUniform2f(getUniformLocationID(uniformName), data.x, data.y);
     }
 
-    public void setUniformData(String uniformName, Vector3f data) {
+    protected void setUniformData(String uniformName, Vector3f data) {
         glUniform3f(getUniformLocationID(uniformName), data.x, data.y, data.z);
     }
 
-    public void setUniformData(String uniformName, Vector4f data) {
+    protected void setUniformData(String uniformName, Vector4f data) {
         glUniform4f(getUniformLocationID(uniformName), data.x, data.y, data.z, data.w);
     }
 
-    public void setUniformData(String uniformName, Matrix2f data) {
+    protected void setUniformData(String uniformName, Matrix2f data) {
         FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(8);
         data.store(matrixBuffer);
         matrixBuffer.flip();
         glUniformMatrix2fv(getUniformLocationID(uniformName), false, matrixBuffer);
     }
 
-    public void setUniformData(String uniformName, Matrix3f data) {
+    protected void setUniformData(String uniformName, Matrix3f data) {
         FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(12);
         data.store(matrixBuffer);
         matrixBuffer.flip();
         glUniformMatrix3fv(getUniformLocationID(uniformName), false, matrixBuffer);
     }
 
-    public void setUniformData(String uniformName, Matrix4f data) {
+    protected void setUniformData(String uniformName, Matrix4f data) {
         FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16);
         data.store(matrixBuffer);
         matrixBuffer.flip();
         glUniformMatrix4fv(getUniformLocationID(uniformName), false, matrixBuffer);
     }
 
-    private String getLogInfo(int obj) {
+    protected String getLogInfo(int obj) {
         return ARBShaderObjects.glGetInfoLogARB(obj, ARBShaderObjects.glGetObjectParameteriARB(obj, ARBShaderObjects.GL_OBJECT_INFO_LOG_LENGTH_ARB));
     }
 
-    private String readFileAsString(String filename) throws IOException {
+    protected String readFileAsString(String filename) throws IOException {
         StringBuilder source = new StringBuilder();
         InputStream in;
 
@@ -164,7 +184,7 @@ public class Shader {
         return source.toString();
     }
 
-    private int loadShaderObject(String filename, int shaderType) throws IOException, RuntimeException {
+    protected int loadShaderObject(String filename, int shaderType) throws IOException, RuntimeException {
         int shader = ARBShaderObjects.glCreateShaderObjectARB(shaderType);
 
         if (shader == 0)

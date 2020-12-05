@@ -11,6 +11,7 @@ import ru.konstanteam.lokutils.objects.Size;
 import ru.konstanteam.lokutils.render.Font;
 import ru.konstanteam.lokutils.render.context.GLContext;
 import ru.konstanteam.lokutils.render.tools.GLFastTools;
+import ru.konstanteam.lokutils.render.tools.GUIRenderBuffer;
 import ru.konstanteam.lokutils.tools.Action;
 
 import java.awt.*;
@@ -160,18 +161,20 @@ public class GUITextField extends GUIObject {
         if (getOwner().isFocused(this)) {
             glColor4f(cursorColor.red, cursorColor.green, cursorColor.blue, cursorColor.alpha);
 
+            GUIRenderBuffer buffer = GLContext.getCurrent().getViewTools().getGuiRenderBuffer();
+
             glDisable(GL_MULTISAMPLE);
-            glBegin(GL_LINES);
+            buffer.begin();
 
             float pointerPos = this.pointerPos;
 
             if (pointerPos - translate <= 0)
                 pointerPos += Math.abs(pointerPos - translate) + 1;
 
-            glVertex2d(Math.max(pointerPos, 1), 0);
-            glVertex2d(Math.max(pointerPos, 1), textSize.height);
+            buffer.addVertex(Math.max(pointerPos, 1), 0);
+            buffer.addVertex(Math.max(pointerPos, 1), textSize.height);
 
-            glEnd();
+            buffer.draw(GL_LINES);
             glEnable(GL_MULTISAMPLE);
         }
 
