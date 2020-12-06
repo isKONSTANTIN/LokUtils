@@ -138,7 +138,7 @@ public class GLFastTools {
         drawRoundedSquare(rect, glRadius, roundingPieces);
     }
 
-    private static void drawRoundedCorner(float x, float y, double sa, float r, int roundingPieces, GUIRenderBuffer buffer) {
+    public static void drawRoundedCorner(float x, float y, double sa, float r, int roundingPieces, GUIRenderBuffer buffer) {
         double cent_x = x + r * cos(sa + PI / 2);
         double cent_y = y + r * sin(sa + PI / 2);
 

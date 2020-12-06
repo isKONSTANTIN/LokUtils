@@ -7,5 +7,5 @@ uniform vec4 color;
 uniform bool useTexture;
 
 void main() {
-    gl_FragColor = useTexture ? texture2D(texture, uv) : color;
+    gl_FragColor = useTexture ?  texture2D(texture, uv) : color;
 }

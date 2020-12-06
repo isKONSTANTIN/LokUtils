@@ -7,6 +7,8 @@ import ru.konstanteam.lokutils.objects.Color;
 import ru.konstanteam.lokutils.objects.Rect;
 import ru.konstanteam.lokutils.objects.Size;
 import ru.konstanteam.lokutils.objects.Vector2i;
+import ru.konstanteam.lokutils.render.context.GLContext;
+import ru.konstanteam.lokutils.render.tools.GUIRenderBuffer;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -104,8 +106,9 @@ public class Font {
         float drawX = area.getX();
         float drawY = area.getY();
 
-        texture.bind();
-        glBegin(GL_QUADS);
+        GUIRenderBuffer buffer = GLContext.getCurrent().getViewTools().getGuiRenderBuffer();
+
+        buffer.begin(texture);
 
         for (int i = 0; i < text.length(); i++) {
             char ch = text.charAt(i);
@@ -143,24 +146,24 @@ public class Font {
 
             glColor4d(color.red, color.green, color.blue, color.alpha);
 
-            glTexCoord2f(glTexX, glTexHeight);
-            glVertex2f(drawX, drawY);
+            buffer.addRawTexCoord(glTexX, glTexHeight);
+            buffer.addVertex(drawX, drawY);
 
-            glTexCoord2f(glTexWidth, glTexHeight);
-            glVertex2f(width, drawY);
+            buffer.addRawTexCoord(glTexWidth, glTexHeight);
+            buffer.addVertex(width, drawY);
 
-            glTexCoord2f(glTexWidth, glTexY);
-            glVertex2f(width, height);
+            buffer.addRawTexCoord(glTexWidth, glTexY);
+            buffer.addVertex(width, height);
 
-            glTexCoord2f(glTexX, glTexY);
-            glVertex2f(drawX, height);
+            buffer.addRawTexCoord(glTexX, glTexY);
+            buffer.addVertex(drawX, height);
 
             spaceSize += g.width;
             spaceSize /= 2f;
             drawX += g.width;
         }
-        glEnd();
-        GL11.glBindTexture(GL_TEXTURE_2D, 0);
+
+        buffer.draw(GL_QUADS);
     }
 
     public Font load() {

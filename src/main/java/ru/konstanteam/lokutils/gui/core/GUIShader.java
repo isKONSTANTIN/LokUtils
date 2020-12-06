@@ -25,8 +25,8 @@ public class GUIShader extends Shader {
 
     public GUIShader() throws IOException {
         this(
-                "#/ru/konstanteam/lokutils/resources/shaders/gui/vert.glsl",
-                "#/ru/konstanteam/lokutils/resources/shaders/gui/frag.glsl"
+                "#/ru/konstanteam/lokutils/resources/shaders/gui/default/vert.glsl",
+                "#/ru/konstanteam/lokutils/resources/shaders/gui/default/frag.glsl"
         );
     }
 
