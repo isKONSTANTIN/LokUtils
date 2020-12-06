@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 
 import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL13C.GL_TEXTURE0;
+import static org.lwjgl.opengl.GL13C.glActiveTexture;
 
 public class Texture extends GLObject {
     protected String path;
@@ -103,13 +105,20 @@ public class Texture extends GLObject {
         id = 0;
     }
 
-    public void bind() {
+    public void bind(int position) {
         if (!GLContext.check(GLcontext))
             throw new RuntimeException("Texture cannot be binded without or another OpenGL context!");
 
+        glActiveTexture(GL_TEXTURE0 + position);
         glBindTexture(GL_TEXTURE_2D, id);
     }
 
+    @Override
+    public void bind() {
+        bind(0);
+    }
+
+    @Override
     public void unbind() {
         if (GLContext.getCurrent() == null)
             throw new RuntimeException("Texture cannot be unbinded without OpenGL context!");

@@ -29,8 +29,6 @@ public class GUIImage extends GUIObject {
     public void render() {
         if (texture == null) return;
 
-        texture.bind();
-        GLFastTools.drawSquare(new Rect(Point.ZERO, size().get()));
-        texture.unbind();
+        GLFastTools.drawTexturedSquare(new Rect(Point.ZERO, size().get()), texture);
     }
 }

@@ -3,6 +3,7 @@ package ru.konstanteam.lokutils.render.tools;
 import ru.konstanteam.lokutils.objects.Circle;
 import ru.konstanteam.lokutils.objects.Point;
 import ru.konstanteam.lokutils.objects.Rect;
+import ru.konstanteam.lokutils.render.Texture;
 import ru.konstanteam.lokutils.render.context.GLContext;
 
 import static java.lang.Math.*;
@@ -23,30 +24,28 @@ public class GLFastTools {
             0, 0,
     };
 
-    public static void drawSquare(Rect rect, float[] texCoords) {
-        glBegin(GL_POLYGON);
+    public static void drawTexturedSquare(Rect rect, Texture texture, float[] texCoords) {
+        GUIRenderBuffer buffer = GLContext.getCurrent().getViewTools().getGuiRenderBuffer();
 
-        glTexCoord2f(texCoords[0], texCoords[1]);
-        glVertex3f(rect.getX(), rect.getY(), 0);
+        buffer.begin(texture);
 
-        glTexCoord2f(texCoords[2], texCoords[3]);
-        glVertex3f(rect.getWidth() + rect.getX(), rect.getY(), 0);
+        buffer.addRawTexCoord(texCoords[0], texCoords[1]);
+        buffer.addVertex(rect.getX(), rect.getY());
 
-        glTexCoord2f(texCoords[4], texCoords[5]);
-        glVertex3f(rect.getWidth() + rect.getX(), rect.getHeight() + rect.getY(), 0);
+        buffer.addRawTexCoord(texCoords[2], texCoords[3]);
+        buffer.addVertex(rect.getWidth() + rect.getX(), rect.getY());
 
-        glTexCoord2f(texCoords[6], texCoords[7]);
-        glVertex3f(rect.getX(), rect.getHeight() + rect.getY(), 0);
+        buffer.addRawTexCoord(texCoords[4], texCoords[5]);
+        buffer.addVertex(rect.getWidth() + rect.getX(), rect.getHeight() + rect.getY());
 
-        glEnd();
+        buffer.addRawTexCoord(texCoords[6], texCoords[7]);
+        buffer.addVertex(rect.getX(), rect.getHeight() + rect.getY());
+
+        buffer.draw(GL_POLYGON);
     }
 
-    public static void drawSquare(Rect rect) {
-        drawSquare(rect, defaultTexCoords);
-    }
-
-    public static void drawInvertedSquare(Rect rect) {
-        drawSquare(rect, invertedTexCoords);
+    public static void drawTexturedSquare(Rect rect, Texture texture) {
+        drawTexturedSquare(rect, texture, defaultTexCoords);
     }
 
     public static void drawHollowSquare(Rect rect) {

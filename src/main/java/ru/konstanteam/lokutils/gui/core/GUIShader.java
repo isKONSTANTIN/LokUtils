@@ -45,4 +45,8 @@ public class GUIShader extends Shader {
     public void setColor(Color color){
         setUniformData("color", new Vector4f(color.red, color.green, color.blue, color.alpha));
     }
+
+    public void setUseTexture(boolean status){
+        setUniformData("useTexture", status);
+    }
 }

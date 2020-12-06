@@ -158,6 +158,10 @@ public class Shader extends GLObject {
         glUniformMatrix4fv(getUniformLocationID(uniformName), false, matrixBuffer);
     }
 
+    protected void setBindedTexturePosition(String uniformName, int position){
+        setUniformData(uniformName, position);
+    }
+
     protected String getLogInfo(int obj) {
         return ARBShaderObjects.glGetInfoLogARB(obj, ARBShaderObjects.glGetObjectParameteriARB(obj, ARBShaderObjects.GL_OBJECT_INFO_LOG_LENGTH_ARB));
     }
