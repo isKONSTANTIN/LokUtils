@@ -174,6 +174,7 @@ public class GUITextField extends GUIObject {
             buffer.addVertex(Math.max(pointerPos, 1), 0);
             buffer.addVertex(Math.max(pointerPos, 1), textSize.height);
 
+
             buffer.draw(GL_LINES);
             glEnable(GL_MULTISAMPLE);
         }

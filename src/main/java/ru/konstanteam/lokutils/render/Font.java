@@ -144,8 +144,6 @@ public class Font {
             float glTexWidth = (g.x + g.width) / (float) texture.getSize().getX();
             float glTexHeight = (g.y + g.height) / (float) texture.getSize().getY();
 
-            glColor4d(color.red, color.green, color.blue, color.alpha);
-
             buffer.addRawTexCoord(glTexX, glTexHeight);
             buffer.addVertex(drawX, drawY);
 
@@ -163,7 +161,7 @@ public class Font {
             drawX += g.width;
         }
 
-        buffer.draw(GL_QUADS);
+        buffer.draw(GL_QUADS, color);
     }
 
     public Font load() {

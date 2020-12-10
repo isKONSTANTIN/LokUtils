@@ -43,6 +43,9 @@ public class GUIRenderBuffer {
             this.textureVbo = new VBO();
 
         this.texture = texture;
+
+        this.vertexBuffer.clear();
+        this.texBuffer.clear();
     }
 
     public void begin(){
@@ -119,8 +122,8 @@ public class GUIRenderBuffer {
     public void draw(int type, Color color, GUIShader shader){
         boolean textureActive = texture != null && texBuffer.size() > 0;
 
-        vertexBuffer.add(vertexBuffer.get(0));
-        vertexBuffer.add(vertexBuffer.get(1));
+        if (vertexBuffer.size() == 0)
+            return;
 
         vertexVbo.putData(vertexBuffer);
         vertexVbo.bind();
@@ -152,18 +155,13 @@ public class GUIRenderBuffer {
         }else
             shader.setColor(color);
 
-        glDrawArrays(type, 0, vertexVbo.getSize());
+        glDrawArrays(type, 0, vertexVbo.getSize() / 2);
 
         GL20C.glDisableVertexAttribArray(0);
         GL20C.glDisableVertexAttribArray(1);
 
         shader.unbind();
         if (textureActive) texture.unbind();
-
-        vertexBuffer.clear();
-        texBuffer.clear();
-
-        this.texture = null;
     }
 
     public void draw(int type, Color color){

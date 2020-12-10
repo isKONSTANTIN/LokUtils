@@ -41,7 +41,7 @@ public class VBO extends GLObject {
         generate();
 
         bind();
-        GL15.glBufferData(GL15.GL_ARRAY_BUFFER, points, GL15.GL_DYNAMIC_DRAW);
+        GL15.glBufferData(GL15.GL_ARRAY_BUFFER, points, GL15.GL_STATIC_DRAW);
         unbind();
 
         size = points.length;

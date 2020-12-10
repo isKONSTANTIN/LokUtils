@@ -1,6 +1,7 @@
 package ru.konstanteam.lokutils.gui.objects;
 
 import ru.konstanteam.lokutils.gui.GUIObject;
+import ru.konstanteam.lokutils.gui.GUIStyle;
 import ru.konstanteam.lokutils.objects.Color;
 import ru.konstanteam.lokutils.objects.Point;
 import ru.konstanteam.lokutils.objects.Rect;
@@ -14,16 +15,20 @@ public class GUIText extends GUIObject {
     protected Font lastFont;
 
     public GUIText() {
-
+        updateSize();
     }
 
     public String getText() {
         return text;
     }
 
+    public void updateSize(){
+        minimumSize().set(getStyle().getFont(styleFontName).getSize(text, null));
+    }
+
     public GUIText setText(String text) {
         this.text = text;
-        minimumSize().set(getStyle().getFont(styleFontName).getSize(text, null));
+        updateSize();
 
         return this;
     }
@@ -34,6 +39,7 @@ public class GUIText extends GUIObject {
 
     public GUIText setStyleFontName(String styleFontName) {
         this.styleFontName = styleFontName;
+        updateSize();
 
         return this;
     }
@@ -44,6 +50,14 @@ public class GUIText extends GUIObject {
 
     public Font getFont() {
         return lastFont;
+    }
+
+    @Override
+    public GUIObject setStyle(GUIStyle style) {
+        super.setStyle(style);
+
+        updateSize();
+        return this;
     }
 
     @Override

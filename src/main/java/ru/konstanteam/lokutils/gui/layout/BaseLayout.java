@@ -30,9 +30,15 @@ public class BaseLayout extends ObjectFreeLayout {
         float maxHeightLine = 0;
         float maxX = 0;
 
+        float gap = this.gap;
+        int i = 0;
+
         Size mySize = size.get();
 
         for (GUIObject object : objects) {
+            if (i == objects.size() - 1)
+                gap = 0;
+
             Size objectSize = object.size().get().offset(gap, gap);
 
             if (filledX + objectSize.width > mySize.width) {
@@ -44,9 +50,12 @@ public class BaseLayout extends ObjectFreeLayout {
             positions.put(object, new Point(filledX, filledY));
 
             filledX += objectSize.width;
+
             maxX = Math.max(maxX, filledX);
 
             maxHeightLine = Math.max(maxHeightLine, objectSize.height);
+
+            i++;
         }
         filledY += maxHeightLine;
 
