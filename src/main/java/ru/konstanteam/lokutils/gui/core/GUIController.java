@@ -25,6 +25,7 @@ public abstract class GUIController {
 
     protected Event checkEvent() {
         Mouse mouse = window.getInputs().mouse;
+
         Event event = null;
 
         Point mousePosition = mouse.getMousePosition();
@@ -51,6 +52,7 @@ public abstract class GUIController {
 
         lastEvent = event;
         lastMousePosition = mousePosition;
+
         return event;
     }
 

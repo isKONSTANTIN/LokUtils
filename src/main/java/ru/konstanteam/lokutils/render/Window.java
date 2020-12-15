@@ -52,12 +52,16 @@ public class Window {
     }
 
     public void update() {
-        glfwSwapBuffers(window);
-
-        glfwPollEvents();
         inputs.update();
         Vector2i resolution = getResolution();
         glViewport(0, 0, resolution.getX(), resolution.getY());
+
+        glContext.update();
+    }
+
+    public void swapBuffer() {
+        glfwSwapBuffers(window);
+        glfwPollEvents();
     }
 
     public Window create() {

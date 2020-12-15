@@ -70,20 +70,17 @@ public class Application<T extends GUIController> implements Runnable {
 
             window.show();
             while (opened) {
-                Vector2i resolution = window.getResolution();
+                window.getGlContext().bind();
+                window.getGlContext().update();
+                window.update();
 
                 updateEvent();
                 uiController.update();
 
-                window.getGlContext().bind();
-                window.getGlContext().update();
-
-                window.getGlContext().getViewTools().setOrtho2DView(new Vector4f(0, resolution.getX(), resolution.getY(), 0));
-
                 renderEvent();
                 uiController.render();
-                window.update();
 
+                window.swapBuffer();
                 window.getGlContext().unbind();
             }
 

@@ -9,23 +9,24 @@ import ru.konstanteam.lokutils.gui.objects.*;
 import ru.konstanteam.lokutils.gui.objects.button.GUIButton;
 import ru.konstanteam.lokutils.gui.objects.margin.GUIMargin;
 import ru.konstanteam.lokutils.objects.Color;
-import ru.konstanteam.lokutils.objects.Point;
-import ru.konstanteam.lokutils.objects.Rect;
-import ru.konstanteam.lokutils.objects.Size;
 import ru.konstanteam.lokutils.render.Font;
-import ru.konstanteam.lokutils.render.context.GLContext;
-import ru.konstanteam.lokutils.render.tools.GLFastTools;
-import ru.konstanteam.lokutils.render.tools.GUIRenderBuffer;
+import ru.konstanteam.lokutils.render.Window;
+import ru.konstanteam.lokutils.testing.shader.ShaderTest;
 
 import static org.lwjgl.opengl.GL11.*;
 
 public class Main extends Application<GUIMainCanvasSystem> {
-    public Main() {
-        super(new GUIMainCanvasSystem());
-    }
+
 
     public static void main(String[] args) {
-        new Main().open();
+        if (args.length < 1)
+            new Main().open();
+        else
+            new ShaderTest().open();
+    }
+
+    public Main() {
+        super(new GUIMainCanvasSystem(), new Window());
     }
 
     public GUIObject generateModernField(String tip, GUIAbstractLayout sizeOwner) {
