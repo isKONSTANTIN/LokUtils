@@ -13,12 +13,14 @@ import ru.konstanteam.lokutils.render.VBO;
 import java.util.ArrayList;
 
 import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL31.glDrawArraysInstanced;
 
 public class GUIRenderBuffer {
     protected VBO vertexVbo;
     protected VBO textureVbo;
     protected GUIShader shader;
     protected Texture texture;
+    protected boolean ended;
 
     protected ArrayList<Float> vertexBuffer = new ArrayList<>();
     protected ArrayList<Float> texBuffer = new ArrayList<>();
@@ -46,6 +48,8 @@ public class GUIRenderBuffer {
 
         this.vertexBuffer.clear();
         this.texBuffer.clear();
+
+        this.ended = false;
     }
 
     public void begin(){
@@ -119,48 +123,52 @@ public class GUIRenderBuffer {
         addTexCoord(rect.getBottomLeftPoint());
     }
 
-    public void draw(int type, Color color, GUIShader shader){
-        boolean textureActive = texture != null && texBuffer.size() > 0;
+    public void end(){
+        ended = true;
 
         if (vertexBuffer.size() == 0)
             return;
 
-        vertexVbo.putData(vertexBuffer);
-        vertexVbo.bind();
+        boolean textureActive = texture != null && texBuffer.size() > 0;
 
-        GL20C.glEnableVertexAttribArray(0);
-        GL20C.glVertexAttribPointer(0, 2, GL_FLOAT, false, 0, 0);
+        vertexVbo.putData(vertexBuffer);
+
+        if (textureActive)
+            textureVbo.putData(texBuffer);
+    }
+
+    public void draw(int type, Color color, GUIShader shader){
+        if (vertexBuffer.size() == 0)
+            return;
+
+        boolean textureActive = texture != null && texBuffer.size() > 0;
+
+        if (!ended)
+            end();
+
+        shader.bind();
+        shader.setVertexData(vertexVbo);
+        shader.setTranslate(GLContext.getCurrent().getViewTools().getCurrentTranslate(), !textureActive);
+        shader.setUseTexture(textureActive);
 
         if (textureActive) {
             texture.bind();
-
-            textureVbo.putData(texBuffer);
-            textureVbo.bind();
-
-            GL20C.glEnableVertexAttribArray(1);
-            GL20C.glVertexAttribPointer(1, 2, GL_FLOAT, false, 0, 0);
-
-            textureVbo.unbind();
+            shader.setUVData(textureVbo);
         }
 
-        shader.bind();
-        shader.setTranslate(GLContext.getCurrent().getViewTools().getCurrentTranslate());
-        shader.setUseTexture(textureActive);
-
-        if (color == null){
+        if (color == null && texture == null){
             float[] currentColor = new float[4];
 
             glGetFloatv(GL_CURRENT_COLOR, currentColor);
             shader.setColor(new Color(currentColor[0], currentColor[1], currentColor[2], currentColor[3]));
-        }else
-            shader.setColor(color);
+        }else {
+            shader.setColor(color != null ? color : Color.WHITE);
+        }
 
         glDrawArrays(type, 0, vertexVbo.getSize() / 2);
 
-        GL20C.glDisableVertexAttribArray(0);
-        GL20C.glDisableVertexAttribArray(1);
-
         shader.unbind();
+
         if (textureActive) texture.unbind();
     }
 

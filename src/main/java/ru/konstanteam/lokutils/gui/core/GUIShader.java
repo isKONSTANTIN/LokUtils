@@ -5,6 +5,7 @@ import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector4f;
 import ru.konstanteam.lokutils.objects.Color;
 import ru.konstanteam.lokutils.objects.Size;
+import ru.konstanteam.lokutils.render.VBO;
 import ru.konstanteam.lokutils.render.shader.Shader;
 import ru.konstanteam.lokutils.render.tools.MatrixTools;
 import ru.konstanteam.lokutils.render.tools.TranslateState;
@@ -18,7 +19,7 @@ public class GUIShader extends Shader {
         super(vertPath, fragPath);
 
         bind();
-        setTranslate(TranslateState.ZERO);
+        setTranslate(TranslateState.ZERO, true);
         setColor(Color.BLACK);
         unbind();
     }
@@ -38,8 +39,16 @@ public class GUIShader extends Shader {
         unbind();
     }
 
-    public void setTranslate(TranslateState translate){
-        setUniformData("view_matrix", ((Matrix4f)new Matrix4f().setIdentity()).translate(new Vector2f(-windowResolution.width / 2f + translate.global.x, -windowResolution.height / 2f + translate.global.y)));
+    public void setTranslate(TranslateState translate, boolean canSmooth){
+        float x = translate.global.x;
+        float y = translate.global.y;
+
+        setUniformData("view_matrix", ((Matrix4f)new Matrix4f().setIdentity()).translate(
+                new Vector2f(
+                        (canSmooth ? x : (int)x) -windowResolution.width / 2,
+                        (canSmooth ? y : (int)y) -windowResolution.height / 2
+                )
+        ));
     }
 
     public void setColor(Color color){
@@ -48,5 +57,13 @@ public class GUIShader extends Shader {
 
     public void setUseTexture(boolean status){
         setUniformData("useTexture", status);
+    }
+
+    public void setVertexData(VBO data){
+        setAttributeData("vertex", data, 2);
+    }
+
+    public void setUVData(VBO data){
+        setAttributeData("frag_uv", data, 2);
     }
 }

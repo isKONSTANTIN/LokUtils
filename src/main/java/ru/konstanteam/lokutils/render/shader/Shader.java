@@ -4,11 +4,13 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.ARBFragmentShader;
 import org.lwjgl.opengl.ARBShaderObjects;
 import org.lwjgl.opengl.ARBVertexShader;
+import org.lwjgl.opengl.GL20C;
 import org.lwjgl.util.vector.*;
 import ru.konstanteam.lokutils.objects.Vector2i;
 import ru.konstanteam.lokutils.objects.Vector3i;
 import ru.konstanteam.lokutils.objects.Vector4i;
 import ru.konstanteam.lokutils.render.GLObject;
+import ru.konstanteam.lokutils.render.VBO;
 import ru.konstanteam.lokutils.render.context.GLContext;
 
 import java.io.*;
@@ -21,7 +23,8 @@ import static org.lwjgl.opengl.GL20.*;
 public class Shader extends GLObject {
     protected String vertPath;
     protected String fragPath;
-    protected HashMap<String, Integer> uniformsName = new HashMap<>();
+    protected HashMap<String, Integer> uniformsNames = new HashMap<>();
+    protected HashMap<String, Integer> attributesNames = new HashMap<>();
 
     protected Shader(String vertPath, String fragPath) throws IOException {
         this.vertPath = vertPath;
@@ -93,12 +96,30 @@ public class Shader extends GLObject {
     }
 
     protected int getUniformLocationID(String name) {
-        if (uniformsName.containsKey(name))
-            return uniformsName.get(name);
+        if (uniformsNames.containsKey(name))
+            return uniformsNames.get(name);
 
         int uid = glGetUniformLocation(id, name);
-        uniformsName.put(name, uid);
+        uniformsNames.put(name, uid);
         return uid;
+    }
+
+    protected int getAttributeLocationID(String name) {
+        if (attributesNames.containsKey(name))
+            return attributesNames.get(name);
+
+        int uid = glGetAttribLocation(id, name);
+        attributesNames.put(name, uid);
+        return uid;
+    }
+
+    protected void setAttributeData(String attributeName, VBO data, int size){
+        int attributeID = getAttributeLocationID(attributeName);
+
+        data.bind();
+        GL20C.glEnableVertexAttribArray(attributeID);
+        GL20C.glVertexAttribPointer(attributeID, size, GL_FLOAT, false, 0, 0);
+        data.unbind();
     }
 
     protected void setUniformData(String uniformName, int data) {

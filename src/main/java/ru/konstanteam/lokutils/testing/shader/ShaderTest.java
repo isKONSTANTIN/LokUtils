@@ -8,6 +8,7 @@ import ru.konstanteam.lokutils.gui.GUIStyle;
 import ru.konstanteam.lokutils.gui.core.GUIShader;
 import ru.konstanteam.lokutils.gui.core.maincanvas.GUIMainCanvasSystem;
 import ru.konstanteam.lokutils.gui.eventsystem.events.MouseMoveEvent;
+import ru.konstanteam.lokutils.gui.eventsystem.events.MouseScrollEvent;
 import ru.konstanteam.lokutils.gui.layout.*;
 import ru.konstanteam.lokutils.gui.objects.*;
 import ru.konstanteam.lokutils.gui.objects.button.GUIButton;
@@ -30,7 +31,7 @@ public class ShaderTest extends Application<GUIMainCanvasSystem> {
     MarbleShader shader;
 
     public ShaderTest() {
-        super(new GUIMainCanvasSystem(), new Window().setDecorated(false).setHint(GLFW_TRANSPARENT_FRAMEBUFFER, 1));
+        super(new GUIMainCanvasSystem(), new Window().setResizable(true).setHint(GLFW_TRANSPARENT_FRAMEBUFFER, 1));
     }
 
     @Override
@@ -51,17 +52,18 @@ public class ShaderTest extends Application<GUIMainCanvasSystem> {
 
     @Override
     public void initEvent() {
-        GUIButton exitButton = new GUIButton().setAction(this::close);
-        exitButton.getText().setText("X");
-        exitButton.size().set(new Size(25,25));
-
-        uiController.getLayout().addObject(exitButton, Alignment.TOP_RIGHT);
+        window.setWindowCloseCallback((e) -> this.close());
 
         uiController.getLayout().getCustomersContainer().setCustomer(MouseMoveEvent.class, event -> {
             Point delta = event.lastPosition.relativeTo(event.endPosition);
 
             shader.addForce(new Vector2f(delta.x, delta.y), 0.4f);
         });
+
+        uiController.getLayout().getCustomersContainer().setCustomer(MouseScrollEvent.class, event -> {
+            shader.addZoomForce(event.scrollDelta.y / 20f);
+        });
+
         try {
             shader = new MarbleShader();
         } catch (IOException e) {
@@ -75,6 +77,8 @@ class MarbleShader extends GUIShader {
 
     protected Vector2f rotation = new Vector2f();
     protected Vector2f movement = new Vector2f();
+    protected float zoom = 1.3f;
+    protected float zoomMovement;
 
     public MarbleShader() throws IOException {
         super("#/ru/konstanteam/lokutils/resources/shaders/testing/vert.glsl", "#/ru/konstanteam/lokutils/resources/shaders/testing/frag.glsl");
@@ -89,6 +93,10 @@ class MarbleShader extends GUIShader {
         addForce(direction, 1);
     }
 
+    public void addZoomForce(float strength){
+        zoomMovement += strength;
+    }
+
     @Override
     public void update(Size windowResolution) {
         super.update(windowResolution);
@@ -99,9 +107,16 @@ class MarbleShader extends GUIShader {
         movement.x /= 1.2f;
         movement.y /= 1.2f;
 
+        zoom += zoomMovement;
+        zoom = Math.max(zoom, 0.4f);
+
+        zoomMovement /= 1.1f;
+
         bind();
         setUniformData("time", System.nanoTime() / 1000000000f);
         setUniformData("iMouse", new Vector3f(rotation.x, rotation.y, 1));
+        setUniformData("zoom", zoom);
+        setUniformData("iResolution", new Vector2f(windowResolution.width, windowResolution.height));
         unbind();
     }
 }

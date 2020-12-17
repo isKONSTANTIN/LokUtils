@@ -11,8 +11,8 @@ uniform bool useTexture;
 
 uniform float time;
 uniform vec3 iMouse;
-
-float zoom=1.3f;
+uniform float zoom=1.3f;
+uniform vec2 iResolution;
 
 vec2 cmul( vec2 a, vec2 b )  { return vec2( a.x*b.x - a.y*b.y, a.x*b.y + a.y*b.x ); }
 vec2 csqr( vec2 a )  { return vec2( a.x*a.x - a.y*a.y, 2.*a.x*a.y  ); }
@@ -33,7 +33,6 @@ vec2 iSphere( in vec3 ro, in vec3 rd, in vec4 sph )//from iq
 }
 
 float map(in vec3 p) {
-
     float res = 0.;
 
     vec3 c = p;
@@ -42,8 +41,8 @@ float map(in vec3 p) {
         p.yz= csqr(p.yz);
         p=p.zxy;
         res += exp((-19. + ((sin(time) + 1.5f) / 2f)) * abs(dot(p,c)));
-
     }
+
     return res/2.;
 }
 
@@ -69,7 +68,6 @@ vec3 raymarch( in vec3 ro, vec3 rd, vec2 tminmax )
 }
 
 void main() {
-    vec2 iResolution = vec2(512, 512);
     vec2 q = gl_FragCoord.xy / iResolution;
     vec2 p = -1.0 + 2.0 * q;
     p.x *= iResolution.x/iResolution.y;

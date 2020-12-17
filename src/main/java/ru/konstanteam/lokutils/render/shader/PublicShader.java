@@ -1,13 +1,11 @@
 package ru.konstanteam.lokutils.render.shader;
 
-import org.lwjgl.BufferUtils;
 import org.lwjgl.util.vector.*;
 import ru.konstanteam.lokutils.objects.Vector2i;
 import ru.konstanteam.lokutils.objects.Vector3i;
 import ru.konstanteam.lokutils.objects.Vector4i;
 
 import java.io.IOException;
-import java.nio.FloatBuffer;
 
 import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL20.glUniformMatrix4fv;
@@ -30,11 +28,11 @@ public class PublicShader extends Shader {
     }
 
     public int getUniformLocationID(String name) {
-        if (uniformsName.containsKey(name))
-            return uniformsName.get(name);
+        if (uniformsNames.containsKey(name))
+            return uniformsNames.get(name);
 
         int uid = glGetUniformLocation(id, name);
-        uniformsName.put(name, uid);
+        uniformsNames.put(name, uid);
         return uid;
     }
 

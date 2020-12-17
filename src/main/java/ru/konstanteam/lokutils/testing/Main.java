@@ -16,8 +16,6 @@ import ru.konstanteam.lokutils.testing.shader.ShaderTest;
 import static org.lwjgl.opengl.GL11.*;
 
 public class Main extends Application<GUIMainCanvasSystem> {
-
-
     public static void main(String[] args) {
         if (args.length < 1)
             new Main().open();

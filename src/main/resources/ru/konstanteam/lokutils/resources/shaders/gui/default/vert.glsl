@@ -4,8 +4,8 @@
 uniform mat4 projection_matrix;
 uniform mat4 view_matrix;
 
-layout(location = 0) in vec2 vertex;
-layout(location = 1) in vec2 frag_uv;
+in vec2 vertex;
+in vec2 frag_uv;
 
 out vec2 uv;
 
