@@ -21,6 +21,7 @@ public class GUIStyle {
                 new GUIStyle()
                         .setFont("default", new Font().load())
                         .setFont("windowTitle", new Font().load(new java.awt.Font("Aria", java.awt.Font.PLAIN, 10)))
+                        .setFont("textFieldTitle", new Font().load(new java.awt.Font("TimesRomans", java.awt.Font.PLAIN, 11)))
 
                         .setColor("background", new Color(0.15f, 0.15f, 0.15f, 0.8f))
                         .setColor("brightBackground", new Color(0.2f, 0.2f, 0.2f, 0.8f))

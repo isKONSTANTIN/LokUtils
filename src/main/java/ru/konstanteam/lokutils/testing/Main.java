@@ -9,6 +9,7 @@ import ru.konstanteam.lokutils.gui.objects.*;
 import ru.konstanteam.lokutils.gui.objects.button.GUIButton;
 import ru.konstanteam.lokutils.gui.objects.margin.GUIMargin;
 import ru.konstanteam.lokutils.objects.Color;
+import ru.konstanteam.lokutils.objects.Size;
 import ru.konstanteam.lokutils.render.Font;
 import ru.konstanteam.lokutils.render.Window;
 import ru.konstanteam.lokutils.testing.shader.ShaderTest;
@@ -25,20 +26,6 @@ public class Main extends Application<GUIMainCanvasSystem> {
 
     public Main() {
         super(new GUIMainCanvasSystem(), new Window());
-    }
-
-    public GUIObject generateModernField(String tip, GUIAbstractLayout sizeOwner) {
-        BaseLayout layout = new BaseLayout();
-        layout.setGap(1);
-
-        layout.addObject(new GUIText().setText(tip).setStyleFontName("tip font"));
-
-        GUITextField field = new GUITextField();
-        field.size().set(() -> sizeOwner.size().get().setHeight(24f));
-        layout.size().set(() -> field.size().get().setHeight(layout.minimumSize().get().height));
-        layout.addObject(field);
-
-        return layout;
     }
 
     @Override
@@ -65,8 +52,14 @@ public class Main extends Application<GUIMainCanvasSystem> {
         separate.setLineSizePercent(1.2f);
         layout.addObject(separate);
 
-        layout.addObject(generateModernField("Username:", layout));
-        layout.addObject(generateModernField("Password:", layout));
+        GUITitledTextField usernameField = new GUITitledTextField("Username:");
+        float initHeight = usernameField.size().get().height;
+        usernameField.size().set(() -> layout.size().get().setHeight(initHeight));
+        layout.addObject(usernameField);
+
+        GUITitledTextField passField = new GUITitledTextField("Password:");
+        passField.size().set(() -> layout.size().get().setHeight(initHeight));
+        layout.addObject(passField);
 
         layout.addObject(new GUILineSpace().setHeight(3));
 
