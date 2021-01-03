@@ -40,7 +40,7 @@ public class Application<T extends GUIController> implements Runnable {
     }
 
     public void renderEvent() {
-        glClearColor(0.6f, 0.6f, 0.6f, 1);
+        glClearColor(0.9f, 0.9f, 0.9f, 1);
         glClear(GL_COLOR_BUFFER_BIT);
     }
 

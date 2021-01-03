@@ -17,7 +17,7 @@ public class GUISlider extends GUIObject {
 
     public GUISlider() {
         this.head = new SliderHead(this);
-        this.head.size().set(() -> size.get().setWidth(0));
+        this.head.size().set(() -> new Size(0, size.get().height / 1.5f));
 
         customersContainer.setCustomer(MouseMoveEvent.class, (event) -> {
             if (new Rect(Point.ZERO, size.get()).inside(event.startPosition))
@@ -26,7 +26,7 @@ public class GUISlider extends GUIObject {
 
         minimumSize().set(head.minimumSize());
 
-        size().set(new Size(100, 12));
+        size().set(new Size(100, 26));
     }
 
     protected Point getHeadPosition() {
@@ -34,7 +34,7 @@ public class GUISlider extends GUIObject {
         Size mineSize = size.get();
         float headRadius = head.getCircleRadius();
 
-        return new Point(Math.min(Math.max(headSize.width / 2f + mineSize.width * fullness - headRadius, 0.5f), mineSize.width - headRadius * 2f), mineSize.height / 2f - headSize.height / 2f);
+        return new Point(Math.min(Math.max(headSize.width / 2f + mineSize.width * fullness - headRadius, 0.0f), mineSize.width - headRadius * 2f), mineSize.height / 2f - headSize.height / 2f);
     }
 
     public void moveHead(float delta) {
@@ -57,15 +57,14 @@ public class GUISlider extends GUIObject {
         Point headPosition = getHeadPosition();
         Size size = this.size.get();
 
+        Color colorBackground = getStyle().getColor("sliderBackground");
+        Point backgroundPosition = new Point(0, size.height / 2f - size.height / 6f);
+        glColor4f(colorBackground.red, colorBackground.green, colorBackground.blue, colorBackground.alpha);
+        GLFastTools.drawRoundedSquare(new Rect(backgroundPosition, size.setHeight(size.height / 3f)), 1);
+
         Color colorFullness = getStyle().getColor("sliderFullness");
         glColor4f(colorFullness.red, colorFullness.green, colorFullness.blue, colorFullness.alpha);
-
-        GLFastTools.drawRoundedSquare(new Rect(Point.ZERO, size.setWidth(Math.max(size.width * fullness, size.height))), 1);
-
-        Color colorEdges = getStyle().getColor("sliderEdges");
-        glColor4f(colorEdges.red, colorEdges.green, colorEdges.blue, colorEdges.alpha);
-
-        GLFastTools.drawRoundedHollowSquare(new Rect(Point.ZERO, size), 1);
+        GLFastTools.drawRoundedSquare(new Rect(backgroundPosition, new Size(Math.max(size.width * fullness, size.height / 3f), size.height / 3f)), 1);
 
         GLContext.getCurrent().getViewTools().pushTranslate(headPosition);
         head.render();

@@ -8,6 +8,7 @@ import ru.konstanteam.lokutils.gui.layout.*;
 import ru.konstanteam.lokutils.gui.objects.*;
 import ru.konstanteam.lokutils.gui.objects.button.GUIButton;
 import ru.konstanteam.lokutils.gui.objects.margin.GUIMargin;
+import ru.konstanteam.lokutils.gui.objects.slider.GUISlider;
 import ru.konstanteam.lokutils.objects.Color;
 import ru.konstanteam.lokutils.objects.Size;
 import ru.konstanteam.lokutils.render.Font;
@@ -30,7 +31,6 @@ public class Main extends Application<GUIMainCanvasSystem> {
 
     @Override
     public void initEvent() {
-        GUIStyle.getDefault().setFont("tip font", new Font().load(new java.awt.Font("TimesRoman", java.awt.Font.BOLD, 10)));
         GUIStyle.getDefault().setColor("separateColor", Color.BLACK.setAlpha(0.4f));
         GUIStyle.getDefault().setFont("title", new Font().load(new java.awt.Font("TimesRoman", java.awt.Font.BOLD, 36)));
 
@@ -44,7 +44,7 @@ public class Main extends Application<GUIMainCanvasSystem> {
         layout.setGap(5);
 
         GUIText title = new GUIText().setStyleFontName("title").setText("LOGIN");
-        title.overrideColor = new Color(0.5f, 1, 0.5f, 1f);
+
         layout.addObject(title, Alignment.CENTER);
 
         GUISeparate separate = new GUISeparate();
@@ -61,6 +61,9 @@ public class Main extends Application<GUIMainCanvasSystem> {
         passField.size().set(() -> layout.size().get().setHeight(initHeight));
         layout.addObject(passField);
 
+        GUISlider slider = new GUISlider();
+        layout.addObject(slider);
+
         layout.addObject(new GUILineSpace().setHeight(3));
 
         layout.addObject(new GUICheckBox().setText("Remember me"));
@@ -75,7 +78,7 @@ public class Main extends Application<GUIMainCanvasSystem> {
         });
 
         GUIButton button = new GUIButton();
-        button.getText().setText("Done");
+        button.getText().setText("Login");
         buttonsLayout.addObject(button);
 
         button = new GUIButton();

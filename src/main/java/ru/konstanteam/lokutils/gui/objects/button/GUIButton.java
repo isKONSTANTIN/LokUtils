@@ -87,6 +87,7 @@ public class GUIButton extends GUIPanel<FreeLayout> {
         super.init(owner);
 
         overrideColor = getStyle().getColor("buttonBackground");
+        text.overrideColor = getStyle().getColor("buttonText");
     }
 
 }

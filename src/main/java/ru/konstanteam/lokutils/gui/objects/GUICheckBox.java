@@ -19,7 +19,7 @@ import ru.konstanteam.lokutils.tools.property.Property;
 import static org.lwjgl.opengl.GL11.glColor4f;
 
 public class GUICheckBox extends GUIObject {
-    protected Color fillColor;
+    protected float filledRadius;
     protected Size boxSize;
     protected GUIText text;
 
@@ -33,9 +33,11 @@ public class GUICheckBox extends GUIObject {
         animations.addAnimation(new Animation("changeStatus") {
             @Override
             public void update(double speed) {
-                Color end = object.getStyle().getColor(status ? "checkboxFillActive" : "checkboxFillInactive");
-                fillColor = softColorChange(fillColor, end, (float) speed * 2);
-                isRun = !softColorChangeDone(fillColor, end);
+                float end = status ? boxSize.width - borderWidth - 4 : 0;
+
+                filledRadius = softChange(filledRadius, end, (float) speed * 2);
+
+                isRun = !softChangeDone(filledRadius, end);
             }
         });
 
@@ -126,7 +128,6 @@ public class GUICheckBox extends GUIObject {
         super.init(owner);
 
         text.init(owner);
-        fillColor = getStyle().getColor("checkboxFillInactive");
     }
 
     @Override
@@ -138,15 +139,18 @@ public class GUICheckBox extends GUIObject {
 
     @Override
     public void render() {
-        glColor4f(fillColor.red, fillColor.green, fillColor.blue, fillColor.alpha);
-        GLFastTools.drawRoundedSquare(new Rect(Point.ZERO, boxSize), roundFactor);
+        if (filledRadius > 0){
+            Color fillColor = getStyle().getColor("checkboxFill");
+            glColor4f(fillColor.red, fillColor.green, fillColor.blue, fillColor.alpha);
+            GLFastTools.drawRoundedSquare(new Rect(new Point(boxSize.width / 2 - filledRadius / 2f, boxSize.height / 2 - filledRadius/ 2f), new Size(filledRadius, filledRadius)), roundFactor);
+        }
 
         if (borderWidth > 0) {
             Color colorStroke = getStyle().getColor("checkboxStroke");
 
             glColor4f(colorStroke.red, colorStroke.green, colorStroke.blue, colorStroke.alpha);
             GL11.glLineWidth(borderWidth);
-            GLFastTools.drawRoundedHollowSquare(new Rect(new Point(borderWidth / 2, borderWidth / 2), boxSize.relativeTo(borderWidth, borderWidth)), roundFactor);
+            GLFastTools.drawRoundedHollowSquare(new Rect(Point.ZERO, boxSize), roundFactor);
         }
 
         GLContext.getCurrent().getViewTools().pushTranslate(textPosition.get());

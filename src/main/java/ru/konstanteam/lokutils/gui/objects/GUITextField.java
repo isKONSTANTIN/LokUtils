@@ -3,6 +3,7 @@ package ru.konstanteam.lokutils.gui.objects;
 import ru.konstanteam.lokutils.gui.GUIObject;
 import ru.konstanteam.lokutils.gui.eventsystem.events.CharTypedEvent;
 import ru.konstanteam.lokutils.gui.eventsystem.events.KeyTypedEvent;
+import ru.konstanteam.lokutils.gui.layout.GUIAbstractLayout;
 import ru.konstanteam.lokutils.input.KeyAction;
 import ru.konstanteam.lokutils.objects.Color;
 import ru.konstanteam.lokutils.objects.Point;
@@ -31,7 +32,7 @@ public class GUITextField extends GUIObject {
     protected Action enterAction;
 
     public GUITextField() {
-        size().set(new Size(100, 20));
+        size().set(new Size(100, 25));
 
         setText(new GUIText());
 
@@ -136,6 +137,13 @@ public class GUITextField extends GUIObject {
     }
 
     @Override
+    public void init(GUIAbstractLayout owner) {
+        super.init(owner);
+
+        this.text.overrideColor = getStyle().getColor("textField");
+    }
+
+    @Override
     public void render() {
         Color color = getStyle().getColor("textFieldBackground");
         Color cursorColor = text.getColor();
@@ -154,7 +162,7 @@ public class GUITextField extends GUIObject {
         translate = Math.max(0, translate);
 
         GLContext.getCurrent().getViewTools().pushScissor(new Rect(size), 0);
-        GLContext.getCurrent().getViewTools().pushTranslate(new Point(-translate, size.height / 2f - textSize.height / 2f));
+        GLContext.getCurrent().getViewTools().pushTranslate(new Point(-translate + 4, size.height / 2f - textSize.height / 2f));
 
         text.render();
 

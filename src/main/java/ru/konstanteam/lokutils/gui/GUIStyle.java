@@ -29,6 +29,7 @@ public class GUIStyle {
                         .setColor("buttonPressed", new Color(0.38f, 0.38f, 0.38f, 0.8f))
                         .setColor("buttonPointed", new Color(0.33f, 0.33f, 0.33f, 0.8f))
                         .setColor("buttonBackground", new Color(0.2f, 0.2f, 0.2f, 0.8f))
+                        .setColor("buttonText", new Color(0.95f, 0.95f, 0.95f, 1))
 
                         .setColor("windowCloseButtonPressed", new ColorRGB(255, 170, 170, 255))
                         .setColor("windowCloseButtonBackground", new ColorRGB(255, 100, 100, 255))
@@ -37,18 +38,18 @@ public class GUIStyle {
                         .setColor("windowContentBackground", new Color(0.3f, 0.3f, 0.3f, 0.9f))
                         .setColor("windowBarBackground", new Color(0.25f, 0.25f, 0.25f, 0.8f))
 
-                        .setColor("text", new Color(0.9f, 0.9f, 0.9f, 1))
-                        .setColor("highlightedText", new Color(1, 1, 0.9f, 1))
+                        .setColor("text", new Color(0.15f, 0.15f, 0.15f, 1))
+                        .setColor("highlightedText", new Color(0.2f, 0.2f, 0.2f, 1))
+                        .setColor("textField", new Color(0.95f, 0.95f, 0.95f, 1))
 
-                        .setColor("checkboxStroke", new Color(0.9f, 0.9f, 0.9f, 1))
-                        .setColor("checkboxFillActive", new Color(0.8f, 0.8f, 0.8f, 1))
-                        .setColor("checkboxFillInactive", new Color(0.5f, 0.5f, 0.5f, 1))
+                        .setColor("checkboxStroke", new Color(0.7f, 0.7f, 0.7f, 1))
+                        .setColor("checkboxFill", new Color(0.4f, 0.4f, 0.4f, 1))
 
                         .setColor("separateColor", new Color(0.6f, 0.6f, 0.6f, 0.9f))
 
-                        .setColor("sliderHead", new Color(0.2f, 0.2f, 0.2f, 1))
-                        .setColor("sliderFullness", new Color(0.8f, 0.8f, 0.8f, 1))
-                        .setColor("sliderEdges", new Color(0.15f, 0.15f, 0.15f, 0.8f))
+                        .setColor("sliderHead", new Color(0.5f, 0.5f, 0.5f, 1))
+                        .setColor("sliderFullness", new Color(0.4f, 0.4f, 0.4f, 1))
+                        .setColor("sliderBackground", new Color(0.2f, 0.2f, 0.2f, 1))
 
                         .setColor("verticalScrollBarBackground", new Color(0.9f, 0.9f, 0.9f, 0.5f))
                         .setColor("verticalScrollBarHead", new Color(1f, 1f, 1f, 0.5f))
@@ -60,8 +61,6 @@ public class GUIStyle {
 
                         .setColor("textFieldBackground", new Color(0.2f, 0.2f, 0.2f, 0.8f))
                         .setObject("textFieldRounded", 0.3f)
-
-
         );
     }
 
