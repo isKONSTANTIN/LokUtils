@@ -64,7 +64,7 @@ public class ViewTools {
 
         Rect lastScissor = getCurrentScissor();
         if (lastScissor != null){
-            absoluteScissor = lastScissor.intersect(absoluteScissor);
+            absoluteScissor = lastScissor.offset(translate.global).intersect(absoluteScissor);
         }
 
         Rect globalScissor = absoluteScissor.setPosition(new Point(absoluteScissor.getX(), window.getResolution().getY() - absoluteScissor.getY() - absoluteScissor.getHeight()));
