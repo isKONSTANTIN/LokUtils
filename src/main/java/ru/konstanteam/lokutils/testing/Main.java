@@ -9,7 +9,9 @@ import ru.konstanteam.lokutils.gui.objects.*;
 import ru.konstanteam.lokutils.gui.objects.button.GUIButton;
 import ru.konstanteam.lokutils.gui.objects.margin.GUIMargin;
 import ru.konstanteam.lokutils.gui.objects.slider.GUISlider;
+import ru.konstanteam.lokutils.gui.panels.scroll.ScrollPanel;
 import ru.konstanteam.lokutils.objects.Color;
+import ru.konstanteam.lokutils.objects.Point;
 import ru.konstanteam.lokutils.objects.Size;
 import ru.konstanteam.lokutils.render.Font;
 import ru.konstanteam.lokutils.render.Window;
@@ -92,7 +94,10 @@ public class Main extends Application<GUIMainCanvasSystem> {
         separate.setLineSizePercent(1.2f);
         layout.addObject(separate);
 
-        uiController.getLayout().addObject(new GUIMargin(layout), Alignment.CENTER);
+        ScrollPanel panel = new ScrollPanel();
+        panel.layout().addObject(new GUIMargin(layout), Point.ZERO);
+
+        uiController.getLayout().addObject(panel, Alignment.CENTER);
 
         this.window.setWindowCloseCallback((win) -> this.close());
     }

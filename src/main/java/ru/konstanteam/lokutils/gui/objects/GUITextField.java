@@ -161,7 +161,7 @@ public class GUITextField extends GUIObject {
 
         translate = Math.max(0, translate);
 
-        GLContext.getCurrent().getViewTools().pushScissor(new Rect(size), 0);
+        GLContext.getCurrent().getViewTools().pushScissor(new Rect(size));
         GLContext.getCurrent().getViewTools().pushTranslate(new Point(-translate + 4, size.height / 2f - textSize.height / 2f));
 
         text.render();
