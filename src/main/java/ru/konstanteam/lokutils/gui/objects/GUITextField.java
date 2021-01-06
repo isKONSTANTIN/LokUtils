@@ -187,7 +187,7 @@ public class GUITextField extends GUIObject {
             glEnable(GL_MULTISAMPLE);
         }
 
-        GLContext.getCurrent().getViewTools().popScissor();
         GLContext.getCurrent().getViewTools().popTranslate();
+        GLContext.getCurrent().getViewTools().popScissor();
     }
 }

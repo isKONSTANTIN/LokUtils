@@ -96,7 +96,6 @@ public class Main extends Application<GUIMainCanvasSystem> {
 
         ScrollPanel panel = new ScrollPanel();
         panel.layout().addObject(new GUIMargin(layout), Point.ZERO);
-
         uiController.getLayout().addObject(panel, Alignment.CENTER);
 
         this.window.setWindowCloseCallback((win) -> this.close());

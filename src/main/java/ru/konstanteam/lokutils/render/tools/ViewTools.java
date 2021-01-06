@@ -1,11 +1,13 @@
 package ru.konstanteam.lokutils.render.tools;
 
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector4f;
 import ru.konstanteam.lokutils.gui.core.GUIShader;
 import ru.konstanteam.lokutils.objects.Point;
 import ru.konstanteam.lokutils.objects.Rect;
 import ru.konstanteam.lokutils.objects.Size;
+import ru.konstanteam.lokutils.objects.Vector2i;
 import ru.konstanteam.lokutils.render.Window;
 
 import java.io.IOException;
@@ -36,11 +38,16 @@ public class ViewTools {
     }
 
     public Rect getCurrentScissor() {
+        Rect abs = getCurrentAbsoluteScissor();
+        TranslateState translation = getCurrentTranslate();
+        return abs != null ? abs.relativeTo(translation.global) : null;
+    }
+
+    public Rect getCurrentAbsoluteScissor() {
         int id = stackScissor.size() - 1;
         if (id < 0) return null;
-        TranslateState translate = getCurrentTranslate();
 
-        return translate != null ? stackScissor.get(id).relativeTo(translate.global) : stackScissor.get(id);
+        return stackScissor.get(id);
     }
 
     public TranslateState getCurrentTranslate() {
@@ -62,12 +69,12 @@ public class ViewTools {
         TranslateState translate = getCurrentTranslate();
         Rect absoluteScissor = scissor.offset(translate.global);
 
-        Rect lastScissor = getCurrentScissor();
+        Rect lastScissor = getCurrentAbsoluteScissor();
         if (lastScissor != null){
-            absoluteScissor = lastScissor.offset(translate.global).intersect(absoluteScissor);
+            absoluteScissor = lastScissor.intersect(absoluteScissor);
         }
 
-        Rect globalScissor = absoluteScissor.setPosition(new Point(absoluteScissor.getX(), window.getResolution().getY() - absoluteScissor.getY() - absoluteScissor.getHeight()));
+        Rect globalScissor = clientToScreen(absoluteScissor);
 
         GL11.glScissor(
                 (int) globalScissor.position.x,
@@ -77,6 +84,17 @@ public class ViewTools {
         );
 
         stackScissor.add(absoluteScissor);
+    }
+
+    private Rect clientToScreen(Rect clientRect) {
+        Vector2i resolution = window.getResolution();
+
+        float x = clientRect.getX();
+        float y = resolution.getY() - clientRect.getY() - clientRect.getHeight();
+        float w = clientRect.getWidth();
+        float h = clientRect.getHeight();
+
+        return new Rect(x, y, w, h);
     }
 
 
@@ -95,10 +113,8 @@ public class ViewTools {
             return;
         }
 
-        Rect scissor = getCurrentScissor();
-        TranslateState translate = getCurrentTranslate();
-        Rect absoluteScissor = scissor.offset(translate.global);
-        Rect globalScissor = absoluteScissor.setPosition(new Point(absoluteScissor.getX(), window.getResolution().getY() - absoluteScissor.getY() - absoluteScissor.getHeight()));
+        Rect scissor = getCurrentAbsoluteScissor();
+        Rect globalScissor = clientToScreen(scissor);
 
         GL11.glScissor(
                 (int) globalScissor.getX(),
