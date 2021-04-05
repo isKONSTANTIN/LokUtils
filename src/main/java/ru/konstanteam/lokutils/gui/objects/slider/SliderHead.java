@@ -32,7 +32,7 @@ public class SliderHead extends GUIObject {
 
     @Override
     public void render() {
-        Color color = overrideColor != null ? overrideColor : getStyle().getColor("sliderHead");
+        Color color = overrideColor != null ? overrideColor : asset.color("head");
         glColor4f(color.red, color.green, color.blue, color.alpha);
 
         GLFastTools.drawCircle(new Circle(Point.ZERO, getCircleRadius()));

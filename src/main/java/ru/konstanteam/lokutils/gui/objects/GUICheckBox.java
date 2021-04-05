@@ -49,7 +49,9 @@ public class GUICheckBox extends GUIObject {
         boxSize = new Size(20, 20);
         roundFactor = 0.6f;
 
-        setText(new GUIText().setText("CheckBox"));
+        GUIText text = new GUIText();
+        text.string().set("CheckBox");
+        setText(text);
 
         minimumSize().set(() ->
                 new Size(Vector2fTools.max(new Vector2f(boxSize.width + borderWidth * 2, boxSize.height + borderWidth * 2), new Vector2f(text.size().get().width, text.size().get().height)).translate(boxSize.width + boxSize.width / 4f, 0))
@@ -71,7 +73,7 @@ public class GUICheckBox extends GUIObject {
     }
 
     public GUICheckBox setText(String text) {
-        this.text.setText(text);
+        this.text.string().set(text);
 
         return this;
     }
@@ -140,13 +142,13 @@ public class GUICheckBox extends GUIObject {
     @Override
     public void render() {
         if (filledRadius > 0){
-            Color fillColor = getStyle().getColor("checkboxFill");
+            Color fillColor = asset.color("fill");
             glColor4f(fillColor.red, fillColor.green, fillColor.blue, fillColor.alpha);
             GLFastTools.drawRoundedSquare(new Rect(new Point(boxSize.width / 2 - filledRadius / 2f, boxSize.height / 2 - filledRadius/ 2f), new Size(filledRadius, filledRadius)), roundFactor);
         }
 
         if (borderWidth > 0) {
-            Color colorStroke = getStyle().getColor("checkboxStroke");
+            Color colorStroke = asset.color("stroke");
 
             glColor4f(colorStroke.red, colorStroke.green, colorStroke.blue, colorStroke.alpha);
             GL11.glLineWidth(borderWidth);

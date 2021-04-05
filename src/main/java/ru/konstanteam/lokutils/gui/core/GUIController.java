@@ -1,7 +1,6 @@
 package ru.konstanteam.lokutils.gui.core;
 
 import org.lwjgl.util.vector.Vector2f;
-import ru.konstanteam.lokutils.gui.GUIStyle;
 import ru.konstanteam.lokutils.gui.eventsystem.Event;
 import ru.konstanteam.lokutils.gui.eventsystem.events.*;
 import ru.konstanteam.lokutils.input.Mouse;
@@ -10,18 +9,9 @@ import ru.konstanteam.lokutils.render.Window;
 
 public abstract class GUIController {
     protected Window window;
-    protected GUIStyle style;
 
     protected Event lastEvent;
     protected Point lastMousePosition = Point.ZERO;
-
-    public GUIStyle getStyle() {
-        return style;
-    }
-
-    public void setStyle(GUIStyle style) {
-        this.style = style;
-    }
 
     protected Event checkEvent() {
         Mouse mouse = window.getInputs().mouse;
@@ -60,8 +50,7 @@ public abstract class GUIController {
 
     public abstract void render();
 
-    public void init(Window window, GUIStyle GUIStyle) {
+    public void init(Window window) {
         this.window = window;
-        this.style = GUIStyle;
     }
 }

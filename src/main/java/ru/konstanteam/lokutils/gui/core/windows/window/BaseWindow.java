@@ -1,6 +1,6 @@
 package ru.konstanteam.lokutils.gui.core.windows.window;
 
-import ru.konstanteam.lokutils.gui.GUIStyle;
+import ru.konstanteam.lokutils.gui.style.GUIStyle;
 import ru.konstanteam.lokutils.gui.core.windows.GUIWindowSystem;
 import ru.konstanteam.lokutils.gui.core.windows.bar.BaseWindowBar;
 import ru.konstanteam.lokutils.gui.eventsystem.Event;
@@ -51,7 +51,7 @@ public class BaseWindow extends GUIWindow {
 
     @Override
     public GUIStyle getStyle() {
-        return windowSystem.getStyle();
+        return GUIStyle.getDefault();
     }
 
     public FreeLayout getLayout() {

@@ -75,8 +75,8 @@ public class VerticalScrollBar extends ScrollBar {
         if (!active())
             return;
 
-        Color background = getStyle().getColor("verticalScrollBarBackground");
-        Color head = getStyle().getColor("verticalScrollBarHead");
+        Color background = asset.color("background");
+        Color head = asset.color("head");
 
         Size size = size().get();
 

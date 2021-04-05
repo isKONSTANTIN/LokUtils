@@ -1,9 +1,7 @@
 package ru.konstanteam.lokutils.applications;
 
-import org.lwjgl.util.vector.Vector4f;
-import ru.konstanteam.lokutils.gui.GUIStyle;
+import ru.konstanteam.lokutils.gui.style.GUIStyle;
 import ru.konstanteam.lokutils.gui.core.GUIController;
-import ru.konstanteam.lokutils.objects.Vector2i;
 import ru.konstanteam.lokutils.render.GLFW;
 import ru.konstanteam.lokutils.render.Window;
 import ru.konstanteam.lokutils.tools.ExecutorServices;
@@ -13,18 +11,18 @@ import static org.lwjgl.opengl.GL11.*;
 public class Application<T extends GUIController> implements Runnable {
 
     protected Window window;
-    protected T uiController;
+    protected T GUIController;
     protected boolean opened;
 
-    public Application(T uiController, Window window) {
-        this.uiController = uiController;
+    public Application(T GUIController, Window window) {
+        this.GUIController = GUIController;
         this.window = window;
 
         opened = true;
     }
 
-    public Application(T uiController) {
-        this(uiController, new Window());
+    public Application(T GUIController) {
+        this(GUIController, new Window());
     }
 
     public boolean isOpened() {
@@ -52,6 +50,10 @@ public class Application<T extends GUIController> implements Runnable {
 
     }
 
+    public void closeEvent() {
+
+    }
+
     @Override
     public void run() {
         try {
@@ -62,7 +64,7 @@ public class Application<T extends GUIController> implements Runnable {
             window.getGlContext().bind();
             GUIStyle.generateDefaultStyle();
 
-            uiController.init(window, GUIStyle.getDefault());
+            GUIController.init(window);
 
             initEvent();
 
@@ -75,14 +77,16 @@ public class Application<T extends GUIController> implements Runnable {
                 window.update();
 
                 updateEvent();
-                uiController.update();
+                GUIController.update();
 
                 renderEvent();
-                uiController.render();
+                GUIController.render();
 
                 window.swapBuffer();
                 window.getGlContext().unbind();
             }
+
+            closeEvent();
 
             window.destroy();
         } catch (Throwable e) {

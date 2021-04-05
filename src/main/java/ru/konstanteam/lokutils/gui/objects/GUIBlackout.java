@@ -29,7 +29,7 @@ public class GUIBlackout extends GUIObject {
 
     @Override
     public void render() {
-        Color color = overrideColor != null ? overrideColor : getStyle().getColor("background");
+        Color color = overrideColor != null ? overrideColor : asset.color("background");
         glColor4f(color.red, color.green, color.blue, color.alpha);
         GLFastTools.drawRoundedSquare(new Rect(size.get()), rounded);
     }

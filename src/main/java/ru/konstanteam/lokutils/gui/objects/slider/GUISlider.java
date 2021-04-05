@@ -2,6 +2,7 @@ package ru.konstanteam.lokutils.gui.objects.slider;
 
 import ru.konstanteam.lokutils.gui.GUIObject;
 import ru.konstanteam.lokutils.gui.eventsystem.events.MouseMoveEvent;
+import ru.konstanteam.lokutils.gui.layout.GUIAbstractLayout;
 import ru.konstanteam.lokutils.objects.Color;
 import ru.konstanteam.lokutils.objects.Point;
 import ru.konstanteam.lokutils.objects.Rect;
@@ -53,16 +54,23 @@ public class GUISlider extends GUIObject {
         return fullness;
     }
 
+    @Override
+    public void init(GUIAbstractLayout owner) {
+        super.init(owner);
+
+        head.init(owner);
+    }
+
     public void render() {
         Point headPosition = getHeadPosition();
         Size size = this.size.get();
 
-        Color colorBackground = getStyle().getColor("sliderBackground");
+        Color colorBackground = asset.color("background");
         Point backgroundPosition = new Point(0, size.height / 2f - size.height / 6f);
         glColor4f(colorBackground.red, colorBackground.green, colorBackground.blue, colorBackground.alpha);
         GLFastTools.drawRoundedSquare(new Rect(backgroundPosition, size.setHeight(size.height / 3f)), 1);
 
-        Color colorFullness = getStyle().getColor("sliderFullness");
+        Color colorFullness = asset.color("fullness");
         glColor4f(colorFullness.red, colorFullness.green, colorFullness.blue, colorFullness.alpha);
         GLFastTools.drawRoundedSquare(new Rect(backgroundPosition, new Size(Math.max(size.width * fullness, size.height / 3f), size.height / 3f)), 1);
 

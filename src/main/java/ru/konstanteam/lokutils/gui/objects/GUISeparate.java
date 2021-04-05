@@ -1,7 +1,7 @@
 package ru.konstanteam.lokutils.gui.objects;
 
 import ru.konstanteam.lokutils.gui.GUIObject;
-import ru.konstanteam.lokutils.gui.GUIStyle;
+import ru.konstanteam.lokutils.gui.style.GUIStyle;
 import ru.konstanteam.lokutils.objects.Color;
 import ru.konstanteam.lokutils.objects.Size;
 import ru.konstanteam.lokutils.render.context.GLContext;
@@ -46,13 +46,12 @@ public class GUISeparate extends GUIObject {
     @Override
     public void render() {
         Size size = size().get();
-        GUIStyle style = getStyle();
 
         boolean horizontal = autoMode ? size.width > size.height : this.horizontal;
         float lineSize = (horizontal ? size.width : size.height) * lineSizePercent;
-        float lineWidth = (Float) style.getObject("separateLineWidth");
+        float lineWidth = (Float) asset.object("lineWidth");
 
-        Color lineColor = style.getColor("separateColor");
+        Color lineColor = asset.color("color");
         glDisable(GL_MULTISAMPLE);
 
         glLineWidth(lineWidth);

@@ -11,6 +11,7 @@ import ru.konstanteam.lokutils.gui.layout.FreeLayout;
 import ru.konstanteam.lokutils.gui.objects.GUIText;
 import ru.konstanteam.lokutils.gui.objects.margin.GUIMargin;
 import ru.konstanteam.lokutils.gui.objects.margin.Margin;
+import ru.konstanteam.lokutils.gui.style.GUIObjectAsset;
 import ru.konstanteam.lokutils.objects.*;
 import ru.konstanteam.lokutils.render.tools.GLFastTools;
 
@@ -24,9 +25,10 @@ public class BaseWindowBar<T extends BaseWindow> extends GUIWindowBar<T> {
 
     protected WindowButton minimizeButton;
     protected WindowButton closeButton;
+    protected GUIObjectAsset asset;
 
     public void render() {
-        Color color = window.getStyle().getColor("windowBarBackground");
+        Color color = asset.color("background");
 
         GL11.glColor4f(color.red, color.green, color.blue, color.alpha);
         GLFastTools.drawRoundedSquare(new Rect(Point.ZERO, baseLayout.size().get()), 4, GLFastTools.getOptimalRoundingPieces(4), new boolean[]{true, true, window.minimized().get(), window.minimized().get()});
@@ -44,6 +46,7 @@ public class BaseWindowBar<T extends BaseWindow> extends GUIWindowBar<T> {
     @Override
     public void init(T window) {
         this.window = window;
+        this.asset = window.getStyle().asset(GUIWindowBar.class);
 
         baseLayout = new FreeLayout();
         baseLayout.size().set(() -> window.contentSize().get().setHeight(14));
@@ -65,16 +68,16 @@ public class BaseWindowBar<T extends BaseWindow> extends GUIWindowBar<T> {
         });
 
         minimizeButton = new WindowButton(new Circle(Point.ZERO, 5), window,
-                window.getStyle().getColor("windowMinimizeButtonPressed"),
-                window.getStyle().getColor("windowMinimizeButtonBackground"),
+                asset.color("minimizeButtonPressed"),
+                asset.color("minimizeButtonBackground"),
                 () -> window.minimized().set(!window.minimized().get())
         );
         minimizeButton.setName("minimizeButton");
 
         closeButton = new WindowButton(new Circle(Point.ZERO, 5),
                 window,
-                window.getStyle().getColor("windowCloseButtonPressed"),
-                window.getStyle().getColor("windowCloseButtonBackground"),
+                asset.color("closeButtonPressed"),
+                asset.color("closeButtonBackground"),
                 () -> {
                     window.getWindowSystem().closeWindow(window);
                 }
@@ -110,11 +113,11 @@ public class BaseWindowBar<T extends BaseWindow> extends GUIWindowBar<T> {
 
     @Override
     public String getTitle() {
-        return text.getText();
+        return text.string().get();
     }
 
     @Override
     public void setTitle(String text) {
-        this.text.setText(text);
+        this.text.string().set(text);
     }
 }

@@ -1,23 +1,19 @@
 package ru.konstanteam.lokutils.testing;
 
 import ru.konstanteam.lokutils.applications.Application;
-import ru.konstanteam.lokutils.gui.GUIObject;
-import ru.konstanteam.lokutils.gui.GUIStyle;
+import ru.konstanteam.lokutils.gui.style.GUIStyle;
 import ru.konstanteam.lokutils.gui.core.maincanvas.GUIMainCanvasSystem;
 import ru.konstanteam.lokutils.gui.layout.*;
 import ru.konstanteam.lokutils.gui.objects.*;
 import ru.konstanteam.lokutils.gui.objects.button.GUIButton;
 import ru.konstanteam.lokutils.gui.objects.margin.GUIMargin;
 import ru.konstanteam.lokutils.gui.objects.slider.GUISlider;
-import ru.konstanteam.lokutils.gui.panels.scroll.ScrollPanel;
 import ru.konstanteam.lokutils.objects.Color;
-import ru.konstanteam.lokutils.objects.Point;
 import ru.konstanteam.lokutils.objects.Size;
-import ru.konstanteam.lokutils.render.Font;
+import ru.konstanteam.lokutils.render.text.Font;
 import ru.konstanteam.lokutils.render.Window;
+import ru.konstanteam.lokutils.render.text.Style;
 import ru.konstanteam.lokutils.testing.shader.ShaderTest;
-
-import static org.lwjgl.opengl.GL11.*;
 
 public class Main extends Application<GUIMainCanvasSystem> {
     public static void main(String[] args) {
@@ -33,8 +29,11 @@ public class Main extends Application<GUIMainCanvasSystem> {
 
     @Override
     public void initEvent() {
-        GUIStyle.getDefault().setColor("separateColor", Color.BLACK.setAlpha(0.4f));
-        GUIStyle.getDefault().setFont("title", new Font().load(new java.awt.Font("TimesRoman", java.awt.Font.BOLD, 36)));
+        GUIStyle style = GUIStyle.generateDefaultStyle();
+        style.asset(GUISeparate.class).color("separateColor", Color.BLACK.setAlpha(0.4f));
+        style.asset(GUIText.class).font("title", new Font("TimesRoman", 36, Style.BOLD));
+
+        this.GUIController.getLayout().setStyle(style);
 
         window.setResizable(true);
         window.setTitle("GUI Test");
@@ -45,7 +44,8 @@ public class Main extends Application<GUIMainCanvasSystem> {
         layout.size().set(() -> layout.minimumSize().get().setWidth(Math.max(window.getResolution().getX() / 2f, buttonsLayout.minimumSize().get().width)));
         layout.setGap(5);
 
-        GUIText title = new GUIText().setStyleFontName("title").setText("LOGIN");
+        GUIText title = new GUIText().setStyleFontName("title");
+        title.string().set("LOGIN");
 
         layout.addObject(title, Alignment.CENTER);
 
@@ -72,7 +72,7 @@ public class Main extends Application<GUIMainCanvasSystem> {
 
         layout.addObject(new GUILineSpace().setHeight(6));
 
-        buttonsLayout.minimumSize().set(layout.size().get());
+        buttonsLayout.minimumSize().set(layout.size().get()); 
         buttonsLayout.size().set(buttonsLayout.minimumSize());
 
         buttonsLayout.minimumSize().addListener((oldV, newV) -> {
@@ -80,11 +80,11 @@ public class Main extends Application<GUIMainCanvasSystem> {
         });
 
         GUIButton button = new GUIButton();
-        button.getText().setText("Login");
+        button.getText().string().set("Login");
         buttonsLayout.addObject(button);
 
         button = new GUIButton();
-        button.getText().setText("Cancel");
+        button.getText().string().set("Cancel");
         buttonsLayout.addObject(button);
 
         layout.addObject(buttonsLayout, Alignment.TOP_RIGHT);
@@ -94,9 +94,9 @@ public class Main extends Application<GUIMainCanvasSystem> {
         separate.setLineSizePercent(1.2f);
         layout.addObject(separate);
 
-        ScrollPanel panel = new ScrollPanel();
-        panel.layout().addObject(new GUIMargin(layout), Point.ZERO);
-        uiController.getLayout().addObject(panel, Alignment.CENTER);
+        layout.maximumSize().set(new Size(200,200));
+
+        GUIController.getLayout().addObject(new GUIMargin(layout), Alignment.CENTER);
 
         this.window.setWindowCloseCallback((win) -> this.close());
     }

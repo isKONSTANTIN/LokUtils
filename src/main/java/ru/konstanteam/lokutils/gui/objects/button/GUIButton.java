@@ -21,10 +21,10 @@ public class GUIButton extends GUIPanel<FreeLayout> {
     protected GUIMargin margin;
     protected ButtonAction action;
 
-    public GUIButton() {
+    public GUIButton(GUIText text) {
         super(new FreeLayout());
 
-        this.text = new GUIText().setText("Button");
+        this.text = text;
         this.margin = new GUIMargin(text, new Margin(10, 10, 7,7));
         this.getRootLayout().addObject(margin, CENTER);
 
@@ -43,10 +43,8 @@ public class GUIButton extends GUIPanel<FreeLayout> {
         this.getAnimations().addAnimation(new Animation("pressed") {
             @Override
             public void update(double speed) {
-                GUIButton button = (GUIButton) object;
-
                 Color source = overrideColor;
-                Color end = button.getStyle().getColor("buttonPressed");
+                Color end = asset.color("pressed");
 
                 overrideColor = softColorChange(source, end, (float) speed * 2f);
 
@@ -57,10 +55,8 @@ public class GUIButton extends GUIPanel<FreeLayout> {
         this.getAnimations().addAnimation(new Animation("unpressed") {
             @Override
             public void update(double speed) {
-                GUIButton button = (GUIButton) object;
-
                 Color source = overrideColor;
-                Color end = button.getStyle().getColor("buttonBackground");
+                Color end = asset.color("background");
 
                 overrideColor = softColorChange(source, end, (float) speed * 2);
 
@@ -70,6 +66,15 @@ public class GUIButton extends GUIPanel<FreeLayout> {
 
         minimumSize().set(margin.minimumSize());
         size().set(minimumSize());
+    }
+
+    public GUIButton(String text){
+        this(new GUIText());
+        this.text.string().set(text);
+    }
+
+    public GUIButton(){
+        this("Button");
     }
 
     public GUIButton setAction(ButtonAction action) {
@@ -86,8 +91,8 @@ public class GUIButton extends GUIPanel<FreeLayout> {
     public void init(GUIAbstractLayout owner) {
         super.init(owner);
 
-        overrideColor = getStyle().getColor("buttonBackground");
-        text.overrideColor = getStyle().getColor("buttonText");
+        overrideColor = asset.color("background");
+        text.overrideColor = asset.color("text");
     }
 
 }

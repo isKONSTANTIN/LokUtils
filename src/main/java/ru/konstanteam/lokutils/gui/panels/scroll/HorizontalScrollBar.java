@@ -79,8 +79,8 @@ public class HorizontalScrollBar extends ScrollBar {
 
         Size size = size().get();
 
-        Color background = getStyle().getColor("horizontalScrollBarBackground");
-        Color head = getStyle().getColor("horizontalScrollBarHead");
+        Color background = asset.color("background");
+        Color head = asset.color("head");
 
         glColor4f(background.red, background.green, background.blue, background.alpha);
         GLFastTools.drawRoundedSquare(new Rect(Point.ZERO.setX(2), size), 1);

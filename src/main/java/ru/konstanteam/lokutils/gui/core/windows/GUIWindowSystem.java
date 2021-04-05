@@ -35,10 +35,7 @@ public class GUIWindowSystem extends GUIController {
             );
         };
 
-        if (GLContext.getCurrent() != null)
-            task.run();
-        else
-            windowCreationTasks.add(task);
+        windowCreationTasks.add(task);
 
         return () -> closeWindow(window);
     }

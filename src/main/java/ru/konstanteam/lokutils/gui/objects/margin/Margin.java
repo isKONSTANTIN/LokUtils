@@ -15,6 +15,13 @@ public class Margin {
         this.bottom = bottom;
     }
 
+    public Margin(float general) {
+        this.left = general;
+        this.right = general;
+        this.top = general;
+        this.bottom = general;
+    }
+
     public float getLeft() {
         return left;
     }

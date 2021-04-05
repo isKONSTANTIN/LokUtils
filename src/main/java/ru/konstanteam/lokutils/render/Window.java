@@ -81,6 +81,7 @@ public class Window {
 
         glfwWindowHint(GLFW_SAMPLES, MSAASamples);
         glfwWindowHint(GLFW_DECORATED, decorated ? GLFW_TRUE : GLFW_FALSE);
+        glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
 
         windowCreationHints.clear();
         windowCreationHints = null;

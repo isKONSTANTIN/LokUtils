@@ -9,6 +9,7 @@ public class Circle extends Field {
     public Circle(Point position, float radius) {
         this.position = position;
         this.radius = radius;
+
     }
 
     public Circle setRadius(float radius) {

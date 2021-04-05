@@ -9,8 +9,9 @@ import ru.konstanteam.lokutils.objects.Color;
 import ru.konstanteam.lokutils.objects.Point;
 import ru.konstanteam.lokutils.objects.Rect;
 import ru.konstanteam.lokutils.objects.Size;
-import ru.konstanteam.lokutils.render.Font;
+import ru.konstanteam.lokutils.render.text.Font;
 import ru.konstanteam.lokutils.render.context.GLContext;
+import ru.konstanteam.lokutils.render.text.TextRenderHelper;
 import ru.konstanteam.lokutils.render.tools.GLFastTools;
 import ru.konstanteam.lokutils.render.tools.GUIRenderBuffer;
 import ru.konstanteam.lokutils.tools.Action;
@@ -47,11 +48,10 @@ public class GUITextField extends GUIObject {
             if (event.key.action == KeyAction.RELEASE || !getOwner().isFocused(this))
                 return;
 
-            String stext = text.getText();
+            String stext = text.string().get();
 
             if (event.key.buttonID == GLFW_KEY_BACKSPACE && stext.length() > 0 && pointer > 0) {
-                String originalText = text.getText();
-                text.setText(originalText.substring(0, pointer - 1).concat(originalText.substring(pointer)));
+                text.string().set(stext.substring(0, pointer - 1).concat(stext.substring(pointer)));
                 movePointer(-1);
             }
 
@@ -86,21 +86,21 @@ public class GUITextField extends GUIObject {
     }
 
     public GUITextField addText(String newText) {
-        String originalText = text.getText();
+        String originalText = text.string().get();
 
-        text.setText(originalText.substring(0, pointer).concat(newText).concat(originalText.substring(pointer)));
+        text.string().set(originalText.substring(0, pointer).concat(newText).concat(originalText.substring(pointer)));
         movePointer(newText.length());
 
         return this;
     }
 
     public GUITextField setPointerPos(int position) {
-        String text = this.text.getText();
+        String text = this.text.string().get();
         Font font = this.text.getFont();
 
         pointer = Math.max(Math.min(position, text.length()), 0);
         if (font != null)
-            pointerPos = font.getSize(text.substring(0, pointer), null).width;
+            pointerPos = TextRenderHelper.getSize(font, text.substring(0, pointer), null).width;
 
         return this;
     }
@@ -116,12 +116,12 @@ public class GUITextField extends GUIObject {
     }
 
     public String getText() {
-        return text.getText();
+        return text.string().get();
     }
 
     public GUITextField setText(GUIText text) {
         if (this.text != null)
-            text.setText(this.text.getText());
+            text.string().set(this.text.string());
 
         this.text = text;
 
@@ -130,7 +130,7 @@ public class GUITextField extends GUIObject {
     }
 
     public GUITextField setText(String text) {
-        this.text.setText(text);
+        this.text.string().set(text);
 
         movePointer(0);
         return this;
@@ -140,19 +140,20 @@ public class GUITextField extends GUIObject {
     public void init(GUIAbstractLayout owner) {
         super.init(owner);
 
-        this.text.overrideColor = getStyle().getColor("textField");
+        text.init(owner);
+        this.text.overrideColor = asset.color("text");
     }
 
     @Override
     public void render() {
-        Color color = getStyle().getColor("textFieldBackground");
+        Color color = asset.color("background");
         Color cursorColor = text.getColor();
 
         Size size = size().get();
         Size textSize = text.size().get();
 
         glColor4f(color.red, color.green, color.blue, color.alpha);
-        GLFastTools.drawRoundedSquare(new Rect(size), (float) getStyle().getObject("textFieldRounded"));
+        GLFastTools.drawRoundedSquare(new Rect(size), (float) asset.object("rounded"));
 
         if (translate + size.width < pointerPos)
             translate = pointerPos - size.width;

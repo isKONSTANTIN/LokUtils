@@ -1,10 +1,9 @@
 package ru.konstanteam.lokutils.gui.core.maincanvas;
 
-import ru.konstanteam.lokutils.gui.GUIStyle;
+import ru.konstanteam.lokutils.gui.style.GUIStyle;
 import ru.konstanteam.lokutils.gui.core.GUIController;
 import ru.konstanteam.lokutils.gui.eventsystem.Event;
 import ru.konstanteam.lokutils.gui.layout.FreeLayout;
-import ru.konstanteam.lokutils.gui.layout.GUIAbstractLayout;
 import ru.konstanteam.lokutils.objects.Size;
 import ru.konstanteam.lokutils.render.Window;
 
@@ -16,12 +15,12 @@ public class GUIMainCanvasSystem extends GUIController {
     }
 
     @Override
-    public void init(Window window, GUIStyle GUIStyle) {
-        super.init(window, GUIStyle);
+    public void init(Window window) {
+        super.init(window);
 
         layout = new FreeLayout();
 
-        layout.setStyle(GUIStyle);
+        layout.setStyle(GUIStyle.getDefault());
         layout.size().set(() -> new Size(window.getResolution()));
     }
 

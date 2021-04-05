@@ -3,24 +3,14 @@ package ru.konstanteam.lokutils.testing.shader;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import ru.konstanteam.lokutils.applications.Application;
-import ru.konstanteam.lokutils.gui.GUIObject;
-import ru.konstanteam.lokutils.gui.GUIStyle;
 import ru.konstanteam.lokutils.gui.core.GUIShader;
 import ru.konstanteam.lokutils.gui.core.maincanvas.GUIMainCanvasSystem;
 import ru.konstanteam.lokutils.gui.eventsystem.events.MouseMoveEvent;
 import ru.konstanteam.lokutils.gui.eventsystem.events.MouseScrollEvent;
-import ru.konstanteam.lokutils.gui.layout.*;
-import ru.konstanteam.lokutils.gui.objects.*;
-import ru.konstanteam.lokutils.gui.objects.button.GUIButton;
-import ru.konstanteam.lokutils.gui.objects.margin.GUIMargin;
-import ru.konstanteam.lokutils.input.Mouse;
 import ru.konstanteam.lokutils.objects.*;
-import ru.konstanteam.lokutils.render.Font;
 import ru.konstanteam.lokutils.render.Window;
 import ru.konstanteam.lokutils.render.context.GLContext;
-import ru.konstanteam.lokutils.render.tools.GLFastTools;
 import ru.konstanteam.lokutils.render.tools.GUIRenderBuffer;
-import ru.konstanteam.lokutils.testing.Main;
 
 import java.io.IOException;
 
@@ -36,7 +26,7 @@ public class ShaderTest extends Application<GUIMainCanvasSystem> {
 
     @Override
     public void renderEvent() {
-        shader.update(uiController.getLayout().size().get());
+        shader.update(GUIController.getLayout().size().get());
 
         glClearColor(0,0,0, 0);
         glClear(GL_COLOR_BUFFER_BIT);
@@ -45,7 +35,7 @@ public class ShaderTest extends Application<GUIMainCanvasSystem> {
 
         renderBuffer.begin();
 
-        renderBuffer.addVertex(new Rect(uiController.getLayout().size().get()));
+        renderBuffer.addVertex(new Rect(GUIController.getLayout().size().get()));
 
         renderBuffer.draw(GL_QUADS, Color.WHITE, shader);
     }
@@ -54,13 +44,13 @@ public class ShaderTest extends Application<GUIMainCanvasSystem> {
     public void initEvent() {
         window.setWindowCloseCallback((e) -> this.close());
 
-        uiController.getLayout().getCustomersContainer().setCustomer(MouseMoveEvent.class, event -> {
+        GUIController.getLayout().getCustomersContainer().setCustomer(MouseMoveEvent.class, event -> {
             Point delta = event.lastPosition.relativeTo(event.endPosition);
 
             shader.addForce(new Vector2f(delta.x, delta.y), 0.4f);
         });
 
-        uiController.getLayout().getCustomersContainer().setCustomer(MouseScrollEvent.class, event -> {
+        GUIController.getLayout().getCustomersContainer().setCustomer(MouseScrollEvent.class, event -> {
             shader.addZoomForce(event.scrollDelta.y / 20f);
         });
 

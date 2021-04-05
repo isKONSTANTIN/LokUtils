@@ -34,7 +34,9 @@ public class GUITitledTextField extends GUIObject {
     }
 
     public GUITitledTextField(String title) {
-        this(new GUIText().setStyleFontName("textFieldTitle").setText(title));
+        this(new GUIText());
+
+        this.title.setStyleFontName("textFieldTitle").string().set(title);
     }
 
     public GUIText getTitle() {

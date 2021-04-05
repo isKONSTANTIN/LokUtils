@@ -12,7 +12,7 @@ public class ScrollLayout extends FreeLayout {
     protected Point scroll = Point.ZERO;
     protected Point scrollMomentum = Point.ZERO;
     protected float momentumFactor = 0.8f;
-    protected float scrollFactor = 4f;
+    protected float scrollFactor = 10f;
     protected Size contentSize = Size.ZERO;
 
     public ScrollLayout() {

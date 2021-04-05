@@ -1,7 +1,7 @@
 package ru.konstanteam.lokutils.gui.layout;
 
 import ru.konstanteam.lokutils.gui.GUIObject;
-import ru.konstanteam.lokutils.gui.GUIStyle;
+import ru.konstanteam.lokutils.gui.style.GUIStyle;
 import ru.konstanteam.lokutils.gui.eventsystem.Event;
 import ru.konstanteam.lokutils.gui.eventsystem.events.ClickType;
 import ru.konstanteam.lokutils.gui.eventsystem.events.MouseClickedEvent;
@@ -22,7 +22,9 @@ public abstract class GUIAbstractLayout extends GUIObject {
     protected PropertyChangeListener invalidListener;
 
     public GUIAbstractLayout(GUIStyle style) {
-        this.style = style;
+        if (style != null)
+            setStyle(style);
+
         this.invalidListener = (oldValue, newValue) -> setInvalidStatus();
         this.size.set(new Size(256, 256));
         this.size.addListener(invalidListener);
@@ -55,7 +57,7 @@ public abstract class GUIAbstractLayout extends GUIObject {
     }
 
     public GUIAbstractLayout() {
-        this(GUIStyle.getDefault());
+        this(null);
     }
 
     public GUIObject getFocusedObject() {
