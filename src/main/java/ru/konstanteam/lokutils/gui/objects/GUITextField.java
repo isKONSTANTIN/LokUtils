@@ -35,7 +35,7 @@ public class GUITextField extends GUIObject {
     public GUITextField() {
         size().set(new Size(100, 25));
 
-        setText(new GUIText());
+        setText(new GUIText(""));
 
         customersContainer.setCustomer(CharTypedEvent.class, (event) -> {
             if (event.key.action != KeyAction.RELEASE || !getOwner().isFocused(this))

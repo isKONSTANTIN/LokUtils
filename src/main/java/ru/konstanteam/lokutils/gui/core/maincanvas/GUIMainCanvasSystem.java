@@ -2,7 +2,7 @@ package ru.konstanteam.lokutils.gui.core.maincanvas;
 
 import ru.konstanteam.lokutils.gui.style.GUIStyle;
 import ru.konstanteam.lokutils.gui.core.GUIController;
-import ru.konstanteam.lokutils.gui.eventsystem.Event;
+import ru.konstanteam.lokutils.gui.eventsystem.events.Event;
 import ru.konstanteam.lokutils.gui.layout.FreeLayout;
 import ru.konstanteam.lokutils.objects.Size;
 import ru.konstanteam.lokutils.render.Window;

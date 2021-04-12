@@ -29,7 +29,7 @@ public class GUICheckBox extends GUIObject {
     protected float borderWidth = 1;
     protected boolean status;
 
-    public GUICheckBox() {
+    public GUICheckBox(GUIText text) {
         animations.addAnimation(new Animation("changeStatus") {
             @Override
             public void update(double speed) {
@@ -49,8 +49,6 @@ public class GUICheckBox extends GUIObject {
         boxSize = new Size(20, 20);
         roundFactor = 0.6f;
 
-        GUIText text = new GUIText();
-        text.string().set("CheckBox");
         setText(text);
 
         minimumSize().set(() ->
@@ -60,6 +58,14 @@ public class GUICheckBox extends GUIObject {
         textPosition.set(() ->
                 new Point(boxSize.width + boxSize.width / 4f, boxSize.height / 2f - text.size().get().height / 2f + 1)
         );
+    }
+
+    public GUICheckBox(String text){
+        this(new GUIText(text));
+    }
+
+    public GUICheckBox(){
+        this("Check box");
     }
 
     public GUIText getText() {

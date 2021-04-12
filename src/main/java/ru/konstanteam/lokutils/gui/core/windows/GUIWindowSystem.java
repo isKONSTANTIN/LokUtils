@@ -2,7 +2,7 @@ package ru.konstanteam.lokutils.gui.core.windows;
 
 import ru.konstanteam.lokutils.gui.core.GUIController;
 import ru.konstanteam.lokutils.gui.core.windows.window.GUIWindow;
-import ru.konstanteam.lokutils.gui.eventsystem.Event;
+import ru.konstanteam.lokutils.gui.eventsystem.events.Event;
 import ru.konstanteam.lokutils.gui.eventsystem.events.ClickType;
 import ru.konstanteam.lokutils.gui.eventsystem.events.MouseClickedEvent;
 import ru.konstanteam.lokutils.gui.eventsystem.events.MouseMoveEvent;

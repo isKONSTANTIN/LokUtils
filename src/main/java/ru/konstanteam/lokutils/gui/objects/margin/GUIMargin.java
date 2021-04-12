@@ -1,7 +1,7 @@
 package ru.konstanteam.lokutils.gui.objects.margin;
 
 import ru.konstanteam.lokutils.gui.GUIObject;
-import ru.konstanteam.lokutils.gui.eventsystem.Event;
+import ru.konstanteam.lokutils.gui.eventsystem.events.Event;
 import ru.konstanteam.lokutils.gui.layout.GUIAbstractLayout;
 import ru.konstanteam.lokutils.objects.Point;
 import ru.konstanteam.lokutils.objects.Size;

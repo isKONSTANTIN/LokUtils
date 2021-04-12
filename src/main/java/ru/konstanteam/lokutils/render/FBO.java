@@ -15,7 +15,7 @@ import static org.lwjgl.opengl.GL12.GL_CLAMP_TO_EDGE;
 import static org.lwjgl.opengl.GL32.glFramebufferTexture;
 import static org.lwjgl.util.glu.GLU.gluOrtho2D;
 
-public class FBO extends GLObject {
+public class FBO extends GLObject{
 
     protected int frameBuffer;
     protected int depthBuffer;

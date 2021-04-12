@@ -4,7 +4,7 @@ plugins {
     id 'maven-publish'
 }
 
-mainClassName = 'ru.konstanteam.lokutils.testing.Fonts'
+mainClassName = 'ru.konstanteam.lokutils.testing.Main'
 
 group 'ru.konstanteam'
 version '0.1-' + getDate()

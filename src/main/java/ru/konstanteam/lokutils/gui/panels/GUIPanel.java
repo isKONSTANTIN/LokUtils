@@ -1,6 +1,6 @@
 package ru.konstanteam.lokutils.gui.panels;
 
-import ru.konstanteam.lokutils.gui.eventsystem.Event;
+import ru.konstanteam.lokutils.gui.eventsystem.events.Event;
 import ru.konstanteam.lokutils.gui.layout.GUIAbstractLayout;
 import ru.konstanteam.lokutils.gui.objects.GUIBlackout;
 import ru.konstanteam.lokutils.objects.Point;

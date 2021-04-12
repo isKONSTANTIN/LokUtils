@@ -17,8 +17,13 @@ public class GUIText extends GUIObject {
     protected Property<String> text = new Property<>("");
     protected Font lastFont;
 
+    public GUIText(String text){
+        this.text.set(text);
+        minimumSize().set(() -> TextRenderHelper.getSize(asset.font(styleFontName), this.text.get(), maximumSize().get()));
+    }
+
     public GUIText() {
-        minimumSize().set(() -> TextRenderHelper.getSize(asset.font(styleFontName), text.get(), maximumSize().get()));
+        this("GUIText");
     }
 
     public Property<String> string(){

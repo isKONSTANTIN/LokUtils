@@ -1,5 +1,6 @@
 package ru.konstanteam.lokutils.gui.eventsystem;
 
+import ru.konstanteam.lokutils.gui.eventsystem.events.Event;
 import ru.konstanteam.lokutils.tools.Removable;
 
 import java.util.HashMap;

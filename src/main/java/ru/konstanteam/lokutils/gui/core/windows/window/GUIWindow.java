@@ -2,7 +2,7 @@ package ru.konstanteam.lokutils.gui.core.windows.window;
 
 import ru.konstanteam.lokutils.gui.style.GUIStyle;
 import ru.konstanteam.lokutils.gui.core.windows.GUIWindowSystem;
-import ru.konstanteam.lokutils.gui.eventsystem.Event;
+import ru.konstanteam.lokutils.gui.eventsystem.events.Event;
 import ru.konstanteam.lokutils.objects.Point;
 import ru.konstanteam.lokutils.objects.Size;
 import ru.konstanteam.lokutils.tools.property.Property;

@@ -1,7 +1,7 @@
 package ru.konstanteam.lokutils.gui.panels.scroll;
 
 import ru.konstanteam.lokutils.gui.GUIObject;
-import ru.konstanteam.lokutils.gui.eventsystem.Event;
+import ru.konstanteam.lokutils.gui.eventsystem.events.Event;
 import ru.konstanteam.lokutils.gui.eventsystem.events.MouseClickedEvent;
 import ru.konstanteam.lokutils.gui.eventsystem.events.MouseMoveEvent;
 import ru.konstanteam.lokutils.gui.layout.GUIAbstractLayout;
@@ -11,10 +11,6 @@ import ru.konstanteam.lokutils.objects.Rect;
 import ru.konstanteam.lokutils.objects.Size;
 import ru.konstanteam.lokutils.render.context.GLContext;
 import ru.konstanteam.lokutils.tools.property.Property;
-
-import static org.lwjgl.opengl.GL11C.glDisable;
-import static org.lwjgl.opengl.GL11C.glEnable;
-import static org.lwjgl.opengl.GL13C.GL_MULTISAMPLE;
 
 public class ScrollPanel extends GUIObject {
     protected VerticalScrollBar vBar;

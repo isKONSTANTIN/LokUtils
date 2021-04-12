@@ -1,7 +1,7 @@
 package ru.konstanteam.lokutils.gui.core;
 
 import org.lwjgl.util.vector.Vector2f;
-import ru.konstanteam.lokutils.gui.eventsystem.Event;
+import ru.konstanteam.lokutils.gui.eventsystem.events.Event;
 import ru.konstanteam.lokutils.gui.eventsystem.events.*;
 import ru.konstanteam.lokutils.input.Mouse;
 import ru.konstanteam.lokutils.objects.Point;
