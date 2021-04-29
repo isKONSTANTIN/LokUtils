@@ -19,7 +19,8 @@ public class GUIText extends GUIObject {
 
     public GUIText(String text){
         this.text.set(text);
-        minimumSize().set(() -> TextRenderHelper.getSize(asset.font(styleFontName), this.text.get(), maximumSize().get()));
+        minimumSize().set(() -> TextRenderHelper.getSize(asset.font(styleFontName), this.text.get(), null));
+        maximumSize().set(minimumSize());
     }
 
     public GUIText() {
@@ -53,6 +54,6 @@ public class GUIText extends GUIObject {
         lastFont = asset.font(getStyleFontName());
         Color color = getColor();
 
-        TextRenderHelper.drawText(lastFont, text.get(), new Rect(Point.ZERO, maximumSize().get()), color);
+        TextRenderHelper.drawText(lastFont, text.get(), new Rect(Point.ZERO, null), color);
     }
 }

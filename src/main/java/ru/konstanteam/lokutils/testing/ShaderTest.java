@@ -1,4 +1,4 @@
-package ru.konstanteam.lokutils.testing.shader;
+package ru.konstanteam.lokutils.testing;
 
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;

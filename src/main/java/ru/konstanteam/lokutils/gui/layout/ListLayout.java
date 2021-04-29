@@ -69,6 +69,21 @@ public class ListLayout extends ObjectFreeLayout {
         for (GUIObject object : objects) {
             Size size = object.size().get();
 
+            Alignment objectAlignment = alignments.get(object);
+
+            if (objectAlignment == Alignment.TOP_LEFT || objectAlignment == Alignment.CENTER_LEFT || objectAlignment == Alignment.BOTTOM_LEFT){
+                Size elementMinSize = object.minimumSize().get();
+                Size elementMaxSize = object.maximumSize().get();
+
+                object.size().set(new Size(
+                                Math.min(elementMaxSize.width, size().get().width),
+                                Math.max(size.height, elementMinSize.height)
+                        )
+                );
+
+                size = object.size().get();
+            }
+
             Point alignmentPos = alignments.get(object).getPosition(size, mySize);
 
             positions.put(object, new Point(alignmentPos.x, y));

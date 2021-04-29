@@ -71,12 +71,12 @@ public class GUIStyle {
                 .color("head", new Color(0.5f, 0.5f, 0.5f, 1));
 
         defaultStyle.asset(VerticalScrollBar.class)
-                .color("background", new Color(0.9f, 0.9f, 0.9f, 0.5f))
-                .color("head", new Color(1f, 1f, 1f, 0.5f));
+                .color("background", new Color(0.8f, 0.8f, 0.8f, 0.5f))
+                .color("head", new Color(0.4f, 0.4f, 0.4f, 0.8f));
 
         defaultStyle.asset(HorizontalScrollBar.class)
-                .color("background", new Color(0.9f, 0.9f, 0.9f, 0.5f))
-                .color("head", new Color(1f, 1f, 1f, 0.5f));
+                .color("background", new Color(0.8f, 0.8f, 0.8f, 0.5f))
+                .color("head", new Color(0.4f, 0.4f, 0.4f, 0.8f));
 
         return defaultStyle;
     }

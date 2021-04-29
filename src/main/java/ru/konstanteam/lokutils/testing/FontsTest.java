@@ -15,18 +15,15 @@ import ru.konstanteam.lokutils.render.Window;
 import java.awt.*;
 import java.util.Locale;
 
-public class Fonts extends Application<GUIMainCanvasSystem> {
-
-    public Fonts() {
+public class FontsTest extends Application<GUIMainCanvasSystem> {
+    public FontsTest() {
         super(new GUIMainCanvasSystem(), new Window());
-    }
-
-    public static void main(String[] args) {
-        new Fonts().open();
     }
 
     @Override
     public void initEvent() {
+        this.window.setWindowCloseCallback((win) -> this.close());
+
         GraphicsEnvironment ge = GraphicsEnvironment
                 .getLocalGraphicsEnvironment();
 
@@ -34,7 +31,6 @@ public class Fonts extends Application<GUIMainCanvasSystem> {
         ScrollPanel scrollPanel = new ScrollPanel();
         ListLayout listLayout = new ListLayout();
         scrollPanel.layout().addObject(listLayout, Alignment.TOP_LEFT);
-        listLayout.size().set(listLayout.minimumSize());
 
         for (Font font : allFonts) {
             String fontName = font.getFontName(Locale.US);
@@ -44,6 +40,9 @@ public class Fonts extends Application<GUIMainCanvasSystem> {
 
             listLayout.addObject(text);
         }
+
+        listLayout.update();
+        listLayout.size().set(() -> listLayout.minimumSize().get());
 
         scrollPanel.size().set(new Size(450,450));
         this.GUIController.getLayout().addObject(new GUIMargin(scrollPanel, new Margin(12)), Alignment.CENTER);

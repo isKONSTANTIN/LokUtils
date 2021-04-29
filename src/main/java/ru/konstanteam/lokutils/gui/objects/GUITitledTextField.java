@@ -52,6 +52,7 @@ public class GUITitledTextField extends GUIObject {
         super.update();
 
         layout.update();
+        layout.size().checkParentChanges();
     }
 
     @Override
