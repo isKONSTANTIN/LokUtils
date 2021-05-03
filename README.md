@@ -1,4 +1,4 @@
-# LokUtils <img src="https://knst.su/LokUtils.png" height="30" width="16">
+# LokUtils
 ![](https://img.shields.io/github/license/isKONSTANTIN/LokUtils?color=green&style=flat-square)
 ![](https://img.shields.io/github/issues/isKONSTANTIN/LokUtils?color=green&style=flat-square)
 ![](https://img.shields.io/static/v1?label=community&message=ru&color=green&style=flat-square)
