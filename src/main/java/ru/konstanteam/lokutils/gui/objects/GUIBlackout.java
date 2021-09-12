@@ -12,7 +12,7 @@ public class GUIBlackout extends GUIObject {
     protected float rounded;
 
     public GUIBlackout() {
-        minimumSize().set(() -> owner.size().get());
+        minimumSize().track(() -> owner.size().get());
     }
 
     public GUIBlackout(float rounded) {

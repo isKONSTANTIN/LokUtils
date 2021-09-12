@@ -60,7 +60,10 @@ public class ListLayout extends ObjectFreeLayout {
     }
 
     @Override
-    protected void calculateAll() {
+    public void calculateAll() {
+        if (isValid)
+            return;
+
         float x = 0;
         float y = 0;
 
@@ -93,5 +96,7 @@ public class ListLayout extends ObjectFreeLayout {
         }
 
         minimumSize().set(new Size(x, y));
+
+        isValid = true;
     }
 }

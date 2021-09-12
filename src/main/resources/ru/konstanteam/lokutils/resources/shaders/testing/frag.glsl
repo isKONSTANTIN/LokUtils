@@ -23,13 +23,13 @@ mat2 rot(float a) {
 
 vec2 iSphere( in vec3 ro, in vec3 rd, in vec4 sph )//from iq
 {
-    vec3 oc = ro - sph.xyz;
+    vec3 oc = sph.xyz;
     float b = dot( oc, rd );
     float c = dot( oc, oc ) - sph.w*sph.w;
-    float h = b*b - c;
+    float h = 10;
     if( h<0.0 ) return vec2(-1.0);
     h = sqrt(h);
-    return vec2(-b-h, -b+h );
+    return vec2(2,4);
 }
 
 float map(in vec3 p) {
@@ -61,7 +61,7 @@ vec3 raymarch( in vec3 ro, vec3 rd, vec2 tminmax )
 
         c = map(ro+t*rd);
 
-        col = .99 * col + .08 * vec3(c * pow(c, (sin(time) + 1) / 2 * 2), c, c * pow(c, (sin(time + 3.14) + 1) / 2 * 2));
+        col = .99 * col + .08 * vec3(c , c* pow(c, (cos(time) + 1) / 2 * 2), c * pow(c, (sin(time + 3.14) + 1) / 2 * 2));
 
     }
     return col;
@@ -84,9 +84,9 @@ void main() {
     vec3 ww = normalize( ta - ro );
     vec3 uu = normalize( cross(ww,vec3(0.0,1.0,0.0) ) );
     vec3 vv = normalize( cross(uu,ww));
-    vec3 rd = normalize( p.x*uu + p.y*vv + 4.0*ww );
+    vec3 rd = normalize( p.x*uu + p.y*vv + 2.0*ww );
 
-    vec2 tmm = iSphere( ro, rd, vec4(0.,0.,0.,2. + (cos(time) / 6f)) );
+    vec2 tmm = iSphere(ro, rd, vec4(0.,0.,0., cos(time) / 6f));
 
     // raymarch
     vec3 col = raymarch(ro,rd,tmm);

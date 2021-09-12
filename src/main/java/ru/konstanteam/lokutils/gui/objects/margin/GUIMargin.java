@@ -6,29 +6,29 @@ import ru.konstanteam.lokutils.gui.layout.GUIAbstractLayout;
 import ru.konstanteam.lokutils.objects.Point;
 import ru.konstanteam.lokutils.objects.Size;
 import ru.konstanteam.lokutils.render.context.GLContext;
-import ru.konstanteam.lokutils.tools.property.Property;
+import ru.konstanteam.lokutils.tools.property.PropertyBasic;
 
 public class GUIMargin extends GUIObject {
     protected GUIObject object;
-    protected Property<Margin> margin = new Property<>(Margin.PIXEL_MARGIN);
+    protected PropertyBasic<Margin> margin = new PropertyBasic<>(Margin.PIXEL_MARGIN);
 
     public GUIMargin(GUIObject object, Margin startMargin) {
         this.object = object;
         this.margin.set(startMargin);
 
-        minimumSize().set(() -> {
+        minimumSize().track(() -> {
             Margin margin = margin().get();
 
             return this.object.minimumSize().get().offset(margin.left + margin.right, margin.top + margin.bottom);
-        });
+        }, margin(), object.minimumSize());
 
-        size().set(() -> {
+        size().track(() -> {
             Margin margin = margin().get();
 
             return this.object.size().get().offset(margin.left + margin.right, margin.top + margin.bottom);
-        });
+        }, margin(), object.size());
 
-        maximumSize().set(() -> {
+        maximumSize().track(() -> {
             Margin margin = margin().get();
             Size maxObjectSize = this.object.maximumSize().get();
 
@@ -36,7 +36,7 @@ public class GUIMargin extends GUIObject {
             boolean heightIsMax = maxObjectSize.height == Float.MAX_VALUE;
 
             return maxObjectSize.offset(widthIsMax ? 0 : margin.left + margin.right, heightIsMax ? 0 : margin.top + margin.bottom);
-        });
+        }, margin(), object.maximumSize());
 
         customersContainer.setCustomer(event -> {
             Point position = new Point(margin.get().left, margin.get().top);
@@ -50,7 +50,7 @@ public class GUIMargin extends GUIObject {
         this(object, Margin.PIXEL_MARGIN);
     }
 
-    public Property<Margin> margin() {
+    public PropertyBasic<Margin> margin() {
         return margin;
     }
 
@@ -65,9 +65,9 @@ public class GUIMargin extends GUIObject {
 
         object.update();
 
-        size.checkParentChanges();
-        minimumSize.checkParentChanges();
-        maximumSize.checkParentChanges();
+        //size.checkParentChanges();
+        //minimumSize.checkParentChanges();
+        //maximumSize.checkParentChanges();
     }
 
     @Override

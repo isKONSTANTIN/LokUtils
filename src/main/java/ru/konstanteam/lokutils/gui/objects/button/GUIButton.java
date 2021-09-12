@@ -64,8 +64,8 @@ public class GUIButton extends GUIPanel<FreeLayout> {
             }
         });
 
-        minimumSize().set(margin.minimumSize());
-        size().set(minimumSize());
+        minimumSize().track(margin.minimumSize());
+        size().track(minimumSize());
     }
 
     public GUIButton(String text){

@@ -21,7 +21,7 @@ public class ShaderTest extends Application<GUIMainCanvasSystem> {
     MarbleShader shader;
 
     public ShaderTest() {
-        super(new GUIMainCanvasSystem(), new Window().setResizable(true).setHint(GLFW_TRANSPARENT_FRAMEBUFFER, 1));
+        super(new GUIMainCanvasSystem(), new Window().setResizable(true).setTitle("LokUtils - shader test").setHint(GLFW_TRANSPARENT_FRAMEBUFFER, 1));
     }
 
     @Override
@@ -98,7 +98,7 @@ class MarbleShader extends GUIShader {
         movement.y /= 1.2f;
 
         zoom += zoomMovement;
-        zoom = Math.max(zoom, 0.4f);
+        zoom =  0.4f;
 
         zoomMovement /= 1.1f;
 

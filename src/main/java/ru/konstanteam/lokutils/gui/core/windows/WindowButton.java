@@ -31,7 +31,7 @@ public class WindowButton extends GUIObject {
         this.defaultColor = defaultColor;
         this.overrideColor = defaultColor;
 
-        size().set(() -> new Size(field.radius * 2, field.radius * 2));
+        size().track(() -> new Size(field.radius * 2, field.radius * 2));
 
         customersContainer.setCustomer(MouseClickedEvent.class, event -> {
             if (event.clickType == ClickType.CLICKED && field.inside(event.position)) {

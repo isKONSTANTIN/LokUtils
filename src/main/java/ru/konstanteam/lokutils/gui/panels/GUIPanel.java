@@ -6,33 +6,37 @@ import ru.konstanteam.lokutils.gui.objects.GUIBlackout;
 import ru.konstanteam.lokutils.objects.Point;
 import ru.konstanteam.lokutils.objects.Size;
 import ru.konstanteam.lokutils.render.context.GLContext;
-import ru.konstanteam.lokutils.tools.property.Property;
+import ru.konstanteam.lokutils.tools.property.PropertyBasic;
+
+import java.util.function.Supplier;
 
 import static java.lang.Math.min;
 
 public class GUIPanel<T extends GUIAbstractLayout> extends GUIBlackout {
     protected T rootLayout;
 
-    protected Property<Point> canvasPosition;
-    protected Property<Size> canvasSize;
+    protected Supplier<Point> canvasPosition;
+    protected Supplier<Size> canvasSize;
 
     public GUIPanel(T rootLayout) {
         this.rootLayout = rootLayout;
 
-        canvasPosition = new Property<>(() -> {
+        canvasPosition = () -> {
             float pixelsRound = this.getPixelsIndentation();
+
             return new Point(pixelsRound, pixelsRound);
-        });
+        };
 
-        canvasSize = new Property<>(() -> {
+        canvasSize = () -> {
             float pixelsRound = this.getPixelsIndentation();
-            return Size.max(size().get().relativeTo(pixelsRound * 2, pixelsRound * 2), rootLayout.minimumSize().get());
-        });
 
-        rootLayout.size().set(canvasSize);
+            return Size.max(size().get().relativeTo(pixelsRound * 2, pixelsRound * 2), rootLayout.minimumSize().get());
+        };
+
+        rootLayout.size().track(canvasSize, size());
         customersContainer.setCustomer(Event.class, rootLayout.getCustomersContainer());
 
-        minimumSize().set(rootLayout.minimumSize());
+        minimumSize().track(rootLayout.minimumSize());
         size().set(new Size(256, 256));
 
         setRounded(0.3f);

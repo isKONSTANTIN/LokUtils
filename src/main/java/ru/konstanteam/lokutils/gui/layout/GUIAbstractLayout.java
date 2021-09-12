@@ -10,6 +10,8 @@ import ru.konstanteam.lokutils.objects.Rect;
 import ru.konstanteam.lokutils.objects.Size;
 import ru.konstanteam.lokutils.render.context.GLContext;
 import ru.konstanteam.lokutils.render.tools.ViewTools;
+import ru.konstanteam.lokutils.tools.property.ChangeListener;
+import ru.konstanteam.lokutils.tools.property.InvalidationListener;
 import ru.konstanteam.lokutils.tools.property.PropertyChangeListener;
 
 import java.util.ArrayList;
@@ -19,15 +21,15 @@ public abstract class GUIAbstractLayout extends GUIObject {
     protected boolean isValid;
     protected GUIObject focusedObject;
     protected int refreshRate = 60;
-    protected PropertyChangeListener invalidListener;
+    protected InvalidationListener<Size> invalidListener;
 
     public GUIAbstractLayout(GUIStyle style) {
         if (style != null)
             setStyle(style);
 
-        this.invalidListener = (oldValue, newValue) -> setInvalidStatus();
+        this.invalidListener = (v) -> setInvalidStatus();
         this.size.set(new Size(256, 256));
-        this.size.addListener(invalidListener);
+        this.size.addInvalidationListener(invalidListener);
 
         customersContainer.setCustomer(event -> {
             if (event instanceof MouseClickedEvent) {
@@ -83,18 +85,18 @@ public abstract class GUIAbstractLayout extends GUIObject {
         object.init(this);
         objects.add(object);
 
-        object.size().addListener(invalidListener);
-        object.minimumSize().addListener(invalidListener);
-        object.maximumSize().addListener(invalidListener);
+        object.size().addInvalidationListener(invalidListener);
+        object.minimumSize().addInvalidationListener(invalidListener);
+        object.maximumSize().addInvalidationListener(invalidListener);
     }
 
     protected boolean removeObject(GUIObject object) {
         boolean result = objects.remove(object);
 
         if (result) {
-            object.size().removeListener(invalidListener);
-            object.minimumSize().removeListener(invalidListener);
-            object.maximumSize().removeListener(invalidListener);
+            object.size().removeInvalidationListener(invalidListener);
+            object.minimumSize().removeInvalidationListener(invalidListener);
+            object.maximumSize().removeInvalidationListener(invalidListener);
 
             setInvalidStatus();
         }
@@ -104,9 +106,9 @@ public abstract class GUIAbstractLayout extends GUIObject {
 
     protected void removeAll() {
         for (GUIObject object : objects) {
-            object.size().removeListener(invalidListener);
-            object.minimumSize().removeListener(invalidListener);
-            object.maximumSize().removeListener(invalidListener);
+            object.size().removeInvalidationListener(invalidListener);
+            object.minimumSize().removeInvalidationListener(invalidListener);
+            object.maximumSize().removeInvalidationListener(invalidListener);
         }
 
         objects.clear();
@@ -114,9 +116,12 @@ public abstract class GUIAbstractLayout extends GUIObject {
         setInvalidStatus();
     }
 
-    protected abstract void calculateAll();
+    public abstract void calculateAll();
 
     protected void setInvalidStatus() {
+        if(!isValid)
+            return;
+
         isValid = false;
     }
 
@@ -129,12 +134,6 @@ public abstract class GUIAbstractLayout extends GUIObject {
                 e.printStackTrace();
             }
         }
-
-        if (!isValid) {
-            calculateAll();
-
-            isValid = true;
-        }
     }
 
     public int getRefreshRate() {
@@ -143,6 +142,8 @@ public abstract class GUIAbstractLayout extends GUIObject {
 
     @Override
     public void render() {
+        calculateAll();
+
         refreshRate = GLContext.getCurrent().getWindow().getMonitor().getVideoMode().refreshRate();
 
         ViewTools viewTools = GLContext.getCurrent().getViewTools();

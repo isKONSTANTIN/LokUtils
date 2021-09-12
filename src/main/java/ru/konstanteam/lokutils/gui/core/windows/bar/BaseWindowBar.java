@@ -49,11 +49,11 @@ public class BaseWindowBar<T extends BaseWindow> extends GUIWindowBar<T> {
         this.asset = window.getStyle().asset(GUIWindowBar.class);
 
         baseLayout = new FreeLayout();
-        baseLayout.size().set(() -> window.contentSize().get().setHeight(14));
+        baseLayout.size().track(() -> window.contentSize().get().setHeight(14));
 
         buttonsLayout = new BaseLayout();
 
-        buttonsLayout.size().set(() -> {
+        buttonsLayout.size().track(() -> {
             ArrayList<GUIObject> objects = buttonsLayout.getObjects();
             float width = 0;
             float maxHeight = 0;
@@ -91,7 +91,7 @@ public class BaseWindowBar<T extends BaseWindow> extends GUIWindowBar<T> {
         baseLayout.addObject(new GUIMargin(text, new Margin(buttonsLayout.getGap(), 0, 0, 0)), Alignment.CENTER_LEFT);
         baseLayout.addObject(buttonsLayout, Alignment.CENTER_RIGHT);
 
-        minimumSize.set(() -> buttonsLayout.size().get().offset(text.size().get()).offset(30, 0).setHeight(14));
+        minimumSize.track(() -> buttonsLayout.size().get().offset(text.size().get()).offset(30, 0).setHeight(14));
     }
 
     @Override

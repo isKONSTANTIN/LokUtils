@@ -18,16 +18,16 @@ public class HorizontalScrollBar extends ScrollBar {
     public HorizontalScrollBar(ScrollPanel panel) {
         super(panel);
 
-        size().set(() -> this.panel.size().get().setHeight(BAR_SIZE).relativeTo(4 + BAR_SIZE, 0));
+        size().track(() -> this.panel.size().get().setHeight(BAR_SIZE).relativeTo(4 + BAR_SIZE, 0));
 
-        headSize.set(() -> {
+        headSize.track(() -> {
             Size size = size().get();
             ScrollLayout layout = this.panel.layout;
 
             return size.setWidth(Math.max(size.height, layout.size().get().width / layout.getContentSize().width * size.width)).relativeTo(2, 2);
         });
 
-        headPosition.set(() -> {
+        headPosition.track(() -> {
             Size size = size().get();
             Size headSize = this.headSize.get();
             ScrollLayout layout = this.panel.layout;

@@ -13,22 +13,22 @@ import ru.konstanteam.lokutils.objects.Point;
 import ru.konstanteam.lokutils.objects.Rect;
 import ru.konstanteam.lokutils.objects.Size;
 import ru.konstanteam.lokutils.render.context.GLContext;
-import ru.konstanteam.lokutils.tools.property.Property;
+import ru.konstanteam.lokutils.tools.property.PropertyBasic;
 
 public class BaseWindow extends GUIWindow {
-    protected final Property<Boolean> minimized = new Property<>(false);
-    protected final Property<Boolean> resizable = new Property<>(false);
-    protected final Property<Boolean> closable = new Property<>(false);
-    protected final Property<Size> contentSize = new Property<>(Size.ZERO);
+    protected final PropertyBasic<Boolean> minimized = new PropertyBasic<>(false);
+    protected final PropertyBasic<Boolean> resizable = new PropertyBasic<>(false);
+    protected final PropertyBasic<Boolean> closable = new PropertyBasic<>(false);
+    protected final PropertyBasic<Size> contentSize = new PropertyBasic<>(Size.ZERO);
     protected Point lastMoveDelta = Point.ZERO;
     protected boolean resizeStatus;
     protected FreeLayout layout;
     protected BaseWindowBar<BaseWindow> bar;
 
     public BaseWindow() {
-        minimumSize().set(() -> Size.max(layout.minimumSize().get().offset(contentOffset().get().x, contentOffset().get().y), bar.minimumSize().get()));
+        minimumSize().track(() -> Size.max(layout.minimumSize().get().offset(contentOffset().get().x, contentOffset().get().y), bar.minimumSize().get()));
 
-        size().set(() -> {
+        size().track(() -> {
             Point offset = contentOffset().get();
 
             return (minimized.get() ? contentSize.get().setHeight(0) : contentSize.get()).offset(offset.x, offset.y);
@@ -37,15 +37,15 @@ public class BaseWindow extends GUIWindow {
         contentSize.set(new Size(300, 300));
     }
 
-    public Property<Boolean> closable() {
+    public PropertyBasic<Boolean> closable() {
         return closable;
     }
 
-    public Property<Boolean> resizable() {
+    public PropertyBasic<Boolean> resizable() {
         return resizable;
     }
 
-    public Property<Boolean> minimized() {
+    public PropertyBasic<Boolean> minimized() {
         return minimized;
     }
 
@@ -63,7 +63,7 @@ public class BaseWindow extends GUIWindow {
     }
 
     @Override
-    public Property<Size> contentSize() {
+    public PropertyBasic<Size> contentSize() {
         return contentSize;
     }
 
@@ -72,10 +72,10 @@ public class BaseWindow extends GUIWindow {
 
         bar = new BaseWindowBar<>();
         bar.init(this);
-        contentOffset.set(() -> bar.getRect().getBottomRightPoint().setX(0));
+        contentOffset.track(() -> bar.getRect().getBottomRightPoint().setX(0));
 
         layout = new FreeLayout();
-        layout.size().set(contentSize);
+        layout.size().track(contentSize);
 
         layout.minimumSize().set(new Size(50, 50));
 

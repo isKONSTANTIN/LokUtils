@@ -1,6 +1,5 @@
 package ru.konstanteam.lokutils.gui.panels.scroll;
 
-import ru.konstanteam.lokutils.gui.GUIObject;
 import ru.konstanteam.lokutils.gui.eventsystem.events.*;
 import ru.konstanteam.lokutils.gui.layout.ScrollLayout;
 import ru.konstanteam.lokutils.objects.Color;
@@ -8,25 +7,23 @@ import ru.konstanteam.lokutils.objects.Point;
 import ru.konstanteam.lokutils.objects.Rect;
 import ru.konstanteam.lokutils.objects.Size;
 import ru.konstanteam.lokutils.render.tools.GLFastTools;
-import ru.konstanteam.lokutils.tools.property.Property;
 
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL13.GL_MULTISAMPLE;
 
 public class VerticalScrollBar extends ScrollBar {
     public VerticalScrollBar(ScrollPanel panel){
         super(panel);
 
-        size().set(() -> this.panel.size().get().setWidth(BAR_SIZE).relativeTo(0, 4 + BAR_SIZE));
+        size().track(() -> this.panel.size().get().setWidth(BAR_SIZE).relativeTo(0, 4 + BAR_SIZE));
 
-        headSize.set(() -> {
+        headSize.track(() -> {
             Size size = size().get();
             ScrollLayout layout = this.panel.layout;
 
             return size.setHeight(Math.max(size.width, layout.size().get().height / layout.getContentSize().height * size.height)).relativeTo(2, 2);
         });
 
-        headPosition.set(() -> {
+        headPosition.track(() -> {
             Size size = size().get();
             Size headSize = this.headSize.get();
             ScrollLayout layout = this.panel.layout;

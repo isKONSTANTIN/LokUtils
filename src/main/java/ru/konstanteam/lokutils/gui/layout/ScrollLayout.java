@@ -53,7 +53,10 @@ public class ScrollLayout extends FreeLayout {
     }
 
     @Override
-    protected void calculateAll() {
+    public void calculateAll() {
+        if (isValid)
+            return;
+
         float x = 0;
         float y = 0;
 
@@ -68,6 +71,8 @@ public class ScrollLayout extends FreeLayout {
         }
 
         contentSize = new Size(x, y);
+
+        isValid = true;
     }
 
     public Point getScroll() {
@@ -84,6 +89,8 @@ public class ScrollLayout extends FreeLayout {
 
     @Override
     public void render() {
+        calculateAll();
+
         Size mySize = size().get();
 
         float newScrollX;

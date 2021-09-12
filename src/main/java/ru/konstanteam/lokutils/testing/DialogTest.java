@@ -17,8 +17,15 @@ import ru.konstanteam.lokutils.render.text.Font;
 import ru.konstanteam.lokutils.render.text.Style;
 
 public class DialogTest extends Application<GUIMainCanvasSystem> {
+    ListLayout layout;
+
     public DialogTest() {
-        super(new GUIMainCanvasSystem(), new Window());
+        super(new GUIMainCanvasSystem(), new Window().setTitle("LokUtils - GUI test").setResizable(true));
+    }
+
+    @Override
+    public void updateEvent() {
+        super.updateEvent();
     }
 
     @Override
@@ -31,13 +38,10 @@ public class DialogTest extends Application<GUIMainCanvasSystem> {
 
         this.GUIController.getLayout().setStyle(style);
 
-        window.setResizable(true);
-        window.setTitle("GUI Test");
-
         BaseLayout buttonsLayout = new BaseLayout();
-        ListLayout layout = new ListLayout();
+        layout = new ListLayout();
         layout.minimumSize().set(layout.size().get());
-        layout.size().set(() -> layout.minimumSize().get().setWidth(Math.max(window.getResolution().getX() / 2f, buttonsLayout.minimumSize().get().width)));
+        layout.size().track(() -> layout.minimumSize().get().setWidth(Math.max(window.getResolution().getX() / 2f, buttonsLayout.minimumSize().get().width)));
         layout.setGap(5);
 
         GUIText title = new GUIText().setStyleFontName("title");
@@ -46,14 +50,14 @@ public class DialogTest extends Application<GUIMainCanvasSystem> {
         layout.addObject(title, Alignment.CENTER);
 
         GUISeparate separate = new GUISeparate();
-        separate.size().set(() -> layout.size().get().setHeight(11));
+        separate.size().track(() -> layout.size().get().setHeight(11), layout.size());
         separate.setLineSizePercent(1.2f);
         layout.addObject(separate);
 
         layout.addObject(new GUITitledTextField("Username:"));
         layout.addObject(new GUITitledTextField("Password:"));
         GUISlider slider = new GUISlider();
-        slider.maximumSize().set(slider.size());
+        slider.maximumSize().track(slider.size());
         layout.addObject(slider);
 
         layout.addObject(new GUILineSpace().setHeight(3));
@@ -61,7 +65,7 @@ public class DialogTest extends Application<GUIMainCanvasSystem> {
         layout.addObject(new GUILineSpace().setHeight(6));
 
         buttonsLayout.minimumSize().set(layout.size().get());
-        buttonsLayout.size().set(buttonsLayout.minimumSize());
+        buttonsLayout.size().track(buttonsLayout.minimumSize());
 
         GUIButton button = new GUIButton();
         button.getText().string().set("Login");
@@ -74,7 +78,7 @@ public class DialogTest extends Application<GUIMainCanvasSystem> {
         layout.addObject(buttonsLayout, Alignment.TOP_RIGHT);
 
         separate = new GUISeparate();
-        separate.size().set(() -> layout.size().get().setHeight(11));
+        separate.size().track(() -> layout.size().get().setHeight(11));
         separate.setLineSizePercent(1.2f);
         layout.addObject(separate);
 

@@ -17,7 +17,7 @@ import java.util.Locale;
 
 public class FontsTest extends Application<GUIMainCanvasSystem> {
     public FontsTest() {
-        super(new GUIMainCanvasSystem(), new Window());
+        super(new GUIMainCanvasSystem(), new Window().setTitle("LokUtils - fonts test"));
     }
 
     @Override
@@ -41,8 +41,7 @@ public class FontsTest extends Application<GUIMainCanvasSystem> {
             listLayout.addObject(text);
         }
 
-        listLayout.update();
-        listLayout.size().set(() -> listLayout.minimumSize().get());
+        listLayout.size().track(() -> listLayout.minimumSize().get().setWidth(scrollPanel.size().get().width), listLayout.minimumSize(), scrollPanel.size());
 
         scrollPanel.size().set(new Size(450,450));
         this.GUIController.getLayout().addObject(new GUIMargin(scrollPanel, new Margin(12)), Alignment.CENTER);

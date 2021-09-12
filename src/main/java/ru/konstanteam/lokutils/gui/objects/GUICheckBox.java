@@ -14,7 +14,7 @@ import ru.konstanteam.lokutils.objects.Size;
 import ru.konstanteam.lokutils.render.context.GLContext;
 import ru.konstanteam.lokutils.render.tools.GLFastTools;
 import ru.konstanteam.lokutils.tools.Vector2fTools;
-import ru.konstanteam.lokutils.tools.property.Property;
+import ru.konstanteam.lokutils.tools.property.PropertyBasic;
 
 import static org.lwjgl.opengl.GL11.glColor4f;
 
@@ -23,7 +23,7 @@ public class GUICheckBox extends GUIObject {
     protected Size boxSize;
     protected GUIText text;
 
-    protected Property<Point> textPosition = new Property<>(Point.ZERO);
+    protected PropertyBasic<Point> textPosition = new PropertyBasic<>(Point.ZERO);
 
     protected float roundFactor;
     protected float borderWidth = 1;
@@ -51,11 +51,11 @@ public class GUICheckBox extends GUIObject {
 
         setText(text);
 
-        minimumSize().set(() ->
+        minimumSize().track(() ->
                 new Size(Vector2fTools.max(new Vector2f(boxSize.width + borderWidth * 2, boxSize.height + borderWidth * 2), new Vector2f(text.size().get().width, text.size().get().height)).translate(boxSize.width + boxSize.width / 4f, 0))
         );
 
-        textPosition.set(() ->
+        textPosition.track(() ->
                 new Point(boxSize.width + boxSize.width / 4f, boxSize.height / 2f - text.size().get().height / 2f + 1)
         );
     }

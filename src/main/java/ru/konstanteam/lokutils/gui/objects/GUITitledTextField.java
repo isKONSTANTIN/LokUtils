@@ -15,7 +15,7 @@ public class GUITitledTextField extends GUIObject {
         this.title = title;
 
         layout = new ListLayout();
-        layout.size().set(() -> size().get().setHeight(layout.minimumSize().get().height));
+        layout.size().track(() -> size().get().setHeight(layout.minimumSize().get().height), layout.minimumSize(), size());
 
         layout.setGap(1);
         layout.addObject(title);
@@ -23,13 +23,13 @@ public class GUITitledTextField extends GUIObject {
         field = new GUITextField();
         float initHeight = field.size().get().height;
 
-        field.size().set(() -> size().get().setHeight(initHeight));
+        field.size().track(() -> size().get().setHeight(initHeight), size());
 
         layout.addObject(field);
 
         customersContainer.setCustomer(layout.getCustomersContainer());
 
-        layout.update();
+        layout.calculateAll();
         size().set(layout.size().get().setWidth(100));
     }
 
@@ -52,7 +52,7 @@ public class GUITitledTextField extends GUIObject {
         super.update();
 
         layout.update();
-        layout.size().checkParentChanges();
+        //layout.size().checkParentChanges();
     }
 
     @Override

@@ -24,7 +24,10 @@ public class BaseLayout extends ObjectFreeLayout {
     }
 
     @Override
-    protected void calculateAll() {
+    public void calculateAll() {
+        if (isValid)
+            return;
+
         float filledX = 0;
         float filledY = 0;
         float maxHeightLine = 0;
@@ -60,6 +63,8 @@ public class BaseLayout extends ObjectFreeLayout {
         filledY += maxHeightLine;
 
         minimumSize().set(new Size(maxX, filledY));
+
+        isValid = true;
     }
 
     @Override
@@ -73,13 +78,16 @@ public class BaseLayout extends ObjectFreeLayout {
 
     public void setGap(float gap) {
         this.gap = gap;
+
         setInvalidStatus();
     }
 
     public boolean removeObject(GUIObject object) {
         boolean result = super.removeObject(object);
+
         if (result)
             positions.remove(object);
+
         return result;
     }
 
@@ -90,6 +98,7 @@ public class BaseLayout extends ObjectFreeLayout {
 
     public void addObject(GUIObject object) {
         super.addObject(object);
+
         setInvalidStatus();
     }
 

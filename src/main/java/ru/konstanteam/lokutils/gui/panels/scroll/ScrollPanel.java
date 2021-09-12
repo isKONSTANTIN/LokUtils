@@ -10,14 +10,14 @@ import ru.konstanteam.lokutils.objects.Point;
 import ru.konstanteam.lokutils.objects.Rect;
 import ru.konstanteam.lokutils.objects.Size;
 import ru.konstanteam.lokutils.render.context.GLContext;
-import ru.konstanteam.lokutils.tools.property.Property;
+import ru.konstanteam.lokutils.tools.property.PropertyBasic;
 
 public class ScrollPanel extends GUIObject {
     protected VerticalScrollBar vBar;
     protected HorizontalScrollBar hBar;
 
-    protected Property<Point> vBarPos = new Property<>(Point.ZERO);
-    protected Property<Point> hBarPos = new Property<>(Point.ZERO);
+    protected PropertyBasic<Point> vBarPos = new PropertyBasic<>(Point.ZERO);
+    protected PropertyBasic<Point> hBarPos = new PropertyBasic<>(Point.ZERO);
 
     protected ScrollLayout layout;
 
@@ -25,11 +25,11 @@ public class ScrollPanel extends GUIObject {
         vBar = new VerticalScrollBar(this);
         hBar = new HorizontalScrollBar(this);
 
-        vBarPos.set(() -> new Point(size.get().width - vBar.size().get().width - 2, 0));
-        hBarPos.set(() -> new Point(0, size.get().height - hBar.size().get().height - 2));
+        vBarPos.track(() -> new Point(size.get().width - vBar.size().get().width - 2, 0));
+        hBarPos.track(() -> new Point(0, size.get().height - hBar.size().get().height - 2));
 
         layout = new ScrollLayout();
-        layout.size().set(() -> size().get().relativeTo(vBar.active() ? vBar.size().get().width + 2 : 0, hBar.active() ? hBar.size().get().height + 2 : 0));
+        layout.size().track(() -> size().get().relativeTo(vBar.active() ? vBar.size().get().width + 2 : 0, hBar.active() ? hBar.size().get().height + 2 : 0));
 
         customersContainer.setCustomer(Event.class, event -> layout.getCustomersContainer().handle(event));
 

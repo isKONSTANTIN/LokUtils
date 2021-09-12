@@ -121,7 +121,7 @@ public class GUITextField extends GUIObject {
 
     public GUITextField setText(GUIText text) {
         if (this.text != null)
-            text.string().set(this.text.string());
+            text.string().track(this.text.string());
 
         this.text = text;
 

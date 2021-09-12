@@ -3,17 +3,15 @@ package ru.konstanteam.lokutils.gui;
 import ru.konstanteam.lokutils.gui.animation.Animations;
 import ru.konstanteam.lokutils.gui.eventsystem.CustomersContainer;
 import ru.konstanteam.lokutils.gui.layout.GUIAbstractLayout;
-import ru.konstanteam.lokutils.gui.objects.GUITextField;
 import ru.konstanteam.lokutils.gui.style.GUIObjectAsset;
 import ru.konstanteam.lokutils.gui.style.GUIStyle;
 import ru.konstanteam.lokutils.objects.Size;
-import ru.konstanteam.lokutils.render.context.GLContext;
-import ru.konstanteam.lokutils.tools.property.Property;
+import ru.konstanteam.lokutils.tools.property.PropertyBasic;
 
 public abstract class GUIObject {
-    protected Property<Size> minimumSize = new Property<>(Size.ZERO);
-    protected Property<Size> maximumSize = new Property<>(new Size(Float.MAX_VALUE, Float.MAX_VALUE));
-    protected Property<Size> size = new Property<>(minimumSize);
+    protected PropertyBasic<Size> minimumSize = new PropertyBasic<>(Size.ZERO);
+    protected PropertyBasic<Size> maximumSize = new PropertyBasic<>(new Size(Float.MAX_VALUE, Float.MAX_VALUE));
+    protected PropertyBasic<Size> size = new PropertyBasic<>(minimumSize);
 
     protected GUIStyle style;
     protected GUIObjectAsset asset;
@@ -65,15 +63,15 @@ public abstract class GUIObject {
         return this;
     }
 
-    public Property<Size> size() {
+    public PropertyBasic<Size> size() {
         return size;
     }
 
-    public Property<Size> minimumSize() {
+    public PropertyBasic<Size> minimumSize() {
         return minimumSize;
     }
 
-    public Property<Size> maximumSize() {
+    public PropertyBasic<Size> maximumSize() {
         return maximumSize;
     }
 

@@ -1,33 +1,31 @@
 package ru.konstanteam.lokutils.gui.objects;
 
 import ru.konstanteam.lokutils.gui.GUIObject;
-import ru.konstanteam.lokutils.gui.style.GUIStyle;
 import ru.konstanteam.lokutils.objects.Color;
 import ru.konstanteam.lokutils.objects.Point;
 import ru.konstanteam.lokutils.objects.Rect;
 import ru.konstanteam.lokutils.render.text.Font;
 import ru.konstanteam.lokutils.render.text.TextRenderHelper;
-import ru.konstanteam.lokutils.tools.property.Property;
-import ru.konstanteam.lokutils.tools.property.PropertyChangeListener;
+import ru.konstanteam.lokutils.tools.property.PropertyBasic;
 
 public class GUIText extends GUIObject {
     public Color overrideColor;
 
     protected String styleFontName = "default";
-    protected Property<String> text = new Property<>("");
+    protected PropertyBasic<String> text = new PropertyBasic<>("");
     protected Font lastFont;
 
     public GUIText(String text){
         this.text.set(text);
-        minimumSize().set(() -> TextRenderHelper.getSize(asset.font(styleFontName), this.text.get(), null));
-        maximumSize().set(minimumSize());
+        minimumSize().track(() -> TextRenderHelper.getSize(asset.font(styleFontName), this.text.get(), null));
+        maximumSize().track(minimumSize());
     }
 
     public GUIText() {
         this("GUIText");
     }
 
-    public Property<String> string(){
+    public PropertyBasic<String> string(){
         return text;
     }
 

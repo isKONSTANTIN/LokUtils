@@ -19,7 +19,7 @@ public class SliderHead extends GUIObject {
             slider.setHead(event.startPosition.x / sliderWidth + event.deltaPositionChange.x / sliderWidth);
         });
 
-        minimumSize().set(() -> {
+        minimumSize().track(() -> {
             float radius = getCircleRadius();
 
             return new Size(radius, radius);

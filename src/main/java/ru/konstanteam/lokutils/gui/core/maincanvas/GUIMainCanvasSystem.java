@@ -21,7 +21,7 @@ public class GUIMainCanvasSystem extends GUIController {
         layout = new FreeLayout();
 
         layout.setStyle(GUIStyle.getDefault());
-        layout.size().set(() -> new Size(window.getResolution()));
+        layout.size().track(() -> new Size(window.getResolution()));
     }
 
     @Override

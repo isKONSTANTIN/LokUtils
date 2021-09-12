@@ -18,14 +18,14 @@ public class GUISlider extends GUIObject {
 
     public GUISlider() {
         this.head = new SliderHead(this);
-        this.head.size().set(() -> new Size(0, size.get().height / 1.5f));
+        this.head.size().track(() -> new Size(0, size.get().height / 1.5f));
 
         customersContainer.setCustomer(MouseMoveEvent.class, (event) -> {
             if (new Rect(Point.ZERO, size.get()).inside(event.startPosition))
                 this.head.getCustomersContainer().handle(event);
         });
 
-        minimumSize().set(head.minimumSize());
+        minimumSize().track(head.minimumSize());
 
         size().set(new Size(100, 26));
     }
