@@ -4,12 +4,12 @@ plugins {
     id 'maven-publish'
 }
 
-mainClassName = 'ru.konstanteam.lokutils.testing.Main'
-
-group 'ru.konstanteam'
+group 'su.knst.lokutils'
 version '0.1-' + getDate()
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
+
+mainClassName = group + '.testing.Main'
 
 repositories {
     mavenCentral()
