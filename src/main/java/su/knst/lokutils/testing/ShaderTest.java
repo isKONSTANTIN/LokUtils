@@ -75,7 +75,7 @@ class MarbleShader extends GUIShader {
     protected float zoomMovement;
 
     public MarbleShader() throws IOException {
-        super("#/ru/konstanteam/lokutils/resources/shaders/testing/vert.glsl", "#/ru/konstanteam/lokutils/resources/shaders/testing/frag.glsl");
+        super("#/su/knst/lokutils/resources/shaders/testing/vert.glsl", "#/su/knst/lokutils/resources/shaders/testing/frag.glsl");
     }
 
     public void addForce(Vector2f direction, float strength){

@@ -5,12 +5,16 @@ import su.knst.lokutils.gui.core.maincanvas.GUIMainCanvasSystem;
 import su.knst.lokutils.gui.layout.Alignment;
 import su.knst.lokutils.gui.layout.ListLayout;
 import su.knst.lokutils.gui.objects.button.GUIButton;
-import su.knst.lokutils.objects.Size;
-import su.knst.lokutils.objects.Vector2i;
+import su.knst.lokutils.input.Keyboard;
+import su.knst.lokutils.objects.*;
 import su.knst.lokutils.render.Window;
+import su.knst.lokutils.render.context.GLContext;
+import su.knst.lokutils.render.tools.GLFastTools;
 import su.knst.lokutils.tools.property.PropertyBasic;
 
 import java.util.function.Supplier;
+
+import static org.lwjgl.opengl.GL11.glColor4f;
 
 public class Main extends Application<GUIMainCanvasSystem> {
     public Main() {
@@ -19,6 +23,16 @@ public class Main extends Application<GUIMainCanvasSystem> {
 
     public static void main(String[] args) {
         new Main().open();
+    }
+
+    @Override
+    public void renderEvent() {
+        super.renderEvent();
+    }
+
+    @Override
+    public void updateEvent() {
+        super.updateEvent();
     }
 
     @Override

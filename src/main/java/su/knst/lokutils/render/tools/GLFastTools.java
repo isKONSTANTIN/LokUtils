@@ -1,8 +1,6 @@
 package su.knst.lokutils.render.tools;
 
-import su.knst.lokutils.objects.Circle;
-import su.knst.lokutils.objects.Point;
-import su.knst.lokutils.objects.Rect;
+import su.knst.lokutils.objects.*;
 import su.knst.lokutils.render.Texture;
 import su.knst.lokutils.render.context.GLContext;
 
@@ -23,6 +21,9 @@ public class GLFastTools {
             1, 0,
             0, 0,
     };
+
+    private static final double COS_1 = 0.54030230586;
+    private static final double SIN_1 = 0.8414709848;
 
     public static void drawTexturedSquare(Rect rect, Texture texture, float[] texCoords) {
         GUIRenderBuffer buffer = GLContext.getCurrent().getViewTools().getGuiRenderBuffer();
@@ -78,6 +79,33 @@ public class GLFastTools {
                     (float) (position.y + (circle.radius * sin(i * twicePi / pieces)))
             );
         }
+
+        buffer.draw(GL_TRIANGLE_FAN);
+    }
+
+    public static void drawSquircle(Squircle squircle){
+        Size size = new Size(squircle.size.width / 2f, squircle.size.height / 2f);
+        Point position = new Point(squircle.position.x + squircle.size.width / 2f, squircle.position.y + squircle.size.height / 2f);
+
+        GUIRenderBuffer buffer = GLContext.getCurrent().getViewTools().getGuiRenderBuffer();
+        buffer.begin();
+        buffer.addVertex(position.x, position.y);
+        Point firstVertex = null;
+
+        for (double d = -1.0; d < 1.00; d += squircle.precision) {
+            double t = d * PI;
+            float x = (float) (pow((abs(cos(t))), 2.0 / squircle.m) * size.width * Math.signum(cos(t)));
+            float y = (float) (pow((abs(sin(t))), 2.0 / squircle.n) * size.height * Math.signum(sin(t)));
+
+            Point vertex = position.offset(x, y);
+
+            if (firstVertex == null)
+                firstVertex = vertex;
+
+            buffer.addVertex(vertex);
+        }
+
+        buffer.addVertex(firstVertex);
 
         buffer.draw(GL_TRIANGLE_FAN);
     }

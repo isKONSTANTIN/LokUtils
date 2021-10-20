@@ -38,7 +38,7 @@ public class GUIPanel<T extends GUIAbstractLayout> extends GUIBlackout {
         minimumSize().track(rootLayout.minimumSize());
         size().set(new Size(256, 256));
 
-        setRounded(0.3f);
+        setRounded(0.4f);
     }
 
     public float getPixelsIndentation() {

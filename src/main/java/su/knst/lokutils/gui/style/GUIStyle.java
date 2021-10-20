@@ -46,7 +46,7 @@ public class GUIStyle {
         defaultStyle.asset(GUIText.class)
                 .color("text", new Color(0.15f, 0.15f, 0.15f, 1))
                 .color("highlighted", new Color(0.2f, 0.2f, 0.2f, 1))
-                .font("default", new Font())
+                .font("default", new Font("#/su/knst/lokutils/resources/fonts/Lato-Regular.ttf", ""))
                 .font("windowTitle", new Font("Aria", 10))
                 .font("textFieldTitle", new Font("TimesRomans", 11));
 

@@ -3,11 +3,16 @@ package su.knst.lokutils.render.text;
 import org.lwjgl.BufferUtils;
 import su.knst.lokutils.objects.Vector2i;
 import su.knst.lokutils.render.Texture;
+import su.knst.lokutils.render.shader.Shader;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,10 +39,10 @@ public class Font {
     private float fontHeight;
     private float spaceSize;
 
-    private final String name;
-    private final Style style;
-    private final int size;
-    private final String additionalSymbols;
+    private String name;
+    private Style style;
+    private int size;
+    private String additionalSymbols;
 
     public Font(String name, int size, Style style, String additionalSymbols){
         this.name = name;
@@ -45,7 +50,17 @@ public class Font {
         this.size = size;
         this.additionalSymbols = additionalSymbols;
 
-        load();
+        StringBuilder builder = new StringBuilder();
+
+        for (String alps : ALPHABETS)
+            builder.append(alps).append(alps.toUpperCase());
+
+        builder.append(additionalSymbols);
+
+        char[] symbols = new char[builder.length()];
+        builder.getChars(0, builder.length(), symbols, 0);
+
+        loadBasic(new java.awt.Font(name, style.ordinal(), size), symbols);
     }
 
     public Font(String name, int size, Style style){
@@ -56,12 +71,50 @@ public class Font {
         this(name, size, Style.PLAIN);
     }
 
-    public Font(String name){
-        this(name, 14);
+    public Font(String path, String additionalSymbols) {
+        InputStream in;
+
+        if (path.charAt(0) == '#') {
+            in = Font.class.getResourceAsStream(path.substring(1));
+        } else {
+            try {
+                in = new FileInputStream(path);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+
+                return;
+            }
+        }
+
+        StringBuilder builder = new StringBuilder();
+
+        for (String alps : ALPHABETS)
+            builder.append(alps).append(alps.toUpperCase());
+
+        this.additionalSymbols = additionalSymbols;
+
+        builder.append(additionalSymbols);
+
+        char[] symbols = new char[builder.length()];
+        builder.getChars(0, builder.length(), symbols, 0);
+
+        java.awt.Font jFont = null;
+        try {
+            jFont = java.awt.Font.createFont(java.awt.Font.TRUETYPE_FONT, in).deriveFont(16f);
+        } catch (FontFormatException | IOException e) {
+            e.printStackTrace();
+            return;
+        }
+
+        this.name = jFont.getName();
+        this.style = Style.PLAIN;
+        this.size = jFont.getSize();
+
+        loadBasic(jFont, symbols);
     }
 
     public Font(){
-        this("");
+        this("", 14);
     }
 
     public HashMap<Character, Glyph> getGlyphs() {
@@ -94,22 +147,6 @@ public class Font {
 
     public float getSpaceSize() {
         return spaceSize;
-    }
-
-    private Font load() {
-        StringBuilder builder = new StringBuilder();
-
-        for (String alps : ALPHABETS)
-            builder.append(alps).append(alps.toUpperCase());
-
-        builder.append(additionalSymbols);
-
-        char[] symbols = new char[builder.length()];
-        builder.getChars(0, builder.length(), symbols, 0);
-
-        loadBasic(new java.awt.Font(name, style.ordinal(), size), symbols);
-
-        return this;
     }
 
     private void loadBasic(java.awt.Font font, char[] symbols) {
