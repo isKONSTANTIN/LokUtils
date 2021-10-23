@@ -5,10 +5,7 @@ import su.knst.lokutils.gui.eventsystem.events.ClickType;
 import su.knst.lokutils.gui.eventsystem.events.MouseClickedEvent;
 import su.knst.lokutils.gui.eventsystem.events.MouseMoveEvent;
 import su.knst.lokutils.gui.layout.ScrollLayout;
-import su.knst.lokutils.objects.Color;
-import su.knst.lokutils.objects.Point;
-import su.knst.lokutils.objects.Rect;
-import su.knst.lokutils.objects.Size;
+import su.knst.lokutils.objects.*;
 import su.knst.lokutils.render.tools.GLFastTools;
 import su.knst.lokutils.gui.eventsystem.events.MoveType;
 
@@ -82,12 +79,12 @@ public class VerticalScrollBar extends ScrollBar {
         Size size = size().get();
 
         glColor4f(background.red, background.green, background.blue, background.alpha);
-        GLFastTools.drawRoundedSquare(new Rect(Point.ZERO.setY(2), size), 1);
+        GLFastTools.drawSquircle(new Squircle(Point.ZERO.setY(2), size, 1));
 
         Size headSize = this.headSize.get();
         Point headPosition = this.headPosition.get();
 
         glColor4f(head.red, head.green, head.blue, head.alpha);
-        GLFastTools.drawRoundedSquare(new Rect(headPosition, headSize), 1);
+        GLFastTools.drawSquircle(new Squircle(headPosition, headSize, 1));
     }
 }

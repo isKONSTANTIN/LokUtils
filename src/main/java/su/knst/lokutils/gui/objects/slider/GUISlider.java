@@ -3,10 +3,7 @@ package su.knst.lokutils.gui.objects.slider;
 import su.knst.lokutils.gui.GUIObject;
 import su.knst.lokutils.gui.eventsystem.events.MouseMoveEvent;
 import su.knst.lokutils.gui.layout.GUIAbstractLayout;
-import su.knst.lokutils.objects.Color;
-import su.knst.lokutils.objects.Point;
-import su.knst.lokutils.objects.Rect;
-import su.knst.lokutils.objects.Size;
+import su.knst.lokutils.objects.*;
 import su.knst.lokutils.render.context.GLContext;
 import su.knst.lokutils.render.tools.GLFastTools;
 
@@ -68,11 +65,11 @@ public class GUISlider extends GUIObject {
         Color colorBackground = asset.color("background");
         Point backgroundPosition = new Point(0, size.height / 2f - size.height / 6f);
         glColor4f(colorBackground.red, colorBackground.green, colorBackground.blue, colorBackground.alpha);
-        GLFastTools.drawRoundedSquare(new Rect(backgroundPosition, size.setHeight(size.height / 3f)), 1);
+        GLFastTools.drawSquircle(new Squircle(backgroundPosition, size.setHeight(size.height / 3f), 1));
 
         Color colorFullness = asset.color("fullness");
         glColor4f(colorFullness.red, colorFullness.green, colorFullness.blue, colorFullness.alpha);
-        GLFastTools.drawRoundedSquare(new Rect(backgroundPosition, new Size(Math.max(size.width * fullness, size.height / 3f), size.height / 3f)), 1);
+        GLFastTools.drawSquircle(new Squircle(backgroundPosition, new Size(Math.max(size.width * fullness, size.height / 3f), size.height / 3f), 1));
 
         GLContext.getCurrent().getViewTools().pushTranslate(headPosition);
         head.render();

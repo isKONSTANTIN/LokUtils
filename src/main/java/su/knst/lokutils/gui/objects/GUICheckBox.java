@@ -20,6 +20,8 @@ import static org.lwjgl.opengl.GL11.glColor4f;
 
 public class GUICheckBox extends GUIObject {
     protected float filledRadius;
+    protected float filledAlpha;
+
     protected Size boxSize;
     protected GUIText text;
 
@@ -36,8 +38,9 @@ public class GUICheckBox extends GUIObject {
                 float end = status ? boxSize.width - borderWidth - 4 : 0;
 
                 filledRadius = softChange(filledRadius, end, (float) speed * 2);
+                filledAlpha = softChange(filledAlpha, status ? 1 : 0, (float) (speed * (status ? 1.3f : 2)));
 
-                isRun = !softChangeDone(filledRadius, end);
+                isRun = !softChangeDone(filledRadius, end) || !softChangeDone(filledAlpha, status ? 1 : 0);
             }
         });
 
@@ -149,7 +152,7 @@ public class GUICheckBox extends GUIObject {
     public void render() {
         if (filledRadius > 0){
             Color fillColor = asset.color("fill");
-            glColor4f(fillColor.red, fillColor.green, fillColor.blue, fillColor.alpha);
+            glColor4f(fillColor.red, fillColor.green, fillColor.blue, fillColor.alpha * filledAlpha);
             GLFastTools.drawRoundedSquare(new Rect(new Point(boxSize.width / 2 - filledRadius / 2f, boxSize.height / 2 - filledRadius/ 2f), new Size(filledRadius, filledRadius)), roundFactor);
         }
 

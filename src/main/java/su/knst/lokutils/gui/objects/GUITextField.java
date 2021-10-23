@@ -8,6 +8,7 @@ import su.knst.lokutils.input.KeyAction;
 import su.knst.lokutils.objects.Point;
 import su.knst.lokutils.objects.Rect;
 import su.knst.lokutils.objects.Size;
+import su.knst.lokutils.objects.Squircle;
 import su.knst.lokutils.render.context.GLContext;
 import su.knst.lokutils.render.text.AbstractFont;
 import su.knst.lokutils.render.text.TextRenderHelper;
@@ -152,7 +153,7 @@ public class GUITextField extends GUIObject {
         Size textSize = text.size().get();
 
         glColor4f(color.red, color.green, color.blue, color.alpha);
-        GLFastTools.drawRoundedSquare(new Rect(size), (float) asset.object("rounded"));
+        GLFastTools.drawSquircle(new Squircle(size, (float) asset.object("rounded")));
 
         if (translate + size.width < pointerPos)
             translate = pointerPos - size.width;

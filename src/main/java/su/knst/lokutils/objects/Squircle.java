@@ -16,6 +16,10 @@ public class Squircle {
         this.precision = 0.02;
     }
 
+    public Squircle(Size size, float round) {
+        this(Point.ZERO, size, round);
+    }
+
     public Squircle(Rect rect, float round) {
         this(rect.position, rect.size, round);
     }
