@@ -4,7 +4,7 @@ import su.knst.lokutils.gui.GUIObject;
 import su.knst.lokutils.objects.Color;
 import su.knst.lokutils.objects.Point;
 import su.knst.lokutils.objects.Rect;
-import su.knst.lokutils.render.text.Font;
+import su.knst.lokutils.render.text.AbstractFont;
 import su.knst.lokutils.render.text.TextRenderHelper;
 import su.knst.lokutils.tools.property.PropertyBasic;
 
@@ -13,7 +13,7 @@ public class GUIText extends GUIObject {
 
     protected String styleFontName = "default";
     protected PropertyBasic<String> text = new PropertyBasic<>("");
-    protected Font lastFont;
+    protected AbstractFont lastFont;
 
     public GUIText(String text){
         this.text.set(text);
@@ -43,7 +43,7 @@ public class GUIText extends GUIObject {
         return overrideColor != null ? overrideColor : asset.color("text");
     }
 
-    public Font getFont() {
+    public AbstractFont getFont() {
         return lastFont;
     }
 

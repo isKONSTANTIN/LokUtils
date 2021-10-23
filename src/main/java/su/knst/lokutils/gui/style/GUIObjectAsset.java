@@ -1,7 +1,7 @@
 package su.knst.lokutils.gui.style;
 
 import su.knst.lokutils.objects.Color;
-import su.knst.lokutils.render.text.Font;
+import su.knst.lokutils.render.text.AbstractFont;
 
 import java.util.HashMap;
 
@@ -49,16 +49,16 @@ public class GUIObjectAsset<T> {
         return object(key, value);
     }
 
-    public Font font(String key){
-        Font result = validOrNull(object(key), Font.class);
+    public AbstractFont font(String key){
+        AbstractFont result = validOrNull(object(key), AbstractFont.class);
 
         if (result == null)
-            result = validOrNull(object("default"), Font.class);
+            result = validOrNull(object("default"), AbstractFont.class);
 
         return result;
     }
 
-    public GUIObjectAsset<T> font(String key, Font value){
+    public GUIObjectAsset<T> font(String key, AbstractFont value){
         return object(key, value);
     }
 }

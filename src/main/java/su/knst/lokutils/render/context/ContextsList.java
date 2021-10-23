@@ -38,7 +38,7 @@ public class ContextsList {
     }
 
     public synchronized void unbind() {
-        glfwMakeContextCurrent(0);
+        //glfwMakeContextCurrent(0);
         lock.unlock();
     }
 }

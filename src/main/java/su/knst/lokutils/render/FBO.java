@@ -2,9 +2,12 @@ package su.knst.lokutils.render;
 
 import org.lwjgl.opengl.ARBFramebufferObject;
 import org.lwjgl.util.vector.Matrix4f;
+import su.knst.lokutils.objects.Size;
 import su.knst.lokutils.objects.Vector2i;
 import su.knst.lokutils.objects.Vector4i;
 import su.knst.lokutils.render.context.GLContext;
+import su.knst.lokutils.render.text.AWTFont;
+import su.knst.lokutils.render.texture.AbstractTexture;
 import su.knst.lokutils.render.tools.MatrixTools;
 
 import java.nio.ByteBuffer;
@@ -16,15 +19,11 @@ import static org.lwjgl.opengl.GL32.glFramebufferTexture;
 import static org.lwjgl.util.glu.GLU.gluOrtho2D;
 
 public class FBO extends GLObject{
-
     protected int frameBuffer;
     protected int depthBuffer;
     protected int textureBuffer;
 
     protected int lastFrameBuffer;
-    protected Vector4i lastViewport = new Vector4i();
-    protected Matrix4f lastProjectionMatrix;
-    protected Matrix4f lastModelMatrix;
 
     protected int multisampledColorRenderBuffer;
     protected int multisampledDepthRenderBuffer;
@@ -33,28 +32,28 @@ public class FBO extends GLObject{
     protected int multisampleSamples;
     protected boolean multisampled;
 
-    protected Vector2i resolution = new Vector2i();
-    protected Vector4i viewport;
+    protected Size resolution = Size.ZERO;
 
     protected boolean generated;
+    protected boolean needAlpha;
 
     public FBO() {
 
     }
 
-    public Vector4i getViewport() {
-        return viewport;
+    public boolean isNeedAlpha() {
+        return needAlpha;
     }
 
-    public void setViewport(Vector4i viewport) {
-        this.viewport = viewport;
+    public void setNeedAlpha(boolean needAlpha) {
+        this.needAlpha = needAlpha;
     }
 
-    public Vector2i getResolution() {
+    public Size getResolution() {
         return resolution;
     }
 
-    public FBO setResolution(Vector2i resolution) {
+    public FBO setResolution(Size resolution) {
         this.resolution = resolution;
 
         return this;
@@ -80,10 +79,28 @@ public class FBO extends GLObject{
         return this;
     }
 
-    public int getTextureBuffer() {
+    public AbstractTexture getTextureBuffer() {
         if (multisampled)
             resolveMultisampled();
-        return textureBuffer;
+
+        AbstractTexture abstractTexture = new AbstractTexture() {
+            @Override
+            public void generate() {
+                GLcontext = GLContext.getCurrent();
+                if (GLcontext == null) throw new RuntimeException("Texture cannot be created without OpenGL context!");
+
+                this.id = textureBuffer;
+            }
+
+            @Override
+            public Size getSize() {
+                return resolution;
+            }
+        };
+
+        abstractTexture.generate();
+
+        return abstractTexture;
     }
 
     public FBO applyChanges() {
@@ -135,25 +152,7 @@ public class FBO extends GLObject{
 
         lastFrameBuffer = glGetInteger(GL_FRAMEBUFFER_BINDING);
 
-        int[] view = new int[4];
-        glGetIntegerv(GL_VIEWPORT, view);
-
-        lastViewport.setX(view[0]);
-        lastViewport.setY(view[1]);
-        lastViewport.setZ(view[2]);
-        lastViewport.setW(view[3]);
-
-        lastProjectionMatrix = MatrixTools.getBindedMatrix(GL_PROJECTION_MATRIX);
-        lastModelMatrix = MatrixTools.getBindedMatrix(GL_MODELVIEW_MATRIX);
-
         glBindFramebuffer(GL_FRAMEBUFFER, multisampled ? multisampledFrameBuffer : frameBuffer);
-
-        if (viewport != null)
-            glViewport(viewport.getX(), viewport.getY(), viewport.getZ(), viewport.getW());
-        else
-            glViewport(0, 0, resolution.getX(), resolution.getY());
-
-        gluOrtho2D(-1, 1, -1, 1);
     }
 
     @Override
@@ -162,9 +161,6 @@ public class FBO extends GLObject{
             throw new RuntimeException("FBO cannot be unbinded without or another OpenGL context!");
 
         glBindFramebuffer(GL_FRAMEBUFFER, lastFrameBuffer);
-        glViewport(lastViewport.getX(), lastViewport.getY(), lastViewport.getZ(), lastViewport.getW());
-        MatrixTools.bindMatrix(lastProjectionMatrix, GL_PROJECTION);
-        MatrixTools.bindMatrix(lastModelMatrix, GL_MODELVIEW);
     }
 
     private void initialiseFrameBuffer() {
@@ -186,11 +182,11 @@ public class FBO extends GLObject{
         glBindFramebuffer(GL_FRAMEBUFFER, multisampledFrameBuffer);
         glBindRenderbuffer(GL_RENDERBUFFER, multisampledColorRenderBuffer);
 
-        glRenderbufferStorageMultisample(GL_RENDERBUFFER, multisampleSamples, GL_RGBA8, resolution.getX(), resolution.getY());
+        glRenderbufferStorageMultisample(GL_RENDERBUFFER, multisampleSamples, GL_RGBA8, (int)resolution.width, (int)resolution.height);
         glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, multisampledColorRenderBuffer);
 
         glBindRenderbuffer(GL_RENDERBUFFER, multisampledDepthRenderBuffer);
-        glRenderbufferStorageMultisample(GL_RENDERBUFFER, multisampleSamples, ARBFramebufferObject.GL_DEPTH24_STENCIL8, resolution.getX(), resolution.getY());
+        glRenderbufferStorageMultisample(GL_RENDERBUFFER, multisampleSamples, ARBFramebufferObject.GL_DEPTH24_STENCIL8, (int)resolution.width, (int)resolution.height);
         glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, multisampledDepthRenderBuffer);
 
         int fboStatus = glCheckFramebufferStatus(GL_FRAMEBUFFER);
@@ -208,7 +204,7 @@ public class FBO extends GLObject{
         glBindFramebuffer(GL_READ_FRAMEBUFFER, multisampledFrameBuffer);
         glBindFramebuffer(GL_DRAW_FRAMEBUFFER, frameBuffer);
 
-        glBlitFramebuffer(0, 0, resolution.getX(), resolution.getY(), 0, 0, resolution.getX(), resolution.getY(), GL_COLOR_BUFFER_BIT, GL_NEAREST);
+        glBlitFramebuffer(0, 0, (int)resolution.width, (int)resolution.height, 0, 0, (int)resolution.width, (int)resolution.height, GL_COLOR_BUFFER_BIT, GL_NEAREST);
 
         glBindFramebuffer(GL_FRAMEBUFFER, lastFrameBuffer);
     }
@@ -222,7 +218,7 @@ public class FBO extends GLObject{
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH24_STENCIL8, resolution.getX(), resolution.getY(), 0, GL_DEPTH_STENCIL, GL_UNSIGNED_INT_24_8, (ByteBuffer) null);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH24_STENCIL8, (int)resolution.width, (int)resolution.height, 0, GL_DEPTH_STENCIL, GL_UNSIGNED_INT_24_8, (ByteBuffer) null);
         glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, depth, 0);
         glBindTexture(GL_TEXTURE_2D, 0);
 
@@ -238,7 +234,7 @@ public class FBO extends GLObject{
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, resolution.getX(), resolution.getY(), 0, GL_RGBA, GL_UNSIGNED_BYTE, (ByteBuffer) null);
+        glTexImage2D(GL_TEXTURE_2D, 0, needAlpha ? GL_RGBA : GL_RGB, (int)resolution.width, (int)resolution.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, (ByteBuffer) null);
         glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, texture, 0);
         glBindTexture(GL_TEXTURE_2D, 0);
 

@@ -8,8 +8,8 @@ import su.knst.lokutils.input.KeyAction;
 import su.knst.lokutils.objects.Point;
 import su.knst.lokutils.objects.Rect;
 import su.knst.lokutils.objects.Size;
-import su.knst.lokutils.render.text.Font;
 import su.knst.lokutils.render.context.GLContext;
+import su.knst.lokutils.render.text.AbstractFont;
 import su.knst.lokutils.render.text.TextRenderHelper;
 import su.knst.lokutils.render.tools.GLFastTools;
 import su.knst.lokutils.render.tools.GUIRenderBuffer;
@@ -95,7 +95,7 @@ public class GUITextField extends GUIObject {
 
     public GUITextField setPointerPos(int position) {
         String text = this.text.string().get();
-        Font font = this.text.getFont();
+        AbstractFont font = this.text.getFont();
 
         pointer = Math.max(Math.min(position, text.length()), 0);
         if (font != null)

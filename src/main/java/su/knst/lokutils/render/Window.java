@@ -3,6 +3,7 @@ package su.knst.lokutils.render;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.util.vector.Vector2f;
 import su.knst.lokutils.input.Inputs;
+import su.knst.lokutils.objects.Size;
 import su.knst.lokutils.objects.Vector2i;
 import su.knst.lokutils.objects.Vector4i;
 import su.knst.lokutils.render.context.GLContext;
@@ -17,10 +18,9 @@ import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 public class Window {
-
     protected long window;
 
-    protected Vector2i resolution = new Vector2i(512, 512);
+    protected Size resolution = new Size(512, 512);
     protected Vector2i position = new Vector2i(-1, -1);
     protected Vector2i aspectRatio = new Vector2i(-1, -1);
     protected Vector4i resolutionLimits = new Vector4i(GLFW_DONT_CARE, GLFW_DONT_CARE, GLFW_DONT_CARE, GLFW_DONT_CARE);
@@ -36,6 +36,7 @@ public class Window {
     protected int MSAASamples = 8;
 
     protected GLContext glContext;
+    protected FBO fbo;
     protected Inputs inputs;
     protected Monitor currentMonitor;
     protected boolean decorated = true;
@@ -46,16 +47,22 @@ public class Window {
     }
 
     public void update() {
+        su.knst.lokutils.render.GLFW.poolEvents();
         inputs.update();
-        Vector2i resolution = getResolution();
-        glViewport(0, 0, resolution.getX(), resolution.getY());
+        Size newResolution = getRawResolution();
+
+        if (!newResolution.equals(resolution)){
+            resolution = newResolution;
+
+            fbo.setResolution(resolution);
+            fbo.applyChanges();
+        }
 
         glContext.update();
     }
 
     public void swapBuffer() {
         glfwSwapBuffers(window);
-        glfwPollEvents();
     }
 
     public Window create() {
@@ -63,7 +70,7 @@ public class Window {
 
         currentMonitor = Monitor.getPrimary();
 
-        Vector2i monitorResolution = new Vector2i(currentMonitor.getVideoMode().width(), currentMonitor.getVideoMode().height());
+        Size monitorResolution = new Size(currentMonitor.getVideoMode().width(), currentMonitor.getVideoMode().height());
 
         if (isFullscreen)
             resolution = monitorResolution;
@@ -73,14 +80,11 @@ public class Window {
         for (Map.Entry<Integer, Integer> hint : windowCreationHints.entrySet())
             glfwWindowHint(hint.getKey(), hint.getValue());
 
-        glfwWindowHint(GLFW_SAMPLES, MSAASamples);
+        //glfwWindowHint(GLFW_SAMPLES, MSAASamples);
         glfwWindowHint(GLFW_DECORATED, decorated ? GLFW_TRUE : GLFW_FALSE);
         glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
 
-        windowCreationHints.clear();
-        windowCreationHints = null;
-
-        window = glfwCreateWindow(resolution.getX(), resolution.getY(), title, isFullscreen ? currentMonitor.getMonitor() : NULL, NULL);
+        window = glfwCreateWindow((int)resolution.width, (int)resolution.height, title, isFullscreen ? currentMonitor.getMonitor() : NULL, NULL);
 
         isCreated = window != NULL;
         if (!isCreated) return null;
@@ -91,7 +95,6 @@ public class Window {
         glContext = new GLContext(this);
 
         glContext.bind();
-
         glEnable(GL_TEXTURE_2D);
         glEnable(GL_ALPHA_TEST);
         glAlphaFunc(GL_GREATER, 0.0f);
@@ -99,14 +102,24 @@ public class Window {
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
         inputs = new Inputs();
+        fbo = new FBO();
 
+        if (MSAASamples > 0){
+            fbo.setMultisampled(true);
+            fbo.setMultisampleSamples(MSAASamples);
+        }
+
+        fbo.setNeedAlpha(windowCreationHints.getOrDefault(GLFW_TRANSPARENT_FRAMEBUFFER, 0) == 1);
+
+        fbo.setResolution(resolution);
+        fbo.generate();
         glContext.unbind();
 
         if (!isFullscreen) {
             if (position.getX() == -1) {
                 position = new Vector2i(
-                        monitorResolution.getX() / 2 - resolution.getX() / 2,
-                        monitorResolution.getY() / 2 - resolution.getY() / 2
+                        (int)(monitorResolution.width / 2 - resolution.width / 2),
+                        (int)(monitorResolution.height / 2 - resolution.height / 2)
                 );
                 setPosition(position);
             }
@@ -117,6 +130,9 @@ public class Window {
 
             setResizable(isResizable);
         }
+
+        windowCreationHints.clear();
+        windowCreationHints = null;
 
         return this;
     }
@@ -162,6 +178,10 @@ public class Window {
 
     public Inputs getInputs() {
         return inputs;
+    }
+
+    public FBO getFbo() {
+        return fbo;
     }
 
     public Window setResizable(boolean resizable) {
@@ -229,19 +249,26 @@ public class Window {
         return this;
     }
 
-    public Vector2i getResolution() {
-        if (!isCreated) return resolution;
+    public Size getResolution() {
+        return resolution;
+    }
+
+    protected Size getRawResolution() {
+        if (!isCreated)
+            return resolution;
 
         IntBuffer xBuffer = BufferUtils.createIntBuffer(1);
         IntBuffer yBuffer = BufferUtils.createIntBuffer(1);
 
         glfwGetWindowSize(window, xBuffer, yBuffer);
 
-        return new Vector2i(xBuffer.get(0), yBuffer.get(0));
+        return new Size(xBuffer.get(0), yBuffer.get(0));
     }
 
-    public Window setResolution(Vector2i resolution) {
-        if (isCreated) glfwSetWindowSize(window, resolution.getX(), resolution.getY());
+    public Window setResolution(Size resolution) {
+        if (isCreated)
+            glfwSetWindowSize(window, (int)resolution.width, (int)resolution.height);
+
         this.resolution = resolution;
 
         return this;
@@ -261,8 +288,8 @@ public class Window {
     public Window setPosition(Vector2i position) {
         if (isCreated)
             glfwSetWindowPos(window, position.getX(), position.getY());
-        else
-            this.position = position;
+
+        this.position = position;
 
         return this;
     }
@@ -285,8 +312,8 @@ public class Window {
                     fullscreen ? monitor.getMonitor() : NULL,
                     fullscreen ? 0 : position.getX(),
                     fullscreen ? 0 : position.getY(),
-                    fullscreen ? monitor.getVideoMode().width() : resolution.getX(),
-                    fullscreen ? monitor.getVideoMode().height() : resolution.getY(),
+                    fullscreen ? monitor.getVideoMode().width() : (int)resolution.width,
+                    fullscreen ? monitor.getVideoMode().height() : (int)resolution.height,
                     monitor.getVideoMode().refreshRate());
 
         isFullscreen = fullscreen;

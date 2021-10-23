@@ -16,6 +16,7 @@ import su.knst.lokutils.render.context.GLContext;
 import java.io.*;
 import java.nio.FloatBuffer;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import static org.lwjgl.opengl.GL20.*;
@@ -25,6 +26,7 @@ public class Shader extends GLObject {
     protected String fragPath;
     protected HashMap<String, Integer> uniformsNames = new HashMap<>();
     protected HashMap<String, Integer> attributesNames = new HashMap<>();
+    protected ArrayList<Integer> enabledVertexAttribs = new ArrayList<>();
 
     protected Shader(String vertPath, String fragPath) throws IOException {
         this.vertPath = vertPath;
@@ -75,6 +77,12 @@ public class Shader extends GLObject {
         if (!GLContext.check(GLcontext))
             throw new RuntimeException("Shader cannot be unbinded without or another OpenGL context!");
 
+        for (int aid : enabledVertexAttribs){
+            glDisableVertexAttribArray(aid);
+        }
+
+        enabledVertexAttribs.clear();
+
         ARBShaderObjects.glUseProgramObjectARB(0);
     }
 
@@ -115,6 +123,8 @@ public class Shader extends GLObject {
 
     protected void setAttributeData(String attributeName, VBO data, int size){
         int attributeID = getAttributeLocationID(attributeName);
+
+        enabledVertexAttribs.add(attributeID);
 
         data.bind();
         GL20C.glEnableVertexAttribArray(attributeID);

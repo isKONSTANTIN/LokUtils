@@ -3,29 +3,29 @@ package su.knst.lokutils.render.tools;
 import su.knst.lokutils.objects.*;
 import su.knst.lokutils.render.Texture;
 import su.knst.lokutils.render.context.GLContext;
+import su.knst.lokutils.render.texture.AbstractTexture;
+
+import java.io.IOException;
 
 import static java.lang.Math.*;
 import static org.lwjgl.opengl.GL11.*;
 
 public class GLFastTools {
-    private static float[] defaultTexCoords = new float[]{
+    public static final float[] defaultTexCoords = new float[]{
             0, 0,
             1, 0,
             1, 1,
             0, 1,
     };
 
-    private static float[] invertedTexCoords = new float[]{
+    public static final float[] invertedTexCoords = new float[]{
             0, 1,
             1, 1,
             1, 0,
             0, 0,
     };
 
-    private static final double COS_1 = 0.54030230586;
-    private static final double SIN_1 = 0.8414709848;
-
-    public static void drawTexturedSquare(Rect rect, Texture texture, float[] texCoords) {
+    public static void drawTexturedSquare(Rect rect, AbstractTexture texture, float[] texCoords) {
         GUIRenderBuffer buffer = GLContext.getCurrent().getViewTools().getGuiRenderBuffer();
 
         buffer.begin(texture);
@@ -45,7 +45,7 @@ public class GLFastTools {
         buffer.draw(GL_POLYGON);
     }
 
-    public static void drawTexturedSquare(Rect rect, Texture texture) {
+    public static void drawTexturedSquare(Rect rect, AbstractTexture texture) {
         drawTexturedSquare(rect, texture, defaultTexCoords);
     }
 
@@ -108,6 +108,20 @@ public class GLFastTools {
         buffer.addVertex(firstVertex);
 
         buffer.draw(GL_TRIANGLE_FAN);
+    }
+
+    public static Texture texture;
+
+    public static void renderBlurRect(Rect rect){
+        GUIRenderBuffer buffer = GLContext.getCurrent().getViewTools().getGuiRenderBuffer();
+        buffer.begin(GLContext.getCurrent().getWindow().getFbo().getTextureBuffer());
+
+        buffer.addVertex(rect.getX(), rect.getY());
+        buffer.addVertex(rect.getWidth() + rect.getX(), rect.getY());
+        buffer.addVertex(rect.getWidth() + rect.getX(), rect.getHeight() + rect.getY());
+        buffer.addVertex(rect.getX(), rect.getHeight() + rect.getY());
+
+        buffer.draw(GL_POLYGON, null, buffer.getBlurShader());
     }
 
     public static void drawRoundedHollowSquare(Rect rect, float radius) {

@@ -20,7 +20,7 @@ public class GUIImage extends GUIObject {
         this.texture = texture;
 
         if (overrideSize)
-            minimumSize().set(new Size(texture.getSize().getX(), texture.getSize().getY()));
+            minimumSize().set(texture.getSize());
 
         return this;
     }

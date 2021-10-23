@@ -3,8 +3,10 @@ package su.knst.lokutils.render;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
+import su.knst.lokutils.objects.Size;
 import su.knst.lokutils.objects.Vector2i;
 import su.knst.lokutils.render.context.GLContext;
+import su.knst.lokutils.render.texture.AbstractTexture;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -16,9 +18,8 @@ import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL13C.GL_TEXTURE0;
 import static org.lwjgl.opengl.GL13C.glActiveTexture;
 
-public class Texture extends GLObject {
+public class Texture extends AbstractTexture {
     protected String path;
-    protected Vector2i size;
 
     public Texture() {
 
@@ -35,7 +36,7 @@ public class Texture extends GLObject {
         } else {
             image = ImageIO.read(new File(path));
         }
-        this.size = new Vector2i(image.getWidth(), image.getHeight());
+        this.size = new Size(image.getWidth(), image.getHeight());
 
         int texture_size = image.getWidth() * image.getHeight() * 4;
         int[] pixels = new int[image.getWidth() * image.getHeight()];
@@ -59,7 +60,7 @@ public class Texture extends GLObject {
         return load(textureBuffer, size);
     }
 
-    public Texture load(ByteBuffer byteBuffer, Vector2i size) {
+    public Texture load(ByteBuffer byteBuffer, Size size) {
         delete();
         generate();
 
@@ -69,7 +70,7 @@ public class Texture extends GLObject {
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL12.GL_CLAMP_TO_EDGE);
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
-        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, size.getX(), size.getY(), 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, byteBuffer);
+        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, (int)size.width, (int)size.height, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, byteBuffer);
 
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
 
@@ -82,47 +83,4 @@ public class Texture extends GLObject {
         return path;
     }
 
-    public Vector2i getSize() {
-        return size;
-    }
-
-    @Override
-    public void generate() {
-        GLcontext = GLContext.getCurrent();
-        if (GLcontext == null) throw new RuntimeException("Texture cannot be created without OpenGL context!");
-
-        id = glGenTextures();
-    }
-
-    @Override
-    public void delete() {
-        if (id == 0) return;
-
-        if (!GLContext.check(GLcontext))
-            throw new RuntimeException("Texture cannot be deleted without or another OpenGL context!");
-
-        glDeleteTextures(id);
-        id = 0;
-    }
-
-    public void bind(int position) {
-        if (!GLContext.check(GLcontext))
-            throw new RuntimeException("Texture cannot be binded without or another OpenGL context!");
-
-        glActiveTexture(GL_TEXTURE0 + position);
-        glBindTexture(GL_TEXTURE_2D, id);
-    }
-
-    @Override
-    public void bind() {
-        bind(0);
-    }
-
-    @Override
-    public void unbind() {
-        if (GLContext.getCurrent() == null)
-            throw new RuntimeException("Texture cannot be unbinded without OpenGL context!");
-
-        glBindTexture(GL_TEXTURE_2D, 0);
-    }
 }

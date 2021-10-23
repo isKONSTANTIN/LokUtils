@@ -2,7 +2,6 @@ package su.knst.lokutils.gui.style;
 
 import su.knst.lokutils.gui.core.windows.bar.GUIWindowBar;
 import su.knst.lokutils.gui.objects.*;
-import su.knst.lokutils.gui.objects.*;
 import su.knst.lokutils.gui.objects.button.GUIButton;
 import su.knst.lokutils.gui.objects.slider.GUISlider;
 import su.knst.lokutils.gui.objects.slider.SliderHead;
@@ -10,16 +9,19 @@ import su.knst.lokutils.gui.panels.scroll.HorizontalScrollBar;
 import su.knst.lokutils.gui.panels.scroll.VerticalScrollBar;
 import su.knst.lokutils.objects.Color;
 import su.knst.lokutils.objects.ColorRGB;
-import su.knst.lokutils.render.text.Font;
 import su.knst.lokutils.render.context.GLContext;
+import su.knst.lokutils.render.text.AWTFont;
+import su.knst.lokutils.render.text.FileFont;
 
+import java.awt.*;
+import java.io.IOException;
 import java.util.HashMap;
 
 public class GUIStyle {
     private static HashMap<GLContext, GUIStyle> defaultStyles = new HashMap<>();
     protected HashMap<Class, GUIObjectAsset> assets = new HashMap<>();
 
-    public static GUIStyle generateDefaultStyle() {
+    public static GUIStyle generateDefaultStyle() throws IOException, FontFormatException {
         if (GLContext.getCurrent() == null)
             throw new RuntimeException("Default style cannot be generated without OpenGL context!");
 
@@ -46,9 +48,9 @@ public class GUIStyle {
         defaultStyle.asset(GUIText.class)
                 .color("text", new Color(0.15f, 0.15f, 0.15f, 1))
                 .color("highlighted", new Color(0.2f, 0.2f, 0.2f, 1))
-                .font("default", new Font("#/su/knst/lokutils/resources/fonts/Lato-Regular.ttf", ""))
-                .font("windowTitle", new Font("Aria", 10))
-                .font("textFieldTitle", new Font("TimesRomans", 11));
+                .font("default", new FileFont("#/su/knst/lokutils/resources/fonts/Lato-Regular.ttf", 16))
+                .font("windowTitle", new AWTFont("Aria", 10))
+                .font("textFieldTitle", new AWTFont("TimesRomans", 11));
 
         defaultStyle.asset(GUITextField.class)
                 .color("text", new Color(0.95f, 0.95f, 0.95f, 1))
@@ -86,8 +88,15 @@ public class GUIStyle {
         if (context == null)
             return null;
 
-        if (!defaultStyles.containsKey(context))
-            setDefault(generateDefaultStyle());
+        if (!defaultStyles.containsKey(context)) {
+            try {
+                setDefault(generateDefaultStyle());
+            } catch (IOException | FontFormatException e) {
+                e.printStackTrace();
+
+                return null;
+            }
+        }
 
         return defaultStyles.get(context);
     }

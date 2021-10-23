@@ -6,16 +6,17 @@ import su.knst.lokutils.gui.layout.Alignment;
 import su.knst.lokutils.gui.layout.BaseLayout;
 import su.knst.lokutils.gui.layout.ListLayout;
 import su.knst.lokutils.gui.objects.*;
-import su.knst.lokutils.gui.objects.*;
 import su.knst.lokutils.gui.objects.button.GUIButton;
 import su.knst.lokutils.gui.objects.margin.GUIMargin;
 import su.knst.lokutils.gui.objects.slider.GUISlider;
 import su.knst.lokutils.gui.style.GUIStyle;
 import su.knst.lokutils.objects.Color;
+import su.knst.lokutils.objects.Rect;
 import su.knst.lokutils.objects.Size;
 import su.knst.lokutils.render.Window;
-import su.knst.lokutils.render.text.Font;
+import su.knst.lokutils.render.text.AWTFont;
 import su.knst.lokutils.render.text.Style;
+import su.knst.lokutils.render.tools.GLFastTools;
 
 public class DialogTest extends Application<GUIMainCanvasSystem> {
     ListLayout layout;
@@ -30,19 +31,26 @@ public class DialogTest extends Application<GUIMainCanvasSystem> {
     }
 
     @Override
+    public void postRender() {
+        super.postRender();
+
+        //GLFastTools.renderBlurRect(new Rect(50, 50, 200, 200));
+    }
+
+    @Override
     public void initEvent() {
         this.window.setWindowCloseCallback((win) -> this.close());
 
-        GUIStyle style = GUIStyle.generateDefaultStyle();
+        GUIStyle style = GUIStyle.getDefault();
         style.asset(GUISeparate.class).color("separateColor", Color.BLACK.setAlpha(0.4f));
-        style.asset(GUIText.class).font("title", new Font("TimesRoman", 36, Style.BOLD));
+        style.asset(GUIText.class).font("title", new AWTFont("TimesRoman", 36, Style.BOLD));
 
         this.GUIController.getLayout().setStyle(style);
 
         BaseLayout buttonsLayout = new BaseLayout();
         layout = new ListLayout();
         layout.minimumSize().set(layout.size().get());
-        layout.size().track(() -> layout.minimumSize().get().setWidth(Math.max(window.getResolution().getX() / 2f, buttonsLayout.minimumSize().get().width)));
+        layout.size().track(() -> layout.minimumSize().get().setWidth(Math.max(window.getResolution().width / 2f, buttonsLayout.minimumSize().get().width)));
         layout.setGap(5);
 
         GUIText title = new GUIText().setStyleFontName("title");

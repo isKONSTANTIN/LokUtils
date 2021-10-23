@@ -1,4 +1,4 @@
-package su.knst.lokutils.gui.core;
+package su.knst.lokutils.gui.core.shaders;
 
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;

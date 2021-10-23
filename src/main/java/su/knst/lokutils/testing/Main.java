@@ -18,16 +18,11 @@ import static org.lwjgl.opengl.GL11.glColor4f;
 
 public class Main extends Application<GUIMainCanvasSystem> {
     public Main() {
-        super(new GUIMainCanvasSystem(), new Window().setResizable(true).setTitle("LokUtils - testing menu").setResolution(new Vector2i(256,512)));
+        super(new GUIMainCanvasSystem(), new Window().setResizable(true).setTitle("LokUtils - testing menu").setResolution(new Size(256,512)));
     }
 
     public static void main(String[] args) {
         new Main().open();
-    }
-
-    @Override
-    public void renderEvent() {
-        super.renderEvent();
     }
 
     @Override

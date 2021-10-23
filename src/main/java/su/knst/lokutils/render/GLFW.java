@@ -17,4 +17,8 @@ public class GLFW {
         return inited;
     }
 
+    public static synchronized void poolEvents(){
+        glfwPollEvents();
+    }
+
 }

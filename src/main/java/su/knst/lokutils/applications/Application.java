@@ -2,8 +2,11 @@ package su.knst.lokutils.applications;
 
 import su.knst.lokutils.gui.style.GUIStyle;
 import su.knst.lokutils.gui.core.GUIController;
+import su.knst.lokutils.objects.Rect;
+import su.knst.lokutils.objects.Size;
 import su.knst.lokutils.render.GLFW;
 import su.knst.lokutils.render.Window;
+import su.knst.lokutils.render.tools.GLFastTools;
 import su.knst.lokutils.tools.ExecutorServices;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -46,6 +49,10 @@ public class Application<T extends GUIController> implements Runnable {
 
     }
 
+    public void postRender(){
+
+    }
+
     public void initEvent() {
 
     }
@@ -73,14 +80,23 @@ public class Application<T extends GUIController> implements Runnable {
             window.show();
             while (opened) {
                 window.getGlContext().bind();
-                window.getGlContext().update();
                 window.update();
+                glClearColor(0,0,0,0);
+                glClear(GL_COLOR_BUFFER_BIT);
+                window.getFbo().bind();
+
+                Size resolution = window.getResolution();
+                glViewport(0, 0, (int)resolution.width, (int)resolution.height);
 
                 updateEvent();
                 GUIController.update();
 
                 renderEvent();
                 GUIController.render();
+                postRender();
+                window.getFbo().unbind();
+
+                GLFastTools.drawTexturedSquare(new Rect(window.getResolution()), window.getFbo().getTextureBuffer(), GLFastTools.invertedTexCoords);
 
                 window.swapBuffer();
                 window.getGlContext().unbind();

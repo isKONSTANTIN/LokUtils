@@ -11,7 +11,7 @@ import su.knst.lokutils.render.tools.GUIRenderBuffer;
 import static org.lwjgl.opengl.GL11.GL_QUADS;
 
 public class TextRenderHelper {
-    public static Size getSize(Font font, String text, Size maxSize) {
+    public static Size getSize(AbstractFont font, String text, Size maxSize) {
         float fontHeight = font.getFontHeight();
         float fontSpaceSize = font.getSpaceSize();
 
@@ -61,7 +61,7 @@ public class TextRenderHelper {
         return new Size(result);
     }
 
-    public static void drawText(Font font, String text, Rect area, Color color) {
+    public static void drawText(AbstractFont font, String text, Rect area, Color color) {
         Texture fontTexture = font.getTexture();
 
         if (fontTexture == null)
@@ -106,10 +106,10 @@ public class TextRenderHelper {
             float width = drawX + g.width;
             float height = drawY + g.height;
 
-            float glTexX = g.x / (float) fontTexture.getSize().getX();
-            float glTexY = g.y / (float) fontTexture.getSize().getY();
-            float glTexWidth = (g.x + g.width) / (float) fontTexture.getSize().getX();
-            float glTexHeight = (g.y + g.height) / (float) fontTexture.getSize().getY();
+            float glTexX = g.x / (float) fontTexture.getSize().width;
+            float glTexY = g.y / (float) fontTexture.getSize().height;
+            float glTexWidth = (g.x + g.width) / (float) fontTexture.getSize().width;
+            float glTexHeight = (g.y + g.height) / (float) fontTexture.getSize().height;
 
             buffer.addRawTexCoord(glTexX, glTexHeight);
             buffer.addVertex(drawX, drawY);

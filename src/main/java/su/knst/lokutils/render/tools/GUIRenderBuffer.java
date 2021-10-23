@@ -3,42 +3,56 @@ package su.knst.lokutils.render.tools;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
-import su.knst.lokutils.gui.core.GUIShader;
-import su.knst.lokutils.objects.*;
+import su.knst.lokutils.gui.core.shaders.BlurShader;
+import su.knst.lokutils.gui.core.shaders.GUIShader;
 import su.knst.lokutils.objects.Color;
 import su.knst.lokutils.objects.Point;
+import su.knst.lokutils.objects.Size;
 import su.knst.lokutils.render.context.GLContext;
 import su.knst.lokutils.render.Texture;
 import su.knst.lokutils.render.VBO;
 import su.knst.lokutils.objects.Rect;
+import su.knst.lokutils.render.texture.AbstractTexture;
 
 import java.util.ArrayList;
 
+import static org.lwjgl.opengl.ARBFramebufferObject.GL_COLOR_ATTACHMENT0;
 import static org.lwjgl.opengl.GL11.*;
 
 public class GUIRenderBuffer {
     protected VBO vertexVbo;
     protected VBO textureVbo;
     protected GUIShader shader;
-    protected Texture texture;
+    protected BlurShader blurShader;
+    protected AbstractTexture texture;
     protected boolean ended;
 
     protected ArrayList<Float> vertexBuffer = new ArrayList<>();
     protected ArrayList<Float> texBuffer = new ArrayList<>();
 
-    public GUIRenderBuffer(GUIShader shader){
-        this.shader = shader;
+    public GUIRenderBuffer() throws Exception{
+        this.shader = new GUIShader();
+        this.blurShader = new BlurShader();
     }
 
     public GUIShader getDefaultShader(){
         return shader;
     }
 
-    public Texture getCurrentTexture(){
+    public BlurShader getBlurShader() {
+        return blurShader;
+    }
+
+    public void update(Size windowSize){
+        shader.update(windowSize);
+        blurShader.update(windowSize);
+    }
+
+    public AbstractTexture getCurrentTexture(){
         return texture;
     }
 
-    public void begin(Texture texture){
+    public void begin(AbstractTexture texture){
         if (vertexVbo == null)
             this.vertexVbo = new VBO();
 
@@ -110,8 +124,8 @@ public class GUIRenderBuffer {
         float y = point.y;
 
         if (texture != null){
-            x /= texture.getSize().getX();
-            y /= texture.getSize().getX();
+            x /= texture.getSize().width;
+            y /= texture.getSize().width;
         }
 
         addRawTexCoord(x, y);
@@ -142,7 +156,7 @@ public class GUIRenderBuffer {
         if (vertexBuffer.size() == 0)
             return;
 
-        boolean textureActive = texture != null && texBuffer.size() > 0;
+        boolean textureActive = texture != null;
 
         if (!ended)
             end();
@@ -154,7 +168,9 @@ public class GUIRenderBuffer {
 
         if (textureActive) {
             texture.bind();
-            shader.setUVData(textureVbo);
+
+            if (texBuffer.size() > 0)
+                shader.setUVData(textureVbo);
         }
 
         if (color == null && texture == null){
@@ -168,9 +184,9 @@ public class GUIRenderBuffer {
 
         glDrawArrays(type, 0, vertexVbo.getSize() / 2);
 
-        shader.unbind();
-
         if (textureActive) texture.unbind();
+
+        shader.unbind();
     }
 
     public void draw(int type, Color color){

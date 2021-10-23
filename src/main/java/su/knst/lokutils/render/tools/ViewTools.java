@@ -2,7 +2,8 @@ package su.knst.lokutils.render.tools;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector4f;
-import su.knst.lokutils.gui.core.GUIShader;
+import su.knst.lokutils.gui.core.shaders.BlurShader;
+import su.knst.lokutils.gui.core.shaders.GUIShader;
 import su.knst.lokutils.objects.Point;
 import su.knst.lokutils.objects.Rect;
 import su.knst.lokutils.objects.Size;
@@ -21,14 +22,14 @@ public class ViewTools {
     private Window window;
     private GUIRenderBuffer guiRenderBuffer;
 
-    public ViewTools(Window window) throws Exception {
+    public ViewTools(Window window) throws Exception{
         this.window = window;
 
-        this.guiRenderBuffer = new GUIRenderBuffer(new GUIShader());
+        this.guiRenderBuffer = new GUIRenderBuffer();
     }
 
     public void update(){
-        guiRenderBuffer.getDefaultShader().update(new Size(window.getResolution()));
+        guiRenderBuffer.update(window.getResolution());
     }
 
     public GUIRenderBuffer getGuiRenderBuffer() {
@@ -85,10 +86,10 @@ public class ViewTools {
     }
 
     private Rect clientToScreen(Rect clientRect) {
-        Vector2i resolution = window.getResolution();
+        Size resolution = window.getResolution();
 
         float x = clientRect.getX();
-        float y = resolution.getY() - clientRect.getY() - clientRect.getHeight();
+        float y = resolution.height - clientRect.getY() - clientRect.getHeight();
         float w = clientRect.getWidth();
         float h = clientRect.getHeight();
 

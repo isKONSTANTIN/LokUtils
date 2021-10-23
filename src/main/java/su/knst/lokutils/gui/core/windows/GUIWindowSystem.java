@@ -29,8 +29,8 @@ public class GUIWindowSystem extends GUIController {
             windows.add(window);
             windowsPositions.put(window,
                     new Point(
-                            this.window.getResolution().getX() / 2f - window.contentSize().get().width / 2f,
-                            this.window.getResolution().getY() / 2f - window.contentSize().get().height / 2f
+                            this.window.getResolution().width / 2f - window.contentSize().get().width / 2f,
+                            this.window.getResolution().height / 2f - window.contentSize().get().height / 2f
                     )
             );
         };

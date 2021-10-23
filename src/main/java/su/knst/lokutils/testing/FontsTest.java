@@ -11,6 +11,8 @@ import su.knst.lokutils.gui.objects.margin.Margin;
 import su.knst.lokutils.gui.panels.scroll.ScrollPanel;
 import su.knst.lokutils.objects.Size;
 import su.knst.lokutils.render.Window;
+import su.knst.lokutils.render.text.AWTFont;
+import su.knst.lokutils.render.text.Style;
 
 import java.awt.*;
 import java.util.Locale;
@@ -34,7 +36,7 @@ public class FontsTest extends Application<GUIMainCanvasSystem> {
 
         for (Font font : allFonts) {
             String fontName = font.getFontName(Locale.US);
-            GUIStyle.getDefault().asset(GUIText.class).font(fontName, new su.knst.lokutils.render.text.Font(font.getName(), 14));
+            GUIStyle.getDefault().asset(GUIText.class).font(fontName, new AWTFont(font.deriveFont(16f), Style.PLAIN));
             GUIText text = new GUIText();
             text.setStyleFontName(fontName).string().set(fontName);
 
